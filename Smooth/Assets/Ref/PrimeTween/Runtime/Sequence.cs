@@ -29,12 +29,12 @@ namespace PrimeTween {
         #endif
         partial struct Sequence/*: ITween<Sequence>*/ {
         const int emptySequenceTag = -43;
-        internal 
-            #if !ENABLE_SERIALIZATION && UNITY_2020_3_OR_NEWER
-            readonly
-            #endif
-            Tween root;
-        internal bool IsCreated => root.IsCreated;
+        // internal 
+        //     #if !ENABLE_SERIALIZATION && UNITY_2020_3_OR_NEWER
+        //     readonly
+        //     #endif
+        //     Tween root;
+        // internal bool IsCreated => root.IsCreated;
 
         /// Sequence is 'alive' when any of its tweens is 'alive'.
         public bool isAlive => root.isAlive;

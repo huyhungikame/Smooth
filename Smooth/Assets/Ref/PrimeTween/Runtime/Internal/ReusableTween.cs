@@ -18,21 +18,21 @@ namespace PrimeTween {
         ///     If plain C# target holds a reference to UnityEngine.Object and animates its properties, then it's user's responsibility to ensure that UnityEngine.Object still exists.
         [CanBeNull] internal object target;
         [SerializeField, CanBeNull] internal UnityEngine.Object unityTarget; 
-        [SerializeField] internal bool _isPaused;
-        internal bool _isAlive;
-        [SerializeField] internal float elapsedTimeTotal;
+        // [SerializeField] internal bool _isPaused;
+        // internal bool _isAlive;
+        // [SerializeField] internal float elapsedTimeTotal;
         [SerializeField]
         internal float easedInterpolationFactor;
         internal float cycleDuration;
         internal PropType propType;
-        internal TweenType tweenType;
+        // internal TweenType tweenType;
         [SerializeField] internal ValueContainer startValue;
         [SerializeField] internal ValueContainer endValue;
         internal ValueContainer diff;
-        internal bool isAdditive;
+        // internal bool isAdditive;
         internal ValueContainer prevVal;
-        [SerializeField] internal TweenSettings settings;
-        [SerializeField] int cyclesDone;
+        // [SerializeField] internal TweenSettings settings;
+        // [SerializeField] int cyclesDone;
         const int iniCyclesDone = -1;
 
         internal object customOnValueChange;
@@ -51,125 +51,125 @@ namespace PrimeTween {
         internal Tween nextSibling;
         
         internal Func<ReusableTween, ValueContainer> getter;
-        internal bool startFromCurrent;
+        // internal bool startFromCurrent;
 
         bool stoppedEmergently;
         internal readonly TweenCoroutineEnumerator coroutineEnumerator = new TweenCoroutineEnumerator();
-        internal float timeScale = 1f;
+        // internal float timeScale = 1f;
         bool warnIgnoredOnCompleteIfTargetDestroyed = true;
         internal Tween.ShakeData shakeData;
-        State state;
+        // State state;
 
-        internal bool updateAndCheckIfRunning(float dt) {
-            if (!_isAlive) {
-                return sequence.IsCreated; // don't release a tween until sequence.releaseTweens()
-            }
-            if (!_isPaused) {
-                SetElapsedTimeTotal(elapsedTimeTotal + dt * timeScale);
-            }
-            return _isAlive;
-        }
+        // internal bool updateAndCheckIfRunning(float dt) {
+        //     if (!_isAlive) {
+        //         return sequence.IsCreated; // don't release a tween until sequence.releaseTweens()
+        //     }
+        //     if (!_isPaused) {
+        //         SetElapsedTimeTotal(elapsedTimeTotal + dt * timeScale);
+        //     }
+        //     return _isAlive;
+        // }
 
-        internal void SetElapsedTimeTotal(float newElapsedTimeTotal) {
-            if (!sequence.IsCreated) {
-                setElapsedTimeTotal(newElapsedTimeTotal, out _);
-                return;
-            }
-            if (isMainSequenceRoot()) {
-                updateSequence(newElapsedTimeTotal, false);
-            }
-        }
+        // internal void SetElapsedTimeTotal(float newElapsedTimeTotal) {
+        //     if (!sequence.IsCreated) {
+        //         setElapsedTimeTotal(newElapsedTimeTotal, out _);
+        //         return;
+        //     }
+        //     if (isMainSequenceRoot()) {
+        //         updateSequence(newElapsedTimeTotal, false);
+        //     }
+        // }
         
-        internal void updateSequence(float _elapsedTimeTotal, bool isRestart) {
-            Assert.IsTrue(isSequenceRoot());
-            float prevEasedT = easedInterpolationFactor;
-            setElapsedTimeTotal(_elapsedTimeTotal, out int cyclesDiff); // update sequence root
-
-            bool isRestartToBeginning = isRestart && cyclesDiff < 0;
-            Assert.IsTrue(!isRestartToBeginning || cyclesDone == 0 || cyclesDone == iniCyclesDone);
-            if (cyclesDiff != 0 && !isRestartToBeginning) {
-                // print($"           sequence cyclesDiff: {cyclesDiff}");
-                if (isRestart) {
-                    Assert.IsTrue(cyclesDiff > 0 && cyclesDone == settings.cycles);
-                    cyclesDiff = 1;
-                }
-                int cyclesDiffAbs = Mathf.Abs(cyclesDiff);
-                int newCyclesDone = cyclesDone;
-                cyclesDone -= cyclesDiff;
-                int cyclesDelta = cyclesDiff > 0 ? 1 : -1; 
-                var interpolationFactor = cyclesDelta > 0 ? 1f : 0f;
-                for (int i = 0; i < cyclesDiffAbs; i++) {
-                    Assert.IsTrue(!isRestart || i == 0);
-                    if (cyclesDone == settings.cycles || cyclesDone == iniCyclesDone) {
-                        // do nothing when moving backward from the last cycle or forward from the -1 cycle
-                        cyclesDone += cyclesDelta;
-                        continue;
-                    }
-                    
-                    var easedT = calcEasedT(interpolationFactor, cyclesDone);
-                    var isForwardCycle = easedT > 0.5f;
-                    const float negativeElapsedTime = -1000f;  
-                    if (!forceChildrenToPos()) {
-                        return;
-                    }
-                    bool forceChildrenToPos() {
-                        // complete the previous cycles by forcing all children tweens to 0f or 1f
-                        // print($" (i:{i}) force to pos: {isForwardCycle}");
-                        var simulatedSequenceElapsedTime = isForwardCycle ? float.MaxValue : negativeElapsedTime;
-                        foreach (var t in sequence.getSelfChildren(isForwardCycle)) {
-                            var tween = t.tween;
-                            tween.updateSequenceChild(simulatedSequenceElapsedTime, isRestart);
-                            if (!sequence.isAlive) {
-                                return false;
-                            }
-                        }
-                        return true;
-                    }
-                    
-                    cyclesDone += cyclesDelta;
-                    var sequenceCycleMode = settings.cycleMode;
-                    if (sequenceCycleMode == CycleMode.Restart && cyclesDone != settings.cycles && cyclesDone != iniCyclesDone) { // '&& cyclesDone != 0' check is wrong because we should do the restart when moving from 1 to 0 cyclesDone
-                        if (!restartChildren()) {
-                            return;
-                        }
-                        bool restartChildren() {
-                            // print($"restart to pos: {!isForwardCycle}");
-                            var simulatedSequenceElapsedTime = !isForwardCycle ? float.MaxValue : negativeElapsedTime;
-                            prevEasedT = simulatedSequenceElapsedTime;
-                            foreach (var t in sequence.getSelfChildren(!isForwardCycle)) {
-                                var tween = t.tween;
-                                tween.updateSequenceChild(simulatedSequenceElapsedTime, true);
-                                if (!sequence.isAlive) {
-                                    return false;
-                                }
-                                Assert.IsTrue(isForwardCycle || tween.cyclesDone == tween.settings.cycles);
-                                Assert.IsTrue(!isForwardCycle || tween.cyclesDone <= 0);
-                                Assert.IsTrue(isForwardCycle || tween.state == State.After);
-                                Assert.IsTrue(!isForwardCycle || tween.state == State.Before);
-                            }
-                            return true;
-                        }
-                    }
-                }
-                Assert.AreEqual(newCyclesDone, cyclesDone);
-                if (isDone(cyclesDiff)) {
-                    if (isMainSequenceRoot() && !_isPaused) {
-                        sequence.releaseTweens();
-                    }
-                    return;
-                }
-            }
-            
-            easedInterpolationFactor = Mathf.Clamp01(easedInterpolationFactor);
-            bool isForward = easedInterpolationFactor > prevEasedT;
-            float sequenceElapsedTime = easedInterpolationFactor * cycleDuration;
-            foreach (var t in sequence.getSelfChildren(isForward)) {
-                t.tween.updateSequenceChild(sequenceElapsedTime, isRestart);
-                if (!sequence.isAlive) {
-                    return;
-                }
-            }
-        }
+        // internal void updateSequence(float _elapsedTimeTotal, bool isRestart) {
+        //     Assert.IsTrue(isSequenceRoot());
+        //     float prevEasedT = easedInterpolationFactor;
+        //     setElapsedTimeTotal(_elapsedTimeTotal, out int cyclesDiff); // update sequence root
+        //
+        //     bool isRestartToBeginning = isRestart && cyclesDiff < 0;
+        //     Assert.IsTrue(!isRestartToBeginning || cyclesDone == 0 || cyclesDone == iniCyclesDone);
+        //     if (cyclesDiff != 0 && !isRestartToBeginning) {
+        //         // print($"           sequence cyclesDiff: {cyclesDiff}");
+        //         if (isRestart) {
+        //             Assert.IsTrue(cyclesDiff > 0 && cyclesDone == settings.cycles);
+        //             cyclesDiff = 1;
+        //         }
+        //         int cyclesDiffAbs = Mathf.Abs(cyclesDiff);
+        //         int newCyclesDone = cyclesDone;
+        //         cyclesDone -= cyclesDiff;
+        //         int cyclesDelta = cyclesDiff > 0 ? 1 : -1; 
+        //         var interpolationFactor = cyclesDelta > 0 ? 1f : 0f;
+        //         for (int i = 0; i < cyclesDiffAbs; i++) {
+        //             Assert.IsTrue(!isRestart || i == 0);
+        //             if (cyclesDone == settings.cycles || cyclesDone == iniCyclesDone) {
+        //                 // do nothing when moving backward from the last cycle or forward from the -1 cycle
+        //                 cyclesDone += cyclesDelta;
+        //                 continue;
+        //             }
+        //             
+        //             var easedT = calcEasedT(interpolationFactor, cyclesDone);
+        //             var isForwardCycle = easedT > 0.5f;
+        //             const float negativeElapsedTime = -1000f;  
+        //             if (!forceChildrenToPos()) {
+        //                 return;
+        //             }
+        //             bool forceChildrenToPos() {
+        //                 // complete the previous cycles by forcing all children tweens to 0f or 1f
+        //                 // print($" (i:{i}) force to pos: {isForwardCycle}");
+        //                 var simulatedSequenceElapsedTime = isForwardCycle ? float.MaxValue : negativeElapsedTime;
+        //                 foreach (var t in sequence.getSelfChildren(isForwardCycle)) {
+        //                     var tween = t.tween;
+        //                     tween.updateSequenceChild(simulatedSequenceElapsedTime, isRestart);
+        //                     if (!sequence.isAlive) {
+        //                         return false;
+        //                     }
+        //                 }
+        //                 return true;
+        //             }
+        //             
+        //             cyclesDone += cyclesDelta;
+        //             var sequenceCycleMode = settings.cycleMode;
+        //             if (sequenceCycleMode == CycleMode.Restart && cyclesDone != settings.cycles && cyclesDone != iniCyclesDone) { // '&& cyclesDone != 0' check is wrong because we should do the restart when moving from 1 to 0 cyclesDone
+        //                 if (!restartChildren()) {
+        //                     return;
+        //                 }
+        //                 bool restartChildren() {
+        //                     // print($"restart to pos: {!isForwardCycle}");
+        //                     var simulatedSequenceElapsedTime = !isForwardCycle ? float.MaxValue : negativeElapsedTime;
+        //                     prevEasedT = simulatedSequenceElapsedTime;
+        //                     foreach (var t in sequence.getSelfChildren(!isForwardCycle)) {
+        //                         var tween = t.tween;
+        //                         tween.updateSequenceChild(simulatedSequenceElapsedTime, true);
+        //                         if (!sequence.isAlive) {
+        //                             return false;
+        //                         }
+        //                         Assert.IsTrue(isForwardCycle || tween.cyclesDone == tween.settings.cycles);
+        //                         Assert.IsTrue(!isForwardCycle || tween.cyclesDone <= 0);
+        //                         Assert.IsTrue(isForwardCycle || tween.state == State.After);
+        //                         Assert.IsTrue(!isForwardCycle || tween.state == State.Before);
+        //                     }
+        //                     return true;
+        //                 }
+        //             }
+        //         }
+        //         Assert.AreEqual(newCyclesDone, cyclesDone);
+        //         if (isDone(cyclesDiff)) {
+        //             if (isMainSequenceRoot() && !_isPaused) {
+        //                 sequence.releaseTweens();
+        //             }
+        //             return;
+        //         }
+        //     }
+        //     
+        //     easedInterpolationFactor = Mathf.Clamp01(easedInterpolationFactor);
+        //     bool isForward = easedInterpolationFactor > prevEasedT;
+        //     float sequenceElapsedTime = easedInterpolationFactor * cycleDuration;
+        //     foreach (var t in sequence.getSelfChildren(isForward)) {
+        //         t.tween.updateSequenceChild(sequenceElapsedTime, isRestart);
+        //         if (!sequence.isAlive) {
+        //             return;
+        //         }
+        //     }
+        // }
 
         bool isDone(int cyclesDiff) {
             Assert.IsTrue(settings.cycles == -1 || cyclesDone <= settings.cycles);
@@ -187,134 +187,134 @@ namespace PrimeTween {
             }
         }
 
-        internal bool isMainSequenceRoot() => tweenType == TweenType.MainSequence;
+        // internal bool isMainSequenceRoot() => tweenType == TweenType.MainSequence;
         internal bool isSequenceRoot() => tweenType == TweenType.MainSequence || tweenType == TweenType.NestedSequence;
 
-        void setElapsedTimeTotal(float _elapsedTimeTotal, out int cyclesDiff) {
-            elapsedTimeTotal = _elapsedTimeTotal;
-            float t = calcTFromElapsedTimeTotal(_elapsedTimeTotal, out cyclesDiff, out var newState);
-            cyclesDone += cyclesDiff;
-            if (newState == State.Running || state != newState) {
-                if (isUnityTargetDestroyed()) {
-                    EmergencyStop(true);
-                    return;
-                }
-                var easedT = calcEasedT(t, cyclesDone);
-                // print($"state: {state}/{newState}, cycles: {cyclesDone}/{settings.cycles} (diff: {cyclesDiff}), elapsedTimeTotal: {elapsedTimeTotal}, interpolation: {t}/{easedT}");
-                state = newState;
-                ReportOnValueChange(easedT);
-                if (stoppedEmergently || !_isAlive) {
-                    return;
-                }
-            }
-            if (isDone(cyclesDiff)) {
-                if (!IsInSequence() && !_isPaused) {
-                    kill();
-                }
-                ReportOnComplete();
-            }
-        }
+        // void setElapsedTimeTotal(float _elapsedTimeTotal, out int cyclesDiff) {
+        //     elapsedTimeTotal = _elapsedTimeTotal;
+        //     float t = calcTFromElapsedTimeTotal(_elapsedTimeTotal, out cyclesDiff, out var newState);
+        //     cyclesDone += cyclesDiff;
+        //     if (newState == State.Running || state != newState) {
+        //         if (isUnityTargetDestroyed()) {
+        //             EmergencyStop(true);
+        //             return;
+        //         }
+        //         var easedT = calcEasedT(t, cyclesDone);
+        //         // print($"state: {state}/{newState}, cycles: {cyclesDone}/{settings.cycles} (diff: {cyclesDiff}), elapsedTimeTotal: {elapsedTimeTotal}, interpolation: {t}/{easedT}");
+        //         state = newState;
+        //         ReportOnValueChange(easedT);
+        //         if (stoppedEmergently || !_isAlive) {
+        //             return;
+        //         }
+        //     }
+        //     if (isDone(cyclesDiff)) {
+        //         if (!IsInSequence() && !_isPaused) {
+        //             kill();
+        //         }
+        //         ReportOnComplete();
+        //     }
+        // }
 
-        float calcTFromElapsedTimeTotal(float _elapsedTimeTotal, out int cyclesDiff, out State newState) {
-            // key timeline points: 0 | startDelay | duration | 1 | endDelay | onComplete
-            var cyclesTotal = settings.cycles;
-            if (_elapsedTimeTotal == float.MaxValue) {
-                Assert.AreNotEqual(-1, cyclesTotal);
-                var cyclesLeft = cyclesTotal - cyclesDone;
-                Assert.IsTrue(cyclesLeft >= 0);
-                cyclesDiff = cyclesLeft;
-                newState = State.After;
-                return 1f;
-            }
-            _elapsedTimeTotal -= waitDelay; // waitDelay is applied before calculating cycles
-            if (_elapsedTimeTotal < 0f) {
-                cyclesDiff = iniCyclesDone - cyclesDone;
-                newState = State.Before;
-                return 0f;
-            }
-            Assert.IsTrue(_elapsedTimeTotal >= 0f);
-            Assert.AreNotEqual(float.MaxValue, _elapsedTimeTotal);
-            var duration = settings.duration;
-            if (duration == 0f) {
-                if (cyclesTotal == -1) {
-                    cyclesDiff = cyclesDone == iniCyclesDone ? 2 : 1;
-                    newState = State.Running;
-                    return 1f;
-                }
-                Assert.AreNotEqual(-1, cyclesTotal);
-                if (_elapsedTimeTotal == 0f) {
-                    cyclesDiff = iniCyclesDone - cyclesDone;
-                    newState = State.Before;
-                    return 0f;
-                }
-                var cyclesLeft = cyclesTotal - cyclesDone;
-                Assert.IsTrue(cyclesLeft >= 0);
-                cyclesDiff = cyclesLeft;
-                newState = State.After; 
-                return 1f;
-            }
-            Assert.AreNotEqual(0f, cycleDuration);
-            var newCyclesDone = (int) (_elapsedTimeTotal / cycleDuration);
-            if (cyclesTotal != -1 && newCyclesDone > cyclesTotal) {
-                newCyclesDone = cyclesTotal;
-            }
-            cyclesDiff = newCyclesDone - cyclesDone;
-            if (cyclesTotal != -1 && cyclesDone + cyclesDiff == cyclesTotal) {
-                newState = State.After;
-                return 1f;
-            }
-            var elapsedTimeInCycle = _elapsedTimeTotal - cycleDuration * newCyclesDone - settings.startDelay;
-            if (elapsedTimeInCycle < 0f) {
-                newState = State.Before;
-                return 0f;
-            }
-            Assert.IsTrue(elapsedTimeInCycle >= 0f);
-            Assert.AreNotEqual(0f, duration);
-            var result = elapsedTimeInCycle / duration;
-            if (result > 1f) {
-                newState = State.After;
-                return 1f;
-            }
-            newState = State.Running;
-            Assert.IsTrue(result >= 0f);
-            return result;
-        }
+        // float calcTFromElapsedTimeTotal(float _elapsedTimeTotal, out int cyclesDiff, out State newState) {
+        //     // key timeline points: 0 | startDelay | duration | 1 | endDelay | onComplete
+        //     var cyclesTotal = settings.cycles;
+        //     if (_elapsedTimeTotal == float.MaxValue) {
+        //         Assert.AreNotEqual(-1, cyclesTotal);
+        //         var cyclesLeft = cyclesTotal - cyclesDone;
+        //         Assert.IsTrue(cyclesLeft >= 0);
+        //         cyclesDiff = cyclesLeft;
+        //         newState = State.After;
+        //         return 1f;
+        //     }
+        //     _elapsedTimeTotal -= waitDelay; // waitDelay is applied before calculating cycles
+        //     if (_elapsedTimeTotal < 0f) {
+        //         cyclesDiff = iniCyclesDone - cyclesDone;
+        //         newState = State.Before;
+        //         return 0f;
+        //     }
+        //     Assert.IsTrue(_elapsedTimeTotal >= 0f);
+        //     Assert.AreNotEqual(float.MaxValue, _elapsedTimeTotal);
+        //     var duration = settings.duration;
+        //     if (duration == 0f) {
+        //         if (cyclesTotal == -1) {
+        //             cyclesDiff = cyclesDone == iniCyclesDone ? 2 : 1;
+        //             newState = State.Running;
+        //             return 1f;
+        //         }
+        //         Assert.AreNotEqual(-1, cyclesTotal);
+        //         if (_elapsedTimeTotal == 0f) {
+        //             cyclesDiff = iniCyclesDone - cyclesDone;
+        //             newState = State.Before;
+        //             return 0f;
+        //         }
+        //         var cyclesLeft = cyclesTotal - cyclesDone;
+        //         Assert.IsTrue(cyclesLeft >= 0);
+        //         cyclesDiff = cyclesLeft;
+        //         newState = State.After; 
+        //         return 1f;
+        //     }
+        //     Assert.AreNotEqual(0f, cycleDuration);
+        //     var newCyclesDone = (int) (_elapsedTimeTotal / cycleDuration);
+        //     if (cyclesTotal != -1 && newCyclesDone > cyclesTotal) {
+        //         newCyclesDone = cyclesTotal;
+        //     }
+        //     cyclesDiff = newCyclesDone - cyclesDone;
+        //     if (cyclesTotal != -1 && cyclesDone + cyclesDiff == cyclesTotal) {
+        //         newState = State.After;
+        //         return 1f;
+        //     }
+        //     var elapsedTimeInCycle = _elapsedTimeTotal - cycleDuration * newCyclesDone - settings.startDelay;
+        //     if (elapsedTimeInCycle < 0f) {
+        //         newState = State.Before;
+        //         return 0f;
+        //     }
+        //     Assert.IsTrue(elapsedTimeInCycle >= 0f);
+        //     Assert.AreNotEqual(0f, duration);
+        //     var result = elapsedTimeInCycle / duration;
+        //     if (result > 1f) {
+        //         newState = State.After;
+        //         return 1f;
+        //     }
+        //     newState = State.Running;
+        //     Assert.IsTrue(result >= 0f);
+        //     return result;
+        // }
 
         /*void print(object msg) {
             Debug.Log($"[{Time.frameCount}]  id {id}  {msg}");
         }*/
 
-        internal void Reset() {
-            Assert.IsFalse(_isAlive);
-            Assert.IsFalse(sequence.IsCreated);
-            Assert.IsFalse(prev.IsCreated);
-            Assert.IsFalse(next.IsCreated);
-            Assert.IsFalse(prevSibling.IsCreated);
-            Assert.IsFalse(nextSibling.IsCreated);
-            Assert.IsFalse(IsInSequence());
-            #if UNITY_EDITOR
-            debugDescription = null;
-            #endif
-            id = -1;
-            target = null;
-            unityTarget = null;
-            propType = PropType.None;
-            settings.customEase = null;
-            customOnValueChange = null;
-            shakeData.Reset();
-            onValueChange = null;
-            onComplete = null;
-            onCompleteCallback = null;
-            onCompleteTarget = null;
-            getter = null;
-            stoppedEmergently = false;
-            waitDelay = 0f;
-            coroutineEnumerator.resetEnumerator();
-            tweenType = TweenType.None;
-            timeScale = 1f;
-            warnIgnoredOnCompleteIfTargetDestroyed = true;
-            clearOnUpdate();
-        }
+        // internal void Reset() {
+        //     Assert.IsFalse(_isAlive);
+        //     Assert.IsFalse(sequence.IsCreated);
+        //     Assert.IsFalse(prev.IsCreated);
+        //     Assert.IsFalse(next.IsCreated);
+        //     Assert.IsFalse(prevSibling.IsCreated);
+        //     Assert.IsFalse(nextSibling.IsCreated);
+        //     Assert.IsFalse(IsInSequence());
+        //     #if UNITY_EDITOR
+        //     debugDescription = null;
+        //     #endif
+        //     id = -1;
+        //     target = null;
+        //     unityTarget = null;
+        //     propType = PropType.None;
+        //     settings.customEase = null;
+        //     customOnValueChange = null;
+        //     shakeData.Reset();
+        //     onValueChange = null;
+        //     onComplete = null;
+        //     onCompleteCallback = null;
+        //     onCompleteTarget = null;
+        //     getter = null;
+        //     stoppedEmergently = false;
+        //     waitDelay = 0f;
+        //     coroutineEnumerator.resetEnumerator();
+        //     tweenType = TweenType.None;
+        //     timeScale = 1f;
+        //     warnIgnoredOnCompleteIfTargetDestroyed = true;
+        //     clearOnUpdate();
+        // }
 
         /// <param name="warnIfTargetDestroyed">https://github.com/KyryloKuzyk/PrimeTween/discussions/4</param>
         internal void OnComplete([NotNull] Action _onComplete, bool warnIfTargetDestroyed) {
@@ -364,7 +364,7 @@ namespace PrimeTween {
             Debug.LogError($"Tween's onComplete callback raised exception, tween: {GetDescription()}, exception:\n{e}", unityTarget);
         }
 
-        internal static bool isDestroyedUnityObject<T>(T obj) where T: class => obj is UnityEngine.Object unityObject && unityObject == null;
+        // internal static bool isDestroyedUnityObject<T>(T obj) where T: class => obj is UnityEngine.Object unityObject && unityObject == null;
 
         void validateOnCompleteAssignment() {
             const string msg = "Tween already has an onComplete callback. Adding more callbacks is not allowed.\n" +
@@ -455,7 +455,7 @@ namespace PrimeTween {
             onComplete?.Invoke(this);
         }
 
-        internal bool isUnityTargetDestroyed() => isDestroyedUnityObject(unityTarget);
+        // internal bool isUnityTargetDestroyed() => isDestroyedUnityObject(unityTarget);
 
         internal bool HasOnComplete => onComplete != null;
 
@@ -689,13 +689,13 @@ namespace PrimeTween {
             #endif
         }
 
-        internal bool IsInSequence() {
-            var result = sequence.IsCreated;
-            Assert.IsTrue(result || !nextSibling.IsCreated);
-            return result;
-        }
+        // internal bool IsInSequence() {
+        //     var result = sequence.IsCreated;
+        //     Assert.IsTrue(result || !nextSibling.IsCreated);
+        //     return result;
+        // }
 
-        internal bool canManipulate() => !IsInSequence() || isMainSequenceRoot();
+        // internal bool canManipulate() => !IsInSequence() || isMainSequenceRoot();
         
         internal bool trySetPause(bool isPaused) {
             if (_isPaused == isPaused) {

@@ -32,15 +32,15 @@ namespace PrimeTween {
         partial struct Tween/*: ITween<Tween>*/ {
         /// Uniquely identifies the tween.
         /// Can be observed from the Debug Inspector if PRIME_TWEEN_INSPECTOR_DEBUGGING is defined. Use only for debugging purposes.
-        internal
-            #if !ENABLE_SERIALIZATION
-            readonly
-            #endif
-            int id;
+        // internal
+        //     #if !ENABLE_SERIALIZATION
+        //     readonly
+        //     #endif
+        //     int id;
             
         internal readonly ReusableTween tween;
         
-        internal bool IsCreated => id != 0;
+        // internal bool IsCreated => id != 0;
 
         internal Tween([NotNull] ReusableTween tween) {
             Assert.IsNotNull(tween);

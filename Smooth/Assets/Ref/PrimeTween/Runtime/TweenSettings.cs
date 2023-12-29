@@ -22,18 +22,18 @@ namespace PrimeTween {
                  "Default is Ease." + nameof(Ease.OutQuad) + ". The Default ease can be modified via '" + nameof(PrimeTweenConfig) + "." + nameof(PrimeTweenConfig.defaultEase) + "' setting.\n\n" +
                  "Set to " + nameof(Ease) + "." + nameof(Ease.Custom) + " to control the easing with custom " + nameof(AnimationCurve) + ".")]
         public Ease ease;
-        [Tooltip("A custom Animation Curve that will work as an easing curve.")]
-        [CanBeNull] public AnimationCurve customEase;
+        // [Tooltip("A custom Animation Curve that will work as an easing curve.")]
+        // [CanBeNull] public AnimationCurve customEase;
         [Tooltip(Constants.cyclesTooltip)]
         public int cycles;
         [Tooltip("See the documentation of each cycle mode by hoovering the dropdown.")]
         public CycleMode cycleMode;
-        [Tooltip(Constants.startDelayTooltip)]
-        public float startDelay;
+        // [Tooltip(Constants.startDelayTooltip)]
+        // public float startDelay;
         [Tooltip(Constants.endDelayTooltip)]
         public float endDelay;
         [Tooltip(Constants.unscaledTimeTooltip)]
-        public bool useUnscaledTime;
+        // public bool useUnscaledTime;
         public bool useFixedUpdate;
         [NonSerialized] internal ParametricEase parametricEase;
         [NonSerialized] internal float parametricEaseStrength;
