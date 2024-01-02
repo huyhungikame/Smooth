@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: CodeGenerator
   m_EditorClassIdentifier: 
   methodsScript: {fileID: 11500000, guid: 51610f0e9d8e4ccead49e9fcc96d54e3, type: 3}
-  dotweenMethodsScript: {fileID: 11500000, guid: 3c238e2b584a4987b714406da2cf9c56, type: 3}
   methodsData:
   - name: LightRange
     methodName: Range
@@ -847,7 +846,7 @@ MonoBehaviour:
     generateOnlyOverloads: 0
   - name: TweenTimeScale
     methodName: TweenTimeScale
-    targetType: PrimeTween.Tween
+    targetType: SmoothTween.Tween
     propertyType: 1
     propertyName: 
     propertyGetter: 
@@ -858,7 +857,7 @@ MonoBehaviour:
     generateOnlyOverloads: 1
   - name: TweenTimeScale
     methodName: TweenTimeScale
-    targetType: PrimeTween.Sequence
+    targetType: SmoothTween.Sequence
     propertyType: 1
     propertyName: 
     propertyGetter: 
