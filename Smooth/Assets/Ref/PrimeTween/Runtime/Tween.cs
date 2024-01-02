@@ -50,7 +50,7 @@ namespace PrimeTween {
         }
 
         /// A tween is 'alive' when it has been created and is not stopped or completed yet. Paused tween is also considered 'alive'.
-        public bool isAlive => id != 0 && tween.id == id && tween._isAlive;
+        // public bool isAlive => id != 0 && tween.id == id && tween._isAlive;
         
         /// Elapsed time of the current cycle.
         public float elapsedTime {

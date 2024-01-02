@@ -17,27 +17,27 @@ namespace PrimeTween {
     /// </example>
     [Serializable]
     public struct TweenSettings {
-        public float duration;
-        [Tooltip("The easing curve of an animation.\n\n" +
-                 "Default is Ease." + nameof(Ease.OutQuad) + ". The Default ease can be modified via '" + nameof(PrimeTweenConfig) + "." + nameof(PrimeTweenConfig.defaultEase) + "' setting.\n\n" +
-                 "Set to " + nameof(Ease) + "." + nameof(Ease.Custom) + " to control the easing with custom " + nameof(AnimationCurve) + ".")]
-        public Ease ease;
+        // public float duration;
+        // [Tooltip("The easing curve of an animation.\n\n" +
+        //          "Default is Ease." + nameof(Ease.OutQuad) + ". The Default ease can be modified via '" + nameof(PrimeTweenConfig) + "." + nameof(PrimeTweenConfig.defaultEase) + "' setting.\n\n" +
+        //          "Set to " + nameof(Ease) + "." + nameof(Ease.Custom) + " to control the easing with custom " + nameof(AnimationCurve) + ".")]
+        // public Ease ease;
         // [Tooltip("A custom Animation Curve that will work as an easing curve.")]
         // [CanBeNull] public AnimationCurve customEase;
-        [Tooltip(Constants.cyclesTooltip)]
-        public int cycles;
-        [Tooltip("See the documentation of each cycle mode by hoovering the dropdown.")]
-        public CycleMode cycleMode;
+        // [Tooltip(Constants.cyclesTooltip)]
+        // public int cycles;
+        // [Tooltip("See the documentation of each cycle mode by hoovering the dropdown.")]
+        // public CycleMode cycleMode;
         // [Tooltip(Constants.startDelayTooltip)]
         // public float startDelay;
-        [Tooltip(Constants.endDelayTooltip)]
-        public float endDelay;
-        [Tooltip(Constants.unscaledTimeTooltip)]
+        // [Tooltip(Constants.endDelayTooltip)]
+        // public float endDelay;
+        // [Tooltip(Constants.unscaledTimeTooltip)]
         // public bool useUnscaledTime;
-        public bool useFixedUpdate;
-        [NonSerialized] internal ParametricEase parametricEase;
-        [NonSerialized] internal float parametricEaseStrength;
-        [NonSerialized] internal float parametricEasePeriod;
+        // public bool useFixedUpdate;
+        // [NonSerialized] internal ParametricEase parametricEase;
+        // [NonSerialized] internal float parametricEaseStrength;
+        // [NonSerialized] internal float parametricEasePeriod;
 
         TweenSettings(float duration, Ease ease, Easing? customEasing, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false, bool useFixedUpdate = false) {
             this.duration = duration;
@@ -169,29 +169,29 @@ namespace PrimeTween {
     /// <summary>The standard animation easing types. Different easing curves produce a different animation 'feeling'.<br/>
     /// Play around with different ease types to choose one that suites you the best.
     /// You can also provide a custom AnimationCurve as an ease function or parametrize eases with the Easing.Overshoot/Elastic/BounceExact(...) methods.</summary>
-    public enum Ease { Custom = -1, Default = 0, Linear = 1, 
-        InSine, OutSine, InOutSine, 
-        InQuad, OutQuad, InOutQuad, 
-        InCubic, OutCubic, InOutCubic, 
-        InQuart, OutQuart, InOutQuart,
-        InQuint, OutQuint, InOutQuint, 
-        InExpo, OutExpo, InOutExpo, 
-        InCirc, OutCirc, InOutCirc, 
-        InElastic, OutElastic, InOutElastic, 
-        InBack, OutBack, InOutBack,
-        InBounce, OutBounce, InOutBounce
-    }
+    // public enum Ease { Custom = -1, Default = 0, Linear = 1, 
+    //     InSine, OutSine, InOutSine, 
+    //     InQuad, OutQuad, InOutQuad, 
+    //     InCubic, OutCubic, InOutCubic, 
+    //     InQuart, OutQuart, InOutQuart,
+    //     InQuint, OutQuint, InOutQuint, 
+    //     InExpo, OutExpo, InOutExpo, 
+    //     InCirc, OutCirc, InOutCirc, 
+    //     InElastic, OutElastic, InOutElastic, 
+    //     InBack, OutBack, InOutBack,
+    //     InBounce, OutBounce, InOutBounce
+    // }
     
     /// <summary>Controls the behavior of subsequent cycles when a tween has more than one cycle.</summary>
-    public enum CycleMode {
-        [Tooltip("Restarts the tween from the beginning.")]
-        Restart,
-        [Tooltip("Swaps the 'startValue' and 'endValue' (easing is normal on the backward cycle).")]
-        Yoyo,
-        [Tooltip("At the end of a cycle increments 'startValue' and 'endValue' (startValue = endValue, endValue += endValue - startValue).\n\n" +
-                 "For example, if tween moves position.x from 0 to 1, then after the first cycle, the tween will move the position.x from 1 to 2, and so on.")]
-        Incremental,
-        [Tooltip("Rewinds the tween as if time was reversed (easing is reversed on the backward cycle).")]
-        Rewind
-    }
+    // public enum CycleMode {
+    //     [Tooltip("Restarts the tween from the beginning.")]
+    //     Restart,
+    //     [Tooltip("Swaps the 'startValue' and 'endValue' (easing is normal on the backward cycle).")]
+    //     Yoyo,
+    //     [Tooltip("At the end of a cycle increments 'startValue' and 'endValue' (startValue = endValue, endValue += endValue - startValue).\n\n" +
+    //              "For example, if tween moves position.x from 0 to 1, then after the first cycle, the tween will move the position.x from 1 to 2, and so on.")]
+    //     Incremental,
+    //     [Tooltip("Rewinds the tween as if time was reversed (easing is reversed on the backward cycle).")]
+    //     Rewind
+    // }
 }

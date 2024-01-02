@@ -37,7 +37,7 @@ namespace PrimeTween {
         // internal bool IsCreated => root.IsCreated;
 
         /// Sequence is 'alive' when any of its tweens is 'alive'.
-        public bool isAlive => root.isAlive;
+        // public bool isAlive => root.isAlive;
         
         /// Elapsed time of the current cycle.
         public float elapsedTime {
@@ -327,27 +327,27 @@ namespace PrimeTween {
             releaseTweens(t => t.warnOnCompleteIgnored(false));
         }
 
-        internal void releaseTweens([CanBeNull] Action<ReusableTween> beforeKill = null) {
-            var enumerator = getAllTweens();
-            enumerator.MoveNext();
-            var current = enumerator.Current;
-            Assert.IsTrue(current.isAlive);
-            while (true) {
-                // ReSharper disable once RedundantCast
-                Tween? next = enumerator.MoveNext() ? enumerator.Current : (Tween?)null;
-                var tween = current.tween;
-                Assert.IsTrue(tween._isAlive);
-                beforeKill?.Invoke(tween);
-                tween.kill();
-                Assert.IsFalse(tween._isAlive);
-                releaseTween(tween);
-                if (!next.HasValue) {
-                    break;
-                }
-                current = next.Value;
-            }
-            Assert.IsFalse(isAlive); // not IsCreated because this may be a local variable in the user's codebase
-        }
+        // internal void releaseTweens([CanBeNull] Action<ReusableTween> beforeKill = null) {
+        //     var enumerator = getAllTweens();
+        //     enumerator.MoveNext();
+        //     var current = enumerator.Current;
+        //     Assert.IsTrue(current.isAlive);
+        //     while (true) {
+        //         // ReSharper disable once RedundantCast
+        //         Tween? next = enumerator.MoveNext() ? enumerator.Current : (Tween?)null;
+        //         var tween = current.tween;
+        //         Assert.IsTrue(tween._isAlive);
+        //         beforeKill?.Invoke(tween);
+        //         tween.kill();
+        //         Assert.IsFalse(tween._isAlive);
+        //         releaseTween(tween);
+        //         if (!next.HasValue) {
+        //             break;
+        //         }
+        //         current = next.Value;
+        //     }
+        //     Assert.IsFalse(isAlive); // not IsCreated because this may be a local variable in the user's codebase
+        // }
 
         static void releaseTween([NotNull] ReusableTween tween) {
             // Debug.Log($"sequence {id} releaseTween {tween.id}");
@@ -392,84 +392,84 @@ namespace PrimeTween {
             set => root.isPaused = value;
         }
 
-        internal SequenceDirectEnumerator getSelfChildren(bool isForward = true) => new SequenceDirectEnumerator(this, isForward);
+        // internal SequenceDirectEnumerator getSelfChildren(bool isForward = true) => new SequenceDirectEnumerator(this, isForward);
         internal SequenceChildrenEnumerator getAllTweens() => new SequenceChildrenEnumerator(this);
 
         public override string ToString() => root.ToString();
 
-        internal struct SequenceDirectEnumerator {
-            readonly Sequence sequence;
-            Tween current;
-            readonly bool isEmpty;
-            readonly bool isForward;
-            bool isStarted;
-  
-            internal SequenceDirectEnumerator(Sequence s, bool isForward) {
-                Assert.IsTrue(s.isAlive);
-                sequence = s;
-                this.isForward = isForward;
-                isStarted = false;
-                isEmpty = isSequenceEmpty(s);
-                if (isEmpty) {
-                    current = default;
-                    return;
-                }
-                current = sequence.root.tween.next;
-                Assert.IsTrue(current.IsCreated && current.id != sequence.root.tween.nextSibling.id);
-                if (!isForward) {
-                    while (true) {
-                        var next = current.tween.nextSibling;
-                        if (!next.IsCreated) {
-                            break;
-                        }
-                        current = next;
-                    }
-                }
-                Assert.IsTrue(current.IsCreated);
-            }
-
-            static bool isSequenceEmpty(Sequence s) {
-                // tests: SequenceNestingDifferentSettings(), TestSequenceEnumeratorWithEmptySequences()
-                return s.root.tween.intParam == emptySequenceTag;
-            }
-            
-            public 
-                #if UNITY_2020_2_OR_NEWER
-                readonly
-                #endif
-                SequenceDirectEnumerator GetEnumerator() {
-                Assert.IsTrue(sequence.isAlive);
-                return this;
-            }
-
-            public 
-                #if UNITY_2020_2_OR_NEWER
-                readonly
-                #endif
-                Tween Current {
-                get {
-                    Assert.IsTrue(sequence.isAlive);
-                    Assert.IsTrue(current.IsCreated);
-                    Assert.IsNotNull(current.tween);
-                    Assert.AreEqual(current.id, current.tween.id);
-                    Assert.IsTrue(current.tween.sequence.IsCreated);
-                    return current;
-                }
-            }
-
-            public bool MoveNext() {
-                if (isEmpty) {
-                    return false;
-                }
-                Assert.IsTrue(current.isAlive);
-                if (!isStarted) {
-                    isStarted = true;
-                    return true;
-                }
-                current = isForward ? current.tween.nextSibling : current.tween.prevSibling;
-                return current.IsCreated;
-            }
-        }
+        // internal struct SequenceDirectEnumerator {
+        //     readonly Sequence sequence;
+        //     Tween current;
+        //     readonly bool isEmpty;
+        //     readonly bool isForward;
+        //     bool isStarted;
+        //
+        //     internal SequenceDirectEnumerator(Sequence s, bool isForward) {
+        //         Assert.IsTrue(s.isAlive);
+        //         sequence = s;
+        //         this.isForward = isForward;
+        //         isStarted = false;
+        //         isEmpty = isSequenceEmpty(s);
+        //         if (isEmpty) {
+        //             current = default;
+        //             return;
+        //         }
+        //         current = sequence.root.tween.next;
+        //         Assert.IsTrue(current.IsCreated && current.id != sequence.root.tween.nextSibling.id);
+        //         if (!isForward) {
+        //             while (true) {
+        //                 var next = current.tween.nextSibling;
+        //                 if (!next.IsCreated) {
+        //                     break;
+        //                 }
+        //                 current = next;
+        //             }
+        //         }
+        //         Assert.IsTrue(current.IsCreated);
+        //     }
+        //
+        //     static bool isSequenceEmpty(Sequence s) {
+        //         // tests: SequenceNestingDifferentSettings(), TestSequenceEnumeratorWithEmptySequences()
+        //         return s.root.tween.intParam == emptySequenceTag;
+        //     }
+        //     
+        //     public 
+        //         #if UNITY_2020_2_OR_NEWER
+        //         readonly
+        //         #endif
+        //         SequenceDirectEnumerator GetEnumerator() {
+        //         Assert.IsTrue(sequence.isAlive);
+        //         return this;
+        //     }
+        //
+        //     public 
+        //         #if UNITY_2020_2_OR_NEWER
+        //         readonly
+        //         #endif
+        //         Tween Current {
+        //         get {
+        //             Assert.IsTrue(sequence.isAlive);
+        //             Assert.IsTrue(current.IsCreated);
+        //             Assert.IsNotNull(current.tween);
+        //             Assert.AreEqual(current.id, current.tween.id);
+        //             Assert.IsTrue(current.tween.sequence.IsCreated);
+        //             return current;
+        //         }
+        //     }
+        //
+        //     public bool MoveNext() {
+        //         if (isEmpty) {
+        //             return false;
+        //         }
+        //         Assert.IsTrue(current.isAlive);
+        //         if (!isStarted) {
+        //             isStarted = true;
+        //             return true;
+        //         }
+        //         current = isForward ? current.tween.nextSibling : current.tween.prevSibling;
+        //         return current.IsCreated;
+        //     }
+        // }
 
         internal struct SequenceChildrenEnumerator {
             readonly Sequence sequence;

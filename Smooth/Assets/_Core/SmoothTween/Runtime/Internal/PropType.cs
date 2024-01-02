@@ -1,6 +1,7 @@
-
-namespace PrimeTween {
-    internal enum PropType {
+namespace SmoothTween.Runtime
+{
+    internal enum PropType
+    {
         None = 0,
         Float,
         Color,

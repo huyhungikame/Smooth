@@ -9,51 +9,51 @@ using Debug = UnityEngine.Debug;
 namespace PrimeTween {
     [Serializable]
     internal class ReusableTween {
-        #if UNITY_EDITOR
-        [SerializeField, HideInInspector] internal string debugDescription;
-        #endif
-        internal int id = -1;
+        // #if UNITY_EDITOR
+        // [SerializeField, HideInInspector] internal string debugDescription;
+        // #endif
+        // internal int id = -1;
         /// Holds a reference to tween's target. If the target is UnityEngine.Object, the tween will gracefully stop when the target is destroyed. That is, destroying object with running tweens is perfectly ok.
         /// Keep in mind: when animating plain C# objects (not derived from UnityEngine.Object), the plugin will hold a strong reference to the object for the entire tween duration.
         ///     If plain C# target holds a reference to UnityEngine.Object and animates its properties, then it's user's responsibility to ensure that UnityEngine.Object still exists.
-        [CanBeNull] internal object target;
-        [SerializeField, CanBeNull] internal UnityEngine.Object unityTarget; 
+        // [CanBeNull] internal object target;
+        // [SerializeField, CanBeNull] internal UnityEngine.Object unityTarget; 
         // [SerializeField] internal bool _isPaused;
         // internal bool _isAlive;
         // [SerializeField] internal float elapsedTimeTotal;
         [SerializeField]
         internal float easedInterpolationFactor;
-        internal float cycleDuration;
-        internal PropType propType;
+        // internal float cycleDuration;
+        // internal PropType propType;
         // internal TweenType tweenType;
-        [SerializeField] internal ValueContainer startValue;
-        [SerializeField] internal ValueContainer endValue;
-        internal ValueContainer diff;
+        // [SerializeField] internal ValueContainer startValue;
+        // [SerializeField] internal ValueContainer endValue;
+        // internal ValueContainer diff;
         // internal bool isAdditive;
         internal ValueContainer prevVal;
         // [SerializeField] internal TweenSettings settings;
         // [SerializeField] int cyclesDone;
-        const int iniCyclesDone = -1;
+        // const int iniCyclesDone = -1;
 
         internal object customOnValueChange;
         internal int intParam;
-        Action<ReusableTween> onValueChange;
+        // Action<ReusableTween> onValueChange;
         
-        [CanBeNull] Action<ReusableTween> onComplete;
+        // [CanBeNull] Action<ReusableTween> onComplete;
         [CanBeNull] object onCompleteCallback;
         [CanBeNull] object onCompleteTarget;
         
-        internal float waitDelay;
-        internal Sequence sequence;
+        // internal float waitDelay;
+        // internal Sequence sequence;
         internal Tween prev;
         internal Tween next;
         internal Tween prevSibling;
         internal Tween nextSibling;
         
-        internal Func<ReusableTween, ValueContainer> getter;
+        // internal Func<ReusableTween, ValueContainer> getter;
         // internal bool startFromCurrent;
 
-        bool stoppedEmergently;
+        // bool stoppedEmergently;
         internal readonly TweenCoroutineEnumerator coroutineEnumerator = new TweenCoroutineEnumerator();
         // internal float timeScale = 1f;
         bool warnIgnoredOnCompleteIfTargetDestroyed = true;
@@ -427,33 +427,33 @@ namespace PrimeTween {
 
         /// Tween.Custom and Tween.ShakeCustom try-catch the <see cref="onValueChange"/> and calls <see cref="ReusableTween.EmergencyStop"/> if an exception occurs.
         /// <see cref="ReusableTween.EmergencyStop"/> sets <see cref="stoppedEmergently"/> to true.
-        void ReportOnValueChange(float _easedInterpolationFactor) {
-            // Debug.Log($"id {id}, ReportOnValueChange {_easedInterpolationFactor}");
-            Assert.IsFalse(isUnityTargetDestroyed());
-            if (startFromCurrent) {
-                startFromCurrent = false;
-                startValue = Tween.tryGetStartValueFromOtherShake(this) ?? getter(this);
-                if (startValue.Vector4Val == endValue.Vector4Val && PrimeTweenManager.Instance.warnEndValueEqualsCurrent && !shakeData.isAlive) {
-                    Debug.LogWarning($"Tween's 'endValue' equals to the current animated value: {startValue.Vector4Val}, tween: {GetDescription()}.\n" +
-                                     $"{Constants.buildWarningCanBeDisabledMessage(nameof(PrimeTweenConfig.warnEndValueEqualsCurrent))}\n");
-                }
-                cacheDiff();
-            }
-            easedInterpolationFactor = _easedInterpolationFactor;
-            onValueChange(this);
-            if (stoppedEmergently || !_isAlive) {
-                return;
-            }
-            onUpdate?.Invoke(this);
-        }
+        // void ReportOnValueChange(float _easedInterpolationFactor) {
+        //     // Debug.Log($"id {id}, ReportOnValueChange {_easedInterpolationFactor}");
+        //     Assert.IsFalse(isUnityTargetDestroyed());
+        //     if (startFromCurrent) {
+        //         startFromCurrent = false;
+        // startValue = Tween.tryGetStartValueFromOtherShake(this) ?? getter(this);
+        //         if (startValue.Vector4Val == endValue.Vector4Val && PrimeTweenManager.Instance.warnEndValueEqualsCurrent && !shakeData.isAlive) {
+        //             Debug.LogWarning($"Tween's 'endValue' equals to the current animated value: {startValue.Vector4Val}, tween: {GetDescription()}.\n" +
+        //                              $"{Constants.buildWarningCanBeDisabledMessage(nameof(PrimeTweenConfig.warnEndValueEqualsCurrent))}\n");
+        //         }
+        //         cacheDiff();
+        //     }
+        //     easedInterpolationFactor = _easedInterpolationFactor;
+        //     onValueChange(this);
+        //     if (stoppedEmergently || !_isAlive) {
+        //         return;
+        //     }
+        //     onUpdate?.Invoke(this);
+        // }
 
-        void ReportOnComplete() {
-            // Debug.Log($"[{Time.frameCount}] id {id} ReportOnComplete() {easedInterpolationFactor}");
-            Assert.IsFalse(startFromCurrent);
-            Assert.IsTrue(timeScale < 0 || cyclesDone == settings.cycles);
-            Assert.IsTrue(timeScale >= 0 || cyclesDone == iniCyclesDone);
-            onComplete?.Invoke(this);
-        }
+        // void ReportOnComplete() {
+        //     // Debug.Log($"[{Time.frameCount}] id {id} ReportOnComplete() {easedInterpolationFactor}");
+        //     Assert.IsFalse(startFromCurrent);
+        //     Assert.IsTrue(timeScale < 0 || cyclesDone == settings.cycles);
+        //     Assert.IsTrue(timeScale >= 0 || cyclesDone == iniCyclesDone);
+        //     onComplete?.Invoke(this);
+        // }
 
         // internal bool isUnityTargetDestroyed() => isDestroyedUnityObject(unityTarget);
 
@@ -557,65 +557,65 @@ namespace PrimeTween {
         }
         internal Quaternion QuaternionVal => Quaternion.SlerpUnclamped(startValue.QuaternionVal, endValue.QuaternionVal, easedInterpolationFactor);
 
-        float calcEasedT(float t, int cyclesDone) {
-            var cycleMode = settings.cycleMode;
-            var cyclesTotal = settings.cycles;
-            if (cyclesDone == cyclesTotal) {
-                // Debug.Log("cyclesDone == cyclesTotal");
-                switch (cycleMode) {
-                    case CycleMode.Restart:
-                        return evaluate(1f);
-                    case CycleMode.Yoyo:
-                    case CycleMode.Rewind:
-                        return evaluate(cyclesTotal % 2);
-                    case CycleMode.Incremental:
-                        return cyclesTotal;
-                    default:
-                        throw new Exception();
-                }
-            }
-            if (cycleMode == CycleMode.Restart) {
-                return evaluate(t);
-            }
-            if (cycleMode == CycleMode.Incremental) {
-                return evaluate(t) + cyclesDone;
-            }
-            var isForwardCycle = cyclesDone % 2 == 0;
-            if (isForwardCycle) {
-                return evaluate(t);
-            }
-            if (cycleMode == CycleMode.Yoyo) {
-                return 1 - evaluate(t);
-            }
-            if (cycleMode == CycleMode.Rewind) {
-                return evaluate(1 - t);
-            }
-            throw new Exception();
-        }
+        // float calcEasedT(float t, int cyclesDone) {
+        //     var cycleMode = settings.cycleMode;
+        //     var cyclesTotal = settings.cycles;
+        //     if (cyclesDone == cyclesTotal) {
+        //         // Debug.Log("cyclesDone == cyclesTotal");
+        //         switch (cycleMode) {
+        //             case CycleMode.Restart:
+        //                 return evaluate(1f);
+        //             case CycleMode.Yoyo:
+        //             case CycleMode.Rewind:
+        //                 return evaluate(cyclesTotal % 2);
+        //             case CycleMode.Incremental:
+        //                 return cyclesTotal;
+        //             default:
+        //                 throw new Exception();
+        //         }
+        //     }
+        //     if (cycleMode == CycleMode.Restart) {
+        //         return evaluate(t);
+        //     }
+        //     if (cycleMode == CycleMode.Incremental) {
+        //         return evaluate(t) + cyclesDone;
+        //     }
+        //     var isForwardCycle = cyclesDone % 2 == 0;
+        //     if (isForwardCycle) {
+        //         return evaluate(t);
+        //     }
+        //     if (cycleMode == CycleMode.Yoyo) {
+        //         return 1 - evaluate(t);
+        //     }
+        //     if (cycleMode == CycleMode.Rewind) {
+        //         return evaluate(1 - t);
+        //     }
+        //     throw new Exception();
+        // }
 
-        float evaluate(float t) {
-            if (settings.ease == Ease.Custom) {
-                if (settings.parametricEase != ParametricEase.None) {
-                    return Easing.Evaluate(t, this);
-                }
-                return settings.customEase.Evaluate(t);
-            }
-            return StandardEasing.Evaluate(t, settings.ease);
-        }
+        // float evaluate(float t) {
+        //     if (settings.ease == Ease.Custom) {
+        //         if (settings.parametricEase != ParametricEase.None) {
+        //             return Easing.Evaluate(t, this);
+        //         }
+        //         return settings.customEase.Evaluate(t);
+        //     }
+        //     return StandardEasing.Evaluate(t, settings.ease);
+        // }
         
-        internal void cacheDiff() {
-            Assert.IsFalse(startFromCurrent);
-            Assert.AreNotEqual(PropType.None, propType);
-            if (propType == PropType.Quaternion) {
-                startValue.QuaternionVal.Normalize();
-                endValue.QuaternionVal.Normalize();
-            } else {
-                diff.x = endValue.x - startValue.x;
-                diff.y = endValue.y - startValue.y;
-                diff.z = endValue.z - startValue.z;
-                diff.w = endValue.w - startValue.w;
-            }
-        }
+        // internal void cacheDiff() {
+        //     Assert.IsFalse(startFromCurrent);
+        //     Assert.AreNotEqual(PropType.None, propType);
+        //     if (propType == PropType.Quaternion) {
+        //         startValue.QuaternionVal.Normalize();
+        //         endValue.QuaternionVal.Normalize();
+        //     } else {
+        //         diff.x = endValue.x - startValue.x;
+        //         diff.y = endValue.y - startValue.y;
+        //         diff.z = endValue.z - startValue.z;
+        //         diff.w = endValue.w - startValue.w;
+        //     }
+        // }
 
         internal void ForceComplete() {
             Assert.IsFalse(sequence.IsCreated);
@@ -671,14 +671,14 @@ namespace PrimeTween {
             Assert.IsFalse(sequence.isAlive);
         }
         
-        internal void kill() {
-            // Debug.Log($"[{Time.frameCount}] kill {GetDescription()}");
-            Assert.IsTrue(_isAlive);
-            _isAlive = false;
-            #if UNITY_EDITOR
-            debugDescription = null;
-            #endif
-        }
+        // internal void kill() {
+        //     // Debug.Log($"[{Time.frameCount}] kill {GetDescription()}");
+        //     Assert.IsTrue(_isAlive);
+        //     _isAlive = false;
+        //     #if UNITY_EDITOR
+        //     debugDescription = null;
+        //     #endif
+        // }
 
         void revive() {
             // Debug.Log($"[{Time.frameCount}] revive {GetDescription()}");
@@ -707,7 +707,7 @@ namespace PrimeTween {
 
         [CanBeNull] object onUpdateTarget;
         object onUpdateCallback;
-        Action<ReusableTween> onUpdate;
+        // Action<ReusableTween> onUpdate;
 
         internal void SetOnUpdate<T>(T _target, [NotNull] Action<T, Tween> _onUpdate) where T : class {
             Assert.IsNull(onUpdate, "Only one OnUpdate() is allowed for one tween.");
