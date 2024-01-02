@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace SmoothTween
 {
-    public partial struct Tween : IEnumerator
+    public readonly partial struct Tween : IEnumerator
     {
         /// <summary>Use this method to wait for a Tween in coroutines.</summary>
         /// <example><code>

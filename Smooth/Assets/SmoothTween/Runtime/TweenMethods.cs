@@ -3,10 +3,8 @@ using UnityEngine;
 
 namespace SmoothTween
 {
-    public partial struct Tween
+    public readonly partial struct Tween
     {
-        /// <summary>Returns the number of alive tweens.</summary>
-        /// <param name="onTarget">If specified, returns the number of running tweens on the target. Please note: if target is specified, this method call has O(n) complexity where n is the total number of running tweens.</param>
         public static int GetTweensCount(object onTarget = null)
         {
             var manager = SmoothTweenManager.Instance;
@@ -19,9 +17,6 @@ namespace SmoothTween
             return SmoothTweenManager.ProcessAll(onTarget, _ => true); // call processAll to filter null tweens
         }
 
-        /// <summary>Stops all tweens and sequences.<br/>
-        /// If <see cref="onTarget"/> is provided, stops only tweens on this target (stopping a tween inside a Sequence is not allowed).</summary>
-        /// <returns>The number of stopped tweens.</returns>
         public static int StopAll(object onTarget = null)
         {
             var result = SmoothTweenManager.ProcessAll(onTarget, tween =>
@@ -32,7 +27,6 @@ namespace SmoothTween
                     {
                         tween.sequence.Stop();
                     }
-                    // do nothing with nested tween or sequence. The main sequence root will process it
                 }
                 else
                 {
@@ -45,9 +39,6 @@ namespace SmoothTween
             return result;
         }
 
-        /// <summary>Completes all tweens and sequences.<br/>
-        /// If <see cref="onTarget"/> is provided, completes only tweens on this target (completing a tween inside a Sequence is not allowed).</summary>
-        /// <returns>The number of completed tweens.</returns>
         public static int CompleteAll(object onTarget = null)
         {
             var result = SmoothTweenManager.ProcessAll(onTarget, tween =>
@@ -58,7 +49,6 @@ namespace SmoothTween
                     {
                         tween.sequence.Complete();
                     }
-                    // do nothing with nested tween or sequence. The main sequence root will process it
                 }
                 else
                 {
@@ -71,7 +61,7 @@ namespace SmoothTween
             return result;
         }
 
-        static void forceUpdateManagerIfTargetIsNull(object onTarget)
+        private static void forceUpdateManagerIfTargetIsNull(object onTarget)
         {
             if (onTarget == null)
             {
@@ -83,22 +73,13 @@ namespace SmoothTween
                         manager.FixedUpdate();
                         manager.Update();
                     }
-                    // Assert.AreEqual(0, manager.tweens.Count); // fails if user's OnComplete() creates new tweens
                 }
             }
         }
 
-        /// <summary>Pauses/unpauses all tweens and sequences.<br/>
-        /// If <see cref="onTarget"/> is provided, pauses/unpauses only tweens on this target (pausing/unpausing a tween inside a Sequence is not allowed).</summary>
-        /// <returns>The number of paused/unpaused tweens.</returns>
         public static int SetPausedAll(bool isPaused, object onTarget = null)
         {
-            if (isPaused)
-            {
-                return SmoothTweenManager.ProcessAll(onTarget, tween => { return tween.TrySetPause(true); });
-            }
-
-            return SmoothTweenManager.ProcessAll(onTarget, tween => { return tween.TrySetPause(false); });
+            return isPaused ? SmoothTweenManager.ProcessAll(onTarget, tween => { return tween.TrySetPause(true); }) : SmoothTweenManager.ProcessAll(onTarget, tween => { return tween.TrySetPause(false); });
         }
 
         public static Tween Delay<T>(T target, float duration, Action<T> onComplete, bool useUnscaledTime = false) where T : class

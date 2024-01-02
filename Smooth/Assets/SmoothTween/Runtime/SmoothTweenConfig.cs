@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace SmoothTween
 {
-    public static partial class SmoothTweenConfig
+    public static class SmoothTweenConfig
     {
         internal static SmoothTweenManager Instance => SmoothTweenManager.Instance;
 

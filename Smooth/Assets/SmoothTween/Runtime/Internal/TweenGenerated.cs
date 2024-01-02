@@ -10,7 +10,7 @@ using JetBrains.Annotations;
 
 namespace SmoothTween
 {
-    public partial struct Tween
+    public readonly partial struct Tween
     {
         public static Tween LightRange(UnityEngine.Light target, Single endValue, float duration, Ease ease = Ease.Default, int cycles = 1, CycleMode cycleMode = CycleMode.Restart,
             float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
