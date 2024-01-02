@@ -91,7 +91,7 @@ namespace SmoothTween
             set => root.progressTotal = value;
         }
 
-        bool tryManipulate() => root.tryManipulate();
+        bool tryManipulate() => root.TryManipulate();
 
         bool validateCanAddChildren()
         {
@@ -266,7 +266,7 @@ namespace SmoothTween
 
         static void validateChildSettings(Tween child)
         {
-            if (child.tween._isPaused)
+            if (child.tween.isPaused)
             {
                 warnIgnoredChildrenSetting(nameof(isPaused));
             }
@@ -319,7 +319,7 @@ namespace SmoothTween
             {
                 SetRemainingCycles(1);
                 root.isPaused = false;
-                root.tween.updateSequence(float.MaxValue, false);
+                root.tween.UpdateSequence(float.MaxValue, false);
             }
         }
 
@@ -328,7 +328,7 @@ namespace SmoothTween
             releaseTweens(t => t.WarnOnCompleteIgnored(false));
         }
 
-        internal void releaseTweens([CanBeNull] Action<ReusableTween> beforeKill = null)
+        internal void releaseTweens( Action<ReusableTween> beforeKill = null)
         {
             var enumerator = getAllTweens();
             enumerator.MoveNext();
@@ -339,7 +339,7 @@ namespace SmoothTween
                 Tween? next = enumerator.MoveNext() ? enumerator.Current : (Tween?)null;
                 var tween = current.tween;
                 beforeKill?.Invoke(tween);
-                tween.kill();
+                tween.Kill();
                 releaseTween(tween);
                 if (!next.HasValue)
                 {

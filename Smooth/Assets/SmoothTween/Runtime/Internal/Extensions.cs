@@ -1,5 +1,3 @@
-// ReSharper disable AnnotateNotNullParameter
-
 using UnityEngine;
 
 namespace SmoothTween

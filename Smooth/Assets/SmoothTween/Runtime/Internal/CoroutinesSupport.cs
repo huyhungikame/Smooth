@@ -14,8 +14,9 @@ namespace SmoothTween
         /// </code></example>
         public IEnumerator ToYieldInstruction()
         {
-            if (!isAlive || !tryManipulate())
+            if (!isAlive || !TryManipulate())
             {
+                // ReSharper disable once NotDisposedResourceIsReturned
                 return Enumerable.Empty<object>().GetEnumerator();
             }
 
@@ -29,10 +30,7 @@ namespace SmoothTween
             return isAlive;
         }
 
-        object IEnumerator.Current
-        {
-            get { return null; }
-        }
+        object IEnumerator.Current => null;
 
         void IEnumerator.Reset() => throw new NotSupportedException();
     }
@@ -53,18 +51,15 @@ namespace SmoothTween
             return isAlive;
         }
 
-        object IEnumerator.Current
-        {
-            get { return null; }
-        }
+        object IEnumerator.Current => null;
 
         void IEnumerator.Reset() => throw new NotSupportedException();
     }
 
     internal class TweenCoroutineEnumerator : IEnumerator
     {
-        Tween tween;
-        bool isRunning;
+        private Tween tween;
+        internal bool isRunning;
 
         internal void SetTween(Tween _tween)
         {
@@ -89,10 +84,7 @@ namespace SmoothTween
             isRunning = false;
         }
 
-        object IEnumerator.Current
-        {
-            get { return null; }
-        }
+        object IEnumerator.Current => null;
 
         void IEnumerator.Reset() => throw new NotSupportedException();
     }

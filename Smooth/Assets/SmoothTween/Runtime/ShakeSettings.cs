@@ -28,7 +28,7 @@ namespace SmoothTween {
                  "Set to " + nameof(Ease) + "." + nameof(Ease.Custom) + " to have manual control over shake's 'strength' over time.")]
         public Ease falloffEase;
         [Tooltip("Shake's 'strength' over time.")]
-        [CanBeNull] public AnimationCurve strengthOverTime;
+         public AnimationCurve strengthOverTime;
         [Tooltip("Represents how asymmetrical the shake is.\n\n" +
                  "'0' means the shake is symmetrical around the initial value.\n\n" +
                  "'1' means the shake is asymmetrical and will happen between the initial position and the value of the '" + nameof(strength) + "' vector.\n\n" +
@@ -45,7 +45,7 @@ namespace SmoothTween {
         public bool useFixedUpdate;
         internal bool isPunch { get; private set; }
 
-        ShakeSettings(Vector3 strength, float duration, float frequency, Ease? falloffEase, [CanBeNull] AnimationCurve strengthOverTime, Ease easeBetweenShakes, float asymmetryFactor, int cycles, float startDelay, float endDelay, bool useUnscaledTime, bool useFixedUpdate) {
+        ShakeSettings(Vector3 strength, float duration, float frequency, Ease? falloffEase,  AnimationCurve strengthOverTime, Ease easeBetweenShakes, float asymmetryFactor, int cycles, float startDelay, float endDelay, bool useUnscaledTime, bool useFixedUpdate) {
             this.frequency = frequency;
             this.strength = strength;
             this.duration = duration;

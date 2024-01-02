@@ -12,10 +12,10 @@ namespace SmoothTween
         [SerializeField, HideInInspector] internal string debugDescription;
 #endif
         internal int id = -1;
-        [CanBeNull] internal object target;
+        internal object target;
         [SerializeField, CanBeNull] internal UnityEngine.Object unityTarget;
-        [SerializeField] internal bool _isPaused;
-        internal bool _isAlive;
+        [SerializeField] internal bool isPaused;
+        internal bool isAlive;
         [SerializeField] internal float elapsedTimeTotal;
         [SerializeField] internal float easedInterpolationFactor;
         internal float cycleDuration;
@@ -27,16 +27,15 @@ namespace SmoothTween
         internal bool isAdditive;
         internal ValueContainer prevVal;
         [SerializeField] internal TweenSettings settings;
-        [SerializeField] int cyclesDone;
-        const int iniCyclesDone = -1;
+        [SerializeField] private int cyclesDone;
+        public const int iniCyclesDone = -1;
 
         internal object customOnValueChange;
         internal int intParam;
-        Action<ReusableTween> onValueChange;
-
-        [CanBeNull] Action<ReusableTween> onComplete;
-        [CanBeNull] object onCompleteCallback;
-        [CanBeNull] object onCompleteTarget;
+        private Action<ReusableTween> onValueChange;
+        private Action<ReusableTween> onComplete;
+        private object onCompleteCallback;
+        private object onCompleteTarget;
 
         internal float waitDelay;
         internal Sequence sequence;
@@ -48,81 +47,75 @@ namespace SmoothTween
         internal Func<ReusableTween, ValueContainer> getter;
         internal bool startFromCurrent;
 
-        bool stoppedEmergently;
+        private bool stoppedEmergent;
         internal readonly TweenCoroutineEnumerator coroutineEnumerator = new TweenCoroutineEnumerator();
         internal float timeScale = 1f;
         internal Tween.ShakeData shakeData;
-        State state;
+        private State state;
 
         internal bool UpdateAndCheckIfRunning(float dt)
         {
-            if (!_isAlive)
+            if (!isAlive)
             {
                 return sequence.IsCreated;
             }
 
-            if (!_isPaused)
+            if (!isPaused)
             {
                 SetElapsedTimeTotal(elapsedTimeTotal + dt * timeScale);
             }
 
-            return _isAlive;
+            return isAlive;
         }
 
         internal void SetElapsedTimeTotal(float newElapsedTimeTotal)
         {
             if (!sequence.IsCreated)
             {
-                setElapsedTimeTotal(newElapsedTimeTotal, out _);
+                SetElapsedTimeTotal(newElapsedTimeTotal, out _);
                 return;
             }
 
-            if (isMainSequenceRoot())
+            if (IsMainSequenceRoot())
             {
-                updateSequence(newElapsedTimeTotal, false);
+                UpdateSequence(newElapsedTimeTotal, false);
             }
         }
 
-        internal void updateSequence(float _elapsedTimeTotal, bool isRestart)
+        internal void UpdateSequence(float _elapsedTimeTotal, bool isRestart)
         {
-            float prevEasedT = easedInterpolationFactor;
-            setElapsedTimeTotal(_elapsedTimeTotal, out int cyclesDiff); // update sequence root
-
-            bool isRestartToBeginning = isRestart && cyclesDiff < 0;
+            var prevEasedT = easedInterpolationFactor;
+            SetElapsedTimeTotal(_elapsedTimeTotal, out int cyclesDiff);
+            var isRestartToBeginning = isRestart && cyclesDiff < 0;
             if (cyclesDiff != 0 && !isRestartToBeginning)
             {
-                // print($"           sequence cyclesDiff: {cyclesDiff}");
                 if (isRestart)
                 {
                     cyclesDiff = 1;
                 }
 
-                int cyclesDiffAbs = Mathf.Abs(cyclesDiff);
-                int newCyclesDone = cyclesDone;
+                var cyclesDiffAbs = Mathf.Abs(cyclesDiff);
                 cyclesDone -= cyclesDiff;
-                int cyclesDelta = cyclesDiff > 0 ? 1 : -1;
+                var cyclesDelta = cyclesDiff > 0 ? 1 : -1;
                 var interpolationFactor = cyclesDelta > 0 ? 1f : 0f;
-                for (int i = 0; i < cyclesDiffAbs; i++)
+                for (var i = 0; i < cyclesDiffAbs; i++)
                 {
                     if (cyclesDone == settings.cycles || cyclesDone == iniCyclesDone)
                     {
-                        // do nothing when moving backward from the last cycle or forward from the -1 cycle
                         cyclesDone += cyclesDelta;
                         continue;
                     }
 
-                    var easedT = calcEasedT(interpolationFactor, cyclesDone);
+                    var easedT = CalcEasedT(interpolationFactor, cyclesDone);
                     var isForwardCycle = easedT > 0.5f;
                     const float negativeElapsedTime = -1000f;
-                    if (!forceChildrenToPos())
+                    if (!ForceChildrenToPos())
                     {
                         return;
                     }
 
-                    bool forceChildrenToPos()
+                    bool ForceChildrenToPos()
                     {
-                        // complete the previous cycles by forcing all children tweens to 0f or 1f
-                        // print($" (i:{i}) force to pos: {isForwardCycle}");
                         var simulatedSequenceElapsedTime = isForwardCycle ? float.MaxValue : negativeElapsedTime;
                         foreach (var t in sequence.getSelfChildren(isForwardCycle))
                         {
@@ -142,12 +135,12 @@ namespace SmoothTween
                     if (sequenceCycleMode == CycleMode.Restart && cyclesDone != settings.cycles && cyclesDone != iniCyclesDone)
                     {
                         // '&& cyclesDone != 0' check is wrong because we should do the restart when moving from 1 to 0 cyclesDone
-                        if (!restartChildren())
+                        if (!RestartChildren())
                         {
                             return;
                         }
 
-                        bool restartChildren()
+                        bool RestartChildren()
                         {
                             // print($"restart to pos: {!isForwardCycle}");
                             var simulatedSequenceElapsedTime = !isForwardCycle ? float.MaxValue : negativeElapsedTime;
@@ -160,7 +153,6 @@ namespace SmoothTween
                                 {
                                     return false;
                                 }
-
                             }
 
                             return true;
@@ -168,9 +160,9 @@ namespace SmoothTween
                     }
                 }
 
-                if (isDone(cyclesDiff))
+                if (IsDone(cyclesDiff))
                 {
-                    if (isMainSequenceRoot() && !_isPaused)
+                    if (IsMainSequenceRoot() && !isPaused)
                     {
                         sequence.releaseTweens();
                     }
@@ -192,7 +184,7 @@ namespace SmoothTween
             }
         }
 
-        bool isDone(int cyclesDiff)
+        bool IsDone(int cyclesDiff)
         {
             if (timeScale >= 0f)
             {
@@ -206,49 +198,48 @@ namespace SmoothTween
         {
             if (isSequenceRoot())
             {
-                updateSequence(encompassingElapsedTime, isRestart);
+                UpdateSequence(encompassingElapsedTime, isRestart);
             }
             else
             {
-                setElapsedTimeTotal(encompassingElapsedTime, out _);
+                SetElapsedTimeTotal(encompassingElapsedTime, out _);
             }
         }
 
-        internal bool isMainSequenceRoot() => tweenType == TweenType.MainSequence;
+        internal bool IsMainSequenceRoot() => tweenType == TweenType.MainSequence;
         internal bool isSequenceRoot() => tweenType == TweenType.MainSequence || tweenType == TweenType.NestedSequence;
 
-        void setElapsedTimeTotal(float _elapsedTimeTotal, out int cyclesDiff)
+        private void SetElapsedTimeTotal(float _elapsedTimeTotal, out int cyclesDiff)
         {
             elapsedTimeTotal = _elapsedTimeTotal;
-            float t = calcTFromElapsedTimeTotal(_elapsedTimeTotal, out cyclesDiff, out var newState);
+            var t = CalcTFromElapsedTimeTotal(_elapsedTimeTotal, out cyclesDiff, out var newState);
             cyclesDone += cyclesDiff;
             if (newState == State.Running || state != newState)
             {
-                var easedT = calcEasedT(t, cyclesDone);
-                // print($"state: {state}/{newState}, cycles: {cyclesDone}/{settings.cycles} (diff: {cyclesDiff}), elapsedTimeTotal: {elapsedTimeTotal}, interpolation: {t}/{easedT}");
+                var easedT = CalcEasedT(t, cyclesDone);
                 state = newState;
                 ReportOnValueChange(easedT);
-                if (stoppedEmergently || !_isAlive)
+                if (stoppedEmergent || !isAlive)
                 {
                     return;
                 }
             }
 
-            if (isDone(cyclesDiff))
+            if (IsDone(cyclesDiff))
             {
-                if (!IsInSequence() && !_isPaused)
+                if (!IsInSequence() && !isPaused)
                 {
-                    kill();
+                    Kill();
                 }
 
                 ReportOnComplete();
             }
         }
 
-        float calcTFromElapsedTimeTotal(float _elapsedTimeTotal, out int cyclesDiff, out State newState)
+        private float CalcTFromElapsedTimeTotal(float _elapsedTimeTotal, out int cyclesDiff, out State newState)
         {
-            // key timeline points: 0 | startDelay | duration | 1 | endDelay | onComplete
             var cyclesTotal = settings.cycles;
+            // ReSharper disable once CompareOfFloatsByEqualityOperator
             if (_elapsedTimeTotal == float.MaxValue)
             {
                 var cyclesLeft = cyclesTotal - cyclesDone;
@@ -257,7 +248,7 @@ namespace SmoothTween
                 return 1f;
             }
 
-            _elapsedTimeTotal -= waitDelay; // waitDelay is applied before calculating cycles
+            _elapsedTimeTotal -= waitDelay;
             if (_elapsedTimeTotal < 0f)
             {
                 cyclesDiff = iniCyclesDone - cyclesDone;
@@ -319,10 +310,6 @@ namespace SmoothTween
             return result;
         }
 
-        /*void print(object msg) {
-            Debug.Log($"[{Time.frameCount}]  id {id}  {msg}");
-        }*/
-
         internal void Reset()
         {
 #if UNITY_EDITOR
@@ -340,12 +327,12 @@ namespace SmoothTween
             onCompleteCallback = null;
             onCompleteTarget = null;
             getter = null;
-            stoppedEmergently = false;
+            stoppedEmergent = false;
             waitDelay = 0f;
             coroutineEnumerator.resetEnumerator();
             tweenType = TweenType.None;
             timeScale = 1f;
-            clearOnUpdate();
+            ClearOnUpdate();
         }
 
         internal void OnComplete<T>(T _target, Action<T> _onComplete) where T : class
@@ -360,9 +347,7 @@ namespace SmoothTween
             };
         }
 
-
-        /// _getter is null for custom tweens
-        internal void Setup([CanBeNull] object _target, ref TweenSettings _settings,  Action<ReusableTween> _onValueChange, [CanBeNull] Func<ReusableTween, ValueContainer> _getter,
+        internal void Setup(object _target, ref TweenSettings _settings, Action<ReusableTween> _onValueChange, Func<ReusableTween, ValueContainer> _getter,
             bool _startFromCurrent)
         {
             if (_settings.ease == Ease.Default)
@@ -383,19 +368,19 @@ namespace SmoothTween
             setUnityTarget(_target);
             elapsedTimeTotal = 0f;
             easedInterpolationFactor = float.MinValue;
-            _isPaused = false;
-            revive();
+            isPaused = false;
+            Revive();
 
             cyclesDone = iniCyclesDone;
             _settings.SetValidValues();
             settings.CopyFrom(ref _settings);
-            recalculateTotalDuration();
+            RecalculateTotalDuration();
             onValueChange = _onValueChange;
             startFromCurrent = _startFromCurrent;
             getter = _getter;
             if (!_startFromCurrent)
             {
-                cacheDiff();
+                CacheDiff();
             }
 
             if (propType == PropType.Quaternion)
@@ -414,21 +399,18 @@ namespace SmoothTween
             unityTarget = unityObject;
         }
 
-        /// Tween.Custom and Tween.ShakeCustom try-catch the <see cref="onValueChange"/> and calls <see cref="ReusableTween.EmergencyStop"/> if an exception occurs.
-        /// <see cref="ReusableTween.EmergencyStop"/> sets <see cref="stoppedEmergently"/> to true.
-        void ReportOnValueChange(float _easedInterpolationFactor)
+        private void ReportOnValueChange(float _easedInterpolationFactor)
         {
-            // Debug.Log($"id {id}, ReportOnValueChange {_easedInterpolationFactor}");
             if (startFromCurrent)
             {
                 startFromCurrent = false;
-                startValue = Tween.tryGetStartValueFromOtherShake(this) ?? getter(this);
-                cacheDiff();
+                startValue = Tween.TryGetStartValueFromOtherShake(this) ?? getter(this);
+                CacheDiff();
             }
 
             easedInterpolationFactor = _easedInterpolationFactor;
             onValueChange(this);
-            if (stoppedEmergently || !_isAlive)
+            if (stoppedEmergent || !isAlive)
             {
                 return;
             }
@@ -436,18 +418,18 @@ namespace SmoothTween
             onUpdate?.Invoke(this);
         }
 
-        void ReportOnComplete()
+        private void ReportOnComplete()
         {
             onComplete?.Invoke(this);
         }
 
         internal bool HasOnComplete => onComplete != null;
 
-        
+
         internal string GetDescription()
         {
-            string result = "";
-            if (!_isAlive)
+            var result = "";
+            if (!isAlive)
             {
                 result += " - ";
             }
@@ -485,9 +467,6 @@ namespace SmoothTween
                 }
 
                 result += " / duration ";
-                /*if (waitDelay != 0f) {
-                    result += $"{waitDelay}+";
-                }*/
                 result += $"{duration}";
             }
 
@@ -500,13 +479,13 @@ namespace SmoothTween
             return result;
         }
 
-        internal float calcDurationWithWaitDependencies()
+        internal float CalcDurationWithWaitDependencies()
         {
             var cycles = settings.cycles;
             return waitDelay + cycleDuration * cycles;
         }
 
-        internal void recalculateTotalDuration()
+        internal void RecalculateTotalDuration()
         {
             cycleDuration = settings.startDelay + settings.duration + settings.endDelay;
         }
@@ -577,20 +556,20 @@ namespace SmoothTween
 
         internal Quaternion QuaternionVal => Quaternion.SlerpUnclamped(startValue.QuaternionVal, endValue.QuaternionVal, easedInterpolationFactor);
 
-        float calcEasedT(float t, int cyclesDone)
+        private float CalcEasedT(float t, int cycle)
         {
             var cycleMode = settings.cycleMode;
             var cyclesTotal = settings.cycles;
-            if (cyclesDone == cyclesTotal)
+            if (cycle == cyclesTotal)
             {
                 // Debug.Log("cyclesDone == cyclesTotal");
                 switch (cycleMode)
                 {
                     case CycleMode.Restart:
-                        return evaluate(1f);
+                        return Evaluate(1f);
                     case CycleMode.Yoyo:
                     case CycleMode.Rewind:
-                        return evaluate(cyclesTotal % 2);
+                        return Evaluate(cyclesTotal % 2);
                     case CycleMode.Incremental:
                         return cyclesTotal;
                     default:
@@ -600,49 +579,40 @@ namespace SmoothTween
 
             if (cycleMode == CycleMode.Restart)
             {
-                return evaluate(t);
+                return Evaluate(t);
             }
 
             if (cycleMode == CycleMode.Incremental)
             {
-                return evaluate(t) + cyclesDone;
+                return Evaluate(t) + cycle;
             }
 
-            var isForwardCycle = cyclesDone % 2 == 0;
+            var isForwardCycle = cycle % 2 == 0;
             if (isForwardCycle)
             {
-                return evaluate(t);
+                return Evaluate(t);
             }
 
             if (cycleMode == CycleMode.Yoyo)
             {
-                return 1 - evaluate(t);
+                return 1 - Evaluate(t);
             }
 
             if (cycleMode == CycleMode.Rewind)
             {
-                return evaluate(1 - t);
+                return Evaluate(1 - t);
             }
 
             throw new Exception();
         }
 
-        float evaluate(float t)
+        private float Evaluate(float t)
         {
-            if (settings.ease == Ease.Custom)
-            {
-                if (settings.parametricEase != ParametricEase.None)
-                {
-                    return Easing.Evaluate(t, this);
-                }
-
-                return settings.customEase.Evaluate(t);
-            }
-
-            return StandardEasing.Evaluate(t, settings.ease);
+            if (settings.ease != Ease.Custom) return StandardEasing.Evaluate(t, settings.ease);
+            return settings.parametricEase != ParametricEase.None ? Easing.Evaluate(t, this) : settings.customEase.Evaluate(t);
         }
 
-        internal void cacheDiff()
+        internal void CacheDiff()
         {
             if (propType == PropType.Quaternion)
             {
@@ -660,10 +630,10 @@ namespace SmoothTween
 
         internal void ForceComplete()
         {
-            kill(); // protects from recursive call
+            Kill();
             cyclesDone = settings.cycles;
-            ReportOnValueChange(calcEasedT(1f, settings.cycles));
-            if (stoppedEmergently)
+            ReportOnValueChange(CalcEasedT(1f, settings.cycles));
+            if (stoppedEmergent)
             {
                 return;
             }
@@ -709,27 +679,26 @@ namespace SmoothTween
 
                 mainSequence.emergencyStop();
             }
-            else if (_isAlive)
+            else if (isAlive)
             {
-                // EmergencyStop() can be called after ForceComplete() and a caught exception in Tween.Custom()
-                kill();
+                Kill();
             }
 
-            stoppedEmergently = true;
+            stoppedEmergent = true;
             WarnOnCompleteIgnored(isTargetDestroyed);
         }
 
-        internal void kill()
+        internal void Kill()
         {
-            _isAlive = false;
+            isAlive = false;
 #if UNITY_EDITOR
             debugDescription = null;
 #endif
         }
 
-        void revive()
+        private void Revive()
         {
-            _isAlive = true;
+            isAlive = true;
 #if UNITY_EDITOR
             debugDescription = null;
 #endif
@@ -737,50 +706,49 @@ namespace SmoothTween
 
         internal bool IsInSequence()
         {
-            var result = sequence.IsCreated;
-            return result;
+            return sequence.IsCreated;
         }
 
-        internal bool canManipulate() => !IsInSequence() || isMainSequenceRoot();
+        internal bool CanManipulate() => !IsInSequence() || IsMainSequenceRoot();
 
-        internal bool trySetPause(bool isPaused)
+        internal bool TrySetPause(bool value)
         {
-            if (_isPaused == isPaused)
+            if (isPaused == value)
             {
                 return false;
             }
 
-            _isPaused = isPaused;
+            isPaused = value;
             return true;
         }
 
-        [CanBeNull] object onUpdateTarget;
-        object onUpdateCallback;
-        Action<ReusableTween> onUpdate;
+        private object onUpdateTarget;
+        private object onUpdateCallback;
+        private Action<ReusableTween> onUpdate;
 
-        internal void SetOnUpdate<T>(T _target,  Action<T, Tween> _onUpdate) where T : class
+        internal void SetOnUpdate<T>(T _target, Action<T, Tween> _onUpdate) where T : class
         {
             onUpdateTarget = _target;
             onUpdateCallback = _onUpdate;
-            onUpdate = reusableTween => reusableTween.invokeOnUpdate<T>();
+            onUpdate = reusableTween => reusableTween.InvokeOnUpdate<T>();
         }
 
-        void invokeOnUpdate<T>() where T : class
+        private void InvokeOnUpdate<T>() where T : class
         {
             var callback = onUpdateCallback as Action<T, Tween>;
             var _onUpdateTarget = onUpdateTarget as T;
             try
             {
-                callback(_onUpdateTarget, new Tween(this));
+                callback?.Invoke(_onUpdateTarget, new Tween(this));
             }
             catch (Exception e)
             {
                 Debug.LogError($"OnUpdate() will not be called again because it thrown exception, tween: {GetDescription()}, exception:\n{e}", unityTarget);
-                clearOnUpdate();
+                ClearOnUpdate();
             }
         }
 
-        void clearOnUpdate()
+        private void ClearOnUpdate()
         {
             onUpdateTarget = null;
             onUpdateCallback = null;
@@ -792,26 +760,22 @@ namespace SmoothTween
             return GetDescription();
         }
 
-        enum State
+        private enum State
         {
             Before,
             Running,
             After
         }
 
-        internal float getElapsedTimeTotal()
+        internal float GetElapsedTimeTotal()
         {
             var result = elapsedTimeTotal;
-            var durationTotal = getDurationTotal();
-            if (result == float.MaxValue)
-            {
-                return durationTotal;
-            }
-
-            return Mathf.Clamp(result, 0f, durationTotal);
+            var durationTotal = GetDurationTotal();
+            // ReSharper disable once CompareOfFloatsByEqualityOperator
+            return result == float.MaxValue ? durationTotal : Mathf.Clamp(result, 0f, durationTotal);
         }
 
-        internal float getDurationTotal()
+        internal float GetDurationTotal()
         {
             var cyclesTotal = settings.cycles;
             if (cyclesTotal == -1)
@@ -822,15 +786,10 @@ namespace SmoothTween
             return cycleDuration * cyclesTotal;
         }
 
-        internal int getCyclesDone()
+        internal int GetCyclesDone()
         {
-            int result = cyclesDone;
-            if (result == iniCyclesDone)
-            {
-                return 0;
-            }
-
-            return result;
+            var result = cyclesDone;
+            return result == iniCyclesDone ? 0 : result;
         }
     }
 }

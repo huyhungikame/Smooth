@@ -94,7 +94,7 @@ namespace PrimeTween {
         AssetDatabase.SaveAssets();
     }
 
-    [CanBeNull]
+    
     static string getMethodPrefix(Dependency dep) {
         switch (dep) {
             case Dependency.UNITY_UGUI_INSTALLED:

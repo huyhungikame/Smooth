@@ -1,6 +1,7 @@
-
-namespace SmoothTween {
-    internal enum PropType {
+namespace SmoothTween
+{
+    internal enum PropType
+    {
         None = 0,
         Float,
         Color,

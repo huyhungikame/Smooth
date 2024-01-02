@@ -81,7 +81,7 @@ namespace SmoothTween {
             return SmoothTweenManager.Animate(tween);
         }
 
-        internal static ValueContainer? tryGetStartValueFromOtherShake( ReusableTween newTween) {
+        internal static ValueContainer? TryGetStartValueFromOtherShake( ReusableTween newTween) {
             if (!newTween.shakeData.isAlive) {
                 return null;
             }
@@ -92,7 +92,7 @@ namespace SmoothTween {
             var manager = SmoothTweenManager.Instance;
             ValueContainer? findIn(List<ReusableTween> list) {
                 foreach (var tween in list) {
-                    if (tween != null && tween != newTween && tween._isAlive && ReferenceEquals(tween.unityTarget, target) && tween.tweenType == newTween.tweenType && !tween.startFromCurrent) {
+                    if (tween != null && tween != newTween && tween.isAlive && ReferenceEquals(tween.unityTarget, target) && tween.tweenType == newTween.tweenType && !tween.startFromCurrent) {
                         // Debug.Log($"tryGetStartValueFromOtherShake {tween.GetDescription()}, {tween.startValue}");
                         return tween.startValue;
                     }
@@ -238,9 +238,9 @@ namespace SmoothTween {
             internal Vector3 getNextVal( ReusableTween tween) {
                 var interpolationFactor = tween.easedInterpolationFactor;
 
-                int cyclesDiff = tween.getCyclesDone() - prevCyclesDone;
-                prevCyclesDone = tween.getCyclesDone();
-                if (interpolationFactor == 0f || (cyclesDiff > 0 && tween.getCyclesDone() != tween.settings.cycles)) {
+                int cyclesDiff = tween.GetCyclesDone() - prevCyclesDone;
+                prevCyclesDone = tween.GetCyclesDone();
+                if (interpolationFactor == 0f || (cyclesDiff > 0 && tween.GetCyclesDone() != tween.settings.cycles)) {
                     onCycleComplete();
                     prevInterpolationFactor = interpolationFactor;
                 }

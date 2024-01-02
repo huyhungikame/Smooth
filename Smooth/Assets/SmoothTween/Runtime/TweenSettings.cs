@@ -23,7 +23,7 @@ namespace SmoothTween {
                  "Set to " + nameof(Ease) + "." + nameof(Ease.Custom) + " to control the easing with custom " + nameof(AnimationCurve) + ".")]
         public Ease ease;
         [Tooltip("A custom Animation Curve that will work as an easing curve.")]
-        [CanBeNull] public AnimationCurve customEase;
+         public AnimationCurve customEase;
         public int cycles;
         [Tooltip("See the documentation of each cycle mode by hoovering the dropdown.")]
         public CycleMode cycleMode;

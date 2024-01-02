@@ -102,11 +102,11 @@ namespace SmoothTween
             for (var i = processedCount; i < cachedCount; i++)
             {
                 var tween = tweens[i];
-                if (tween._isAlive
+                if (tween.isAlive
                     && !tween.startFromCurrent
                     && tween.settings.startDelay == 0
                     && !tween.isAdditive
-                    && tween.canManipulate()
+                    && tween.CanManipulate()
                     && tween.elapsedTimeTotal == 0f)
                 {
                     tween.SetElapsedTimeTotal(0f);
@@ -172,7 +172,7 @@ namespace SmoothTween
             if (tween.target == null)
             {
                 Debug.LogError("Target is Null");
-                tween.kill();
+                tween.Kill();
                 ReleaseTweenToPool(tween);
                 return default;
             }
@@ -225,7 +225,7 @@ namespace SmoothTween
                         }
                     }
 
-                    if (tween._isAlive && predicate(tween))
+                    if (tween.isAlive && predicate(tween))
                     {
                         numProcessed++;
                     }

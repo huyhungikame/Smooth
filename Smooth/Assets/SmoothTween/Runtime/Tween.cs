@@ -52,7 +52,7 @@ namespace SmoothTween
         }
 
         /// A tween is 'alive' when it has been created and is not stopped or completed yet. Paused tween is also considered 'alive'.
-        public bool isAlive => id != 0 && tween.id == id && tween._isAlive;
+        public bool isAlive => id != 0 && tween.id == id && tween.isAlive;
 
         /// Elapsed time of the current cycle.
         public float elapsedTime
@@ -82,7 +82,7 @@ namespace SmoothTween
 
         void setElapsedTime(float value)
         {
-            if (!tryManipulate())
+            if (!TryManipulate())
             {
                 return;
             }
@@ -111,7 +111,7 @@ namespace SmoothTween
         /// The total number of cycles. Returns -1 to indicate infinite number cycles.
         public int cyclesTotal => validateIsAlive() ? tween.settings.cycles : 0;
 
-        public int cyclesDone => validateIsAlive() ? tween.getCyclesDone() : 0;
+        public int cyclesDone => validateIsAlive() ? tween.GetCyclesDone() : 0;
 
         /// The duration of one cycle.
         public float duration
@@ -134,13 +134,13 @@ namespace SmoothTween
         /// Elapsed time of all cycles.
         public float elapsedTimeTotal
         {
-            get => validateIsAlive() ? tween.getElapsedTimeTotal() : 0;
+            get => validateIsAlive() ? tween.GetElapsedTimeTotal() : 0;
             set => setElapsedTimeTotal(value);
         }
 
         void setElapsedTimeTotal(float value)
         {
-            if (!tryManipulate())
+            if (!TryManipulate())
             {
                 return;
             }
@@ -160,7 +160,7 @@ namespace SmoothTween
         }
 
         /// <summary>The duration of all cycles. If cycles == -1, returns <see cref="float.PositiveInfinity"/>.</summary>
-        public float durationTotal => validateIsAlive() ? tween.getDurationTotal() : 0;
+        public float durationTotal => validateIsAlive() ? tween.GetDurationTotal() : 0;
 
         /// Normalized progress of the current cycle expressed in 0..1 range.
         public float progress
@@ -243,20 +243,20 @@ namespace SmoothTween
 
         public bool isPaused
         {
-            get => tryManipulate() && tween._isPaused;
+            get => TryManipulate() && tween.isPaused;
             set
             {
-                if (tryManipulate() && tween.trySetPause(value))
+                if (TryManipulate() && tween.TrySetPause(value))
                 {
                     if (!value && cyclesDone == cyclesTotal)
                     {
-                        if (tween.isMainSequenceRoot())
+                        if (tween.IsMainSequenceRoot())
                         {
                             tween.sequence.releaseTweens();
                         }
                         else
                         {
-                            tween.kill();
+                            tween.Kill();
                         }
                     }
                 }
@@ -266,9 +266,9 @@ namespace SmoothTween
         /// Interrupts the tween, ignoring onComplete callback. 
         public void Stop()
         {
-            if (isAlive && tryManipulate())
+            if (isAlive && TryManipulate())
             {
-                tween.kill();
+                tween.Kill();
             }
         }
 
@@ -276,20 +276,20 @@ namespace SmoothTween
         public void Complete()
         {
             // don't warn that tween is dead because dead tween means that it's already 'completed'
-            if (isAlive && tryManipulate())
+            if (isAlive && TryManipulate())
             {
                 tween.ForceComplete();
             }
         }
 
-        internal bool tryManipulate()
+        internal bool TryManipulate()
         {
             if (!validateIsAlive())
             {
                 return false;
             }
 
-            if (!tween.canManipulate())
+            if (!tween.CanManipulate())
             {
                 return false;
             }
@@ -302,7 +302,7 @@ namespace SmoothTween
         /// To stop the animation at the 'startValue', set <see cref="stopAtEndValue"/> to false.</summary>
         public void SetRemainingCycles(bool stopAtEndValue)
         {
-            if (!tryManipulate())
+            if (!TryManipulate())
             {
                 return;
             }
@@ -313,7 +313,7 @@ namespace SmoothTween
                                  ") is meant to be used with CycleMode.Yoyo or Rewind. Please consider using the overload that accepts int instead.");
             }
 
-            SetRemainingCycles(tween.getCyclesDone() % 2 == 0 == stopAtEndValue ? 1 : 2);
+            SetRemainingCycles(tween.GetCyclesDone() % 2 == 0 == stopAtEndValue ? 1 : 2);
         }
 
         /// <summary>Sets the number of remaining cycles.<br/>
@@ -322,7 +322,7 @@ namespace SmoothTween
         /// Setting cycles to -1 will repeat the tween indefinitely.<br/></summary>
         public void SetRemainingCycles(int cycles)
         {
-            if (!tryManipulate())
+            if (!TryManipulate())
             {
                 return;
             }
@@ -346,7 +346,7 @@ namespace SmoothTween
             else
             {
                 TweenSettings.setCyclesTo1If0(ref cycles);
-                tween.settings.cycles = tween.getCyclesDone() + cycles;
+                tween.settings.cycles = tween.GetCyclesDone() + cycles;
             }
         }
 
@@ -361,10 +361,10 @@ namespace SmoothTween
             return this;
         }
 
-        public Sequence Group(Tween _tween) => tryManipulate() ? Sequence.Create(this).Group(_tween) : default;
-        public Sequence Chain(Tween _tween) => tryManipulate() ? Sequence.Create(this).Chain(_tween) : default;
-        public Sequence Group(Sequence sequence) => tryManipulate() ? Sequence.Create(this).Group(sequence) : default;
-        public Sequence Chain(Sequence sequence) => tryManipulate() ? Sequence.Create(this).Chain(sequence) : default;
+        public Sequence Group(Tween _tween) => TryManipulate() ? Sequence.Create(this).Group(_tween) : default;
+        public Sequence Chain(Tween _tween) => TryManipulate() ? Sequence.Create(this).Chain(_tween) : default;
+        public Sequence Group(Sequence sequence) => TryManipulate() ? Sequence.Create(this).Group(sequence) : default;
+        public Sequence Chain(Sequence sequence) => TryManipulate() ? Sequence.Create(this).Chain(sequence) : default;
 
         bool validateIsAlive()
         {
@@ -382,10 +382,10 @@ namespace SmoothTween
 
         public float timeScale
         {
-            get => tryManipulate() ? tween.timeScale : 1;
+            get => TryManipulate() ? tween.timeScale : 1;
             set
             {
-                if (tryManipulate())
+                if (TryManipulate())
                 {
                     tween.timeScale = value;
                 }
@@ -402,6 +402,6 @@ namespace SmoothTween
             return this;
         }
 
-        internal float durationWithWaitDelay => tween.calcDurationWithWaitDependencies();
+        internal float durationWithWaitDelay => tween.CalcDurationWithWaitDependencies();
     }
 }

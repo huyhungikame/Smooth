@@ -28,7 +28,7 @@ namespace SmoothTween
             {
                 if (tween.IsInSequence())
                 {
-                    if (tween.isMainSequenceRoot())
+                    if (tween.IsMainSequenceRoot())
                     {
                         tween.sequence.Stop();
                     }
@@ -36,7 +36,7 @@ namespace SmoothTween
                 }
                 else
                 {
-                    tween.kill();
+                    tween.Kill();
                 }
 
                 return true;
@@ -54,7 +54,7 @@ namespace SmoothTween
             {
                 if (tween.IsInSequence())
                 {
-                    if (tween.isMainSequenceRoot())
+                    if (tween.IsMainSequenceRoot())
                     {
                         tween.sequence.Complete();
                     }
@@ -95,10 +95,10 @@ namespace SmoothTween
         {
             if (isPaused)
             {
-                return SmoothTweenManager.ProcessAll(onTarget, tween => { return tween.trySetPause(true); });
+                return SmoothTweenManager.ProcessAll(onTarget, tween => { return tween.TrySetPause(true); });
             }
 
-            return SmoothTweenManager.ProcessAll(onTarget, tween => { return tween.trySetPause(false); });
+            return SmoothTweenManager.ProcessAll(onTarget, tween => { return tween.TrySetPause(false); });
         }
 
         public static Tween Delay<T>(T target, float duration, Action<T> onComplete, bool useUnscaledTime = false) where T : class
@@ -420,7 +420,7 @@ namespace SmoothTween
 
         public static Tween TweenTimeScale(Tween tween, TweenSettings<float> settings)
         {
-            if (!tween.tryManipulate())
+            if (!tween.TryManipulate())
             {
                 return default;
             }
