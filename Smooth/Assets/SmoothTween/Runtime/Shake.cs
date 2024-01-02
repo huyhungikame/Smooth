@@ -69,7 +69,7 @@ namespace SmoothTween {
         static Tween shake(TweenType tweenType, PropType propType, [NotNull] Transform target, ShakeSettings settings, [NotNull] Action<ReusableTween, Vector3> onValueChange, [NotNull] Func<ReusableTween, ValueContainer> getter) {
             Assert.IsNotNull(onValueChange);
             Assert.IsNotNull(getter);
-            var tween = SmoothTweenManager.fetchTween();
+            var tween = SmoothTweenManager.FetchTween();
             tween.propType = propType;
             prepareShakeData(settings, tween);
             tween.tweenType = tweenType;
@@ -107,7 +107,7 @@ namespace SmoothTween {
 
         public static Tween ShakeCustom<T>([NotNull] T target, Vector3 startValue, ShakeSettings settings, [NotNull] Action<T, Vector3> onValueChange) where T : class {
             Assert.IsNotNull(onValueChange);
-            var tween = SmoothTweenManager.fetchTween();
+            var tween = SmoothTweenManager.FetchTween();
             tween.propType = PropType.Vector3;
             tween.tweenType = TweenType.ShakeCustom;
             tween.startValue.CopyFrom(ref startValue);

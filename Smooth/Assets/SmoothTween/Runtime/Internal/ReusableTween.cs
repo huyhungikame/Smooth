@@ -60,7 +60,7 @@ namespace SmoothTween {
         internal Tween.ShakeData shakeData;
         State state;
 
-        internal bool updateAndCheckIfRunning(float dt) {
+        internal bool UpdateAndCheckIfRunning(float dt) {
             if (!_isAlive) {
                 return sequence.IsCreated; // don't release a tween until sequence.releaseTweens()
             }
@@ -195,10 +195,6 @@ namespace SmoothTween {
             float t = calcTFromElapsedTimeTotal(_elapsedTimeTotal, out cyclesDiff, out var newState);
             cyclesDone += cyclesDiff;
             if (newState == State.Running || state != newState) {
-                if (isUnityTargetDestroyed()) {
-                    EmergencyStop(true);
-                    return;
-                }
                 var easedT = calcEasedT(t, cyclesDone);
                 // print($"state: {state}/{newState}, cycles: {cyclesDone}/{settings.cycles} (diff: {cyclesDiff}), elapsedTimeTotal: {elapsedTimeTotal}, interpolation: {t}/{easedT}");
                 state = newState;
@@ -334,7 +330,7 @@ namespace SmoothTween {
         }
 
         internal void OnComplete<T>([NotNull] T _target, [NotNull] Action<T> _onComplete, bool warnIfTargetDestroyed) where T : class {
-            if (_target == null || isDestroyedUnityObject(_target)) {
+            if (_target == null) {
                 Debug.LogError($"{nameof(_target)} is null or has been destroyed. {Constants.onCompleteCallbackIgnored}");
                 return;
             }
@@ -347,10 +343,6 @@ namespace SmoothTween {
                 var callback = tween.onCompleteCallback as Action<T>;
                 Assert.IsNotNull(callback);
                 var _onCompleteTarget = tween.onCompleteTarget as T;
-                if (isDestroyedUnityObject(_onCompleteTarget)) {
-                    tween.warnOnCompleteIgnored(true);
-                    return;
-                }
                 try {
                     callback(_onCompleteTarget);
                 } catch (Exception e) {
@@ -364,7 +356,6 @@ namespace SmoothTween {
             Debug.LogError($"Tween's onComplete callback raised exception, tween: {GetDescription()}, exception:\n{e}", unityTarget);
         }
 
-        internal static bool isDestroyedUnityObject<T>(T obj) where T: class => obj is UnityEngine.Object unityObject && unityObject == null;
 
         void validateOnCompleteAssignment() {
             const string msg = "Tween already has an onComplete callback. Adding more callbacks is not allowed.\n" +
@@ -429,14 +420,9 @@ namespace SmoothTween {
         /// <see cref="ReusableTween.EmergencyStop"/> sets <see cref="stoppedEmergently"/> to true.
         void ReportOnValueChange(float _easedInterpolationFactor) {
             // Debug.Log($"id {id}, ReportOnValueChange {_easedInterpolationFactor}");
-            Assert.IsFalse(isUnityTargetDestroyed());
             if (startFromCurrent) {
                 startFromCurrent = false;
                 startValue = Tween.tryGetStartValueFromOtherShake(this) ?? getter(this);
-                if (startValue.Vector4Val == endValue.Vector4Val && SmoothTweenManager.Instance.warnEndValueEqualsCurrent && !shakeData.isAlive) {
-                    Debug.LogWarning($"Tween's 'endValue' equals to the current animated value: {startValue.Vector4Val}, tween: {GetDescription()}.\n" +
-                                     $"{Constants.buildWarningCanBeDisabledMessage(nameof(PrimeTweenConfig.warnEndValueEqualsCurrent))}\n");
-                }
                 cacheDiff();
             }
             easedInterpolationFactor = _easedInterpolationFactor;
@@ -454,8 +440,6 @@ namespace SmoothTween {
             Assert.IsTrue(timeScale >= 0 || cyclesDone == iniCyclesDone);
             onComplete?.Invoke(this);
         }
-
-        internal bool isUnityTargetDestroyed() => isDestroyedUnityObject(unityTarget);
 
         internal bool HasOnComplete => onComplete != null;
 
@@ -620,10 +604,6 @@ namespace SmoothTween {
         internal void ForceComplete() {
             Assert.IsFalse(sequence.IsCreated);
             kill(); // protects from recursive call
-            if (isUnityTargetDestroyed()) {
-                warnOnCompleteIgnored(true);
-                return;
-            }
             cyclesDone = settings.cycles; 
             ReportOnValueChange(calcEasedT(1f, settings.cycles));
             if (stoppedEmergently) {
@@ -721,11 +701,6 @@ namespace SmoothTween {
             var callback = onUpdateCallback as Action<T, Tween>;
             Assert.IsNotNull(callback);
             var _onUpdateTarget = onUpdateTarget as T;
-            if (isDestroyedUnityObject(_onUpdateTarget)) {
-                Debug.LogError($"OnUpdate() will not be called again because OnUpdate()'s target has been destroyed, tween: {GetDescription()}", unityTarget);
-                clearOnUpdate();
-                return;
-            }
             try {
                 callback(_onUpdateTarget, new Tween(this));
             } catch (Exception e) {

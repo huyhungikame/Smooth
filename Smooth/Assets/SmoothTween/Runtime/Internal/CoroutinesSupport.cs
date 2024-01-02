@@ -22,7 +22,6 @@ namespace SmoothTween {
         }
 
         bool IEnumerator.MoveNext() {
-            SmoothTweenManager.Instance.warnStructBoxingInCoroutineOnce();
             return isAlive;
         }
 
@@ -48,7 +47,6 @@ namespace SmoothTween {
         public IEnumerator ToYieldInstruction() => root.ToYieldInstruction();
 
         bool IEnumerator.MoveNext() {
-            SmoothTweenManager.Instance.warnStructBoxingInCoroutineOnce();
             return isAlive;
         }
 

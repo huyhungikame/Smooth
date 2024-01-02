@@ -102,7 +102,7 @@ namespace SmoothTween {
                 return default;
             }
             #endif
-            var tween = SmoothTweenManager.fetchTween();
+            var tween = SmoothTweenManager.FetchTween();
             tween.propType = PropType.Float;
             tween.tweenType = TweenType.MainSequence;
             if (cycleMode == CycleMode.Incremental) {
@@ -119,7 +119,7 @@ namespace SmoothTween {
             var settings = new TweenSettings(0f, sequenceEase, cycles, cycleMode, 0f, 0f, useUnscaledTime, useFixedUpdate);
             tween.Setup(SmoothTweenManager.dummyTarget, ref settings, _ => {}, null, false);
             tween.intParam = emptySequenceTag;
-            var root = SmoothTweenManager.addTween(tween);
+            var root = SmoothTweenManager.AddTween(tween);
             Assert.IsTrue(root.isAlive);
             return new Sequence(root);
         }
@@ -221,7 +221,7 @@ namespace SmoothTween {
             if (!tryManipulate()) {
                 return this;
             }
-            var delay = SmoothTweenManager.createEmpty();
+            var delay = SmoothTweenManager.CreateEmpty();
             delay.tween.OnComplete(callback, warnIfTargetDestroyed);
             return Chain(delay);
         }
@@ -232,7 +232,7 @@ namespace SmoothTween {
             if (!tryManipulate()) {
                 return this;
             }
-            var maybeDelay = SmoothTweenManager.delayWithoutDurationCheck(target, 0, false);
+            var maybeDelay = SmoothTweenManager.DelayWithoutDurationCheck(target, 0, false);
             if (!maybeDelay.HasValue) {
                 return this;
             }

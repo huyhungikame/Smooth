@@ -23,7 +23,7 @@ namespace SmoothTween {
                 #endif
                 return result;
             }
-            return SmoothTweenManager.processAll(onTarget, _ => true); // call processAll to filter null tweens
+            return SmoothTweenManager.ProcessAll(onTarget, _ => true); // call processAll to filter null tweens
         }
 
         #if PRIME_TWEEN_EXPERIMENTAL
@@ -40,7 +40,7 @@ namespace SmoothTween {
         /// If <see cref="onTarget"/> is provided, stops only tweens on this target (stopping a tween inside a Sequence is not allowed).</summary>
         /// <returns>The number of stopped tweens.</returns>
         public static int StopAll([CanBeNull] object onTarget = null) {
-            var result = SmoothTweenManager.processAll(onTarget, tween => {
+            var result = SmoothTweenManager.ProcessAll(onTarget, tween => {
                 if (tween.IsInSequence()) {
                     if (tween.isMainSequenceRoot()) {
                         tween.sequence.Stop();
@@ -59,7 +59,7 @@ namespace SmoothTween {
         /// If <see cref="onTarget"/> is provided, completes only tweens on this target (completing a tween inside a Sequence is not allowed).</summary>
         /// <returns>The number of completed tweens.</returns>
         public static int CompleteAll([CanBeNull] object onTarget = null) {
-            var result = SmoothTweenManager.processAll(onTarget, tween => {
+            var result = SmoothTweenManager.ProcessAll(onTarget, tween => {
                 if (tween.IsInSequence()) {
                     if (tween.isMainSequenceRoot()) {
                         tween.sequence.Complete();
@@ -92,11 +92,11 @@ namespace SmoothTween {
         /// <returns>The number of paused/unpaused tweens.</returns>
         public static int SetPausedAll(bool isPaused, [CanBeNull] object onTarget = null) {
             if (isPaused) {
-                return SmoothTweenManager.processAll(onTarget, tween => {
+                return SmoothTweenManager.ProcessAll(onTarget, tween => {
                     return tween.trySetPause(true);
                 });
             }
-            return SmoothTweenManager.processAll(onTarget, tween => {
+            return SmoothTweenManager.ProcessAll(onTarget, tween => {
                 return tween.trySetPause(false);
             });
         }
@@ -143,8 +143,7 @@ namespace SmoothTween {
         }
 
         static Tween? delay_internal([CanBeNull] object target, float duration, bool useUnscaledTime) {
-            SmoothTweenManager.checkDuration(target, duration);
-            return SmoothTweenManager.delayWithoutDurationCheck(target, duration, useUnscaledTime);
+            return SmoothTweenManager.DelayWithoutDurationCheck(target, duration, useUnscaledTime);
         }
 
         public static Tween MaterialColor([NotNull] Material target, int propertyId, Color endValue, float duration, Ease ease = default, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)

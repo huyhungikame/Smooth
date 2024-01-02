@@ -1610,7 +1610,7 @@ namespace SmoothTween {
             if (settings.startFromCurrent) {
                 UnityEngine.Debug.LogWarning(Constants.customTweensDontSupportStartFromCurrentWarning);
             }
-            var tween = SmoothTweenManager.fetchTween();
+            var tween = SmoothTweenManager.FetchTween();
             tween.startValue.CopyFrom(ref settings.startValue);
             tween.endValue.CopyFrom(ref settings.endValue);
             tween.propType = PropType.Float;
@@ -1644,7 +1644,7 @@ namespace SmoothTween {
             if (settings.startFromCurrent) {
                 UnityEngine.Debug.LogWarning(Constants.customTweensDontSupportStartFromCurrentWarning);
             }
-            var tween = SmoothTweenManager.fetchTween();
+            var tween = SmoothTweenManager.FetchTween();
             tween.startValue.CopyFrom(ref settings.startValue);
             tween.endValue.CopyFrom(ref settings.endValue);
             tween.propType = PropType.Float;
@@ -1671,7 +1671,7 @@ namespace SmoothTween {
             return SmoothTweenManager.Animate(tween);
         }
         static Tween animate(object target, ref TweenSettings<float> settings, [NotNull] Action<ReusableTween> setter, Func<ReusableTween, ValueContainer> getter) {
-            var tween = SmoothTweenManager.fetchTween();
+            var tween = SmoothTweenManager.FetchTween();
             tween.startValue.CopyFrom(ref settings.startValue);
             tween.endValue.CopyFrom(ref settings.endValue);
             tween.propType = PropType.Float;
@@ -1679,7 +1679,7 @@ namespace SmoothTween {
             return SmoothTweenManager.Animate(tween);
         }
         static Tween animateWithIntParam([NotNull] object target, int intParam, ref TweenSettings<float> settings, [NotNull] Action<ReusableTween> setter, [NotNull] Func<ReusableTween, ValueContainer> getter) {
-            var tween = SmoothTweenManager.fetchTween();
+            var tween = SmoothTweenManager.FetchTween();
             tween.intParam = intParam;
             tween.startValue.CopyFrom(ref settings.startValue);
             tween.endValue.CopyFrom(ref settings.endValue);
@@ -1698,7 +1698,7 @@ namespace SmoothTween {
             if (settings.startFromCurrent) {
                 UnityEngine.Debug.LogWarning(Constants.customTweensDontSupportStartFromCurrentWarning);
             }
-            var tween = SmoothTweenManager.fetchTween();
+            var tween = SmoothTweenManager.FetchTween();
             tween.startValue.CopyFrom(ref settings.startValue);
             tween.endValue.CopyFrom(ref settings.endValue);
             tween.propType = PropType.Color;
@@ -1732,7 +1732,7 @@ namespace SmoothTween {
             if (settings.startFromCurrent) {
                 UnityEngine.Debug.LogWarning(Constants.customTweensDontSupportStartFromCurrentWarning);
             }
-            var tween = SmoothTweenManager.fetchTween();
+            var tween = SmoothTweenManager.FetchTween();
             tween.startValue.CopyFrom(ref settings.startValue);
             tween.endValue.CopyFrom(ref settings.endValue);
             tween.propType = PropType.Color;
@@ -1759,7 +1759,7 @@ namespace SmoothTween {
             return SmoothTweenManager.Animate(tween);
         }
         static Tween animate(object target, ref TweenSettings<UnityEngine.Color> settings, [NotNull] Action<ReusableTween> setter, Func<ReusableTween, ValueContainer> getter) {
-            var tween = SmoothTweenManager.fetchTween();
+            var tween = SmoothTweenManager.FetchTween();
             tween.startValue.CopyFrom(ref settings.startValue);
             tween.endValue.CopyFrom(ref settings.endValue);
             tween.propType = PropType.Color;
@@ -1767,7 +1767,7 @@ namespace SmoothTween {
             return SmoothTweenManager.Animate(tween);
         }
         static Tween animateWithIntParam([NotNull] object target, int intParam, ref TweenSettings<UnityEngine.Color> settings, [NotNull] Action<ReusableTween> setter, [NotNull] Func<ReusableTween, ValueContainer> getter) {
-            var tween = SmoothTweenManager.fetchTween();
+            var tween = SmoothTweenManager.FetchTween();
             tween.intParam = intParam;
             tween.startValue.CopyFrom(ref settings.startValue);
             tween.endValue.CopyFrom(ref settings.endValue);
@@ -1786,7 +1786,7 @@ namespace SmoothTween {
             if (settings.startFromCurrent) {
                 UnityEngine.Debug.LogWarning(Constants.customTweensDontSupportStartFromCurrentWarning);
             }
-            var tween = SmoothTweenManager.fetchTween();
+            var tween = SmoothTweenManager.FetchTween();
             tween.startValue.CopyFrom(ref settings.startValue);
             tween.endValue.CopyFrom(ref settings.endValue);
             tween.propType = PropType.Vector2;
@@ -1820,7 +1820,7 @@ namespace SmoothTween {
             if (settings.startFromCurrent) {
                 UnityEngine.Debug.LogWarning(Constants.customTweensDontSupportStartFromCurrentWarning);
             }
-            var tween = SmoothTweenManager.fetchTween();
+            var tween = SmoothTweenManager.FetchTween();
             tween.startValue.CopyFrom(ref settings.startValue);
             tween.endValue.CopyFrom(ref settings.endValue);
             tween.propType = PropType.Vector2;
@@ -1847,7 +1847,7 @@ namespace SmoothTween {
             return SmoothTweenManager.Animate(tween);
         }
         static Tween animate(object target, ref TweenSettings<UnityEngine.Vector2> settings, [NotNull] Action<ReusableTween> setter, Func<ReusableTween, ValueContainer> getter) {
-            var tween = SmoothTweenManager.fetchTween();
+            var tween = SmoothTweenManager.FetchTween();
             tween.startValue.CopyFrom(ref settings.startValue);
             tween.endValue.CopyFrom(ref settings.endValue);
             tween.propType = PropType.Vector2;
@@ -1855,7 +1855,7 @@ namespace SmoothTween {
             return SmoothTweenManager.Animate(tween);
         }
         static Tween animateWithIntParam([NotNull] object target, int intParam, ref TweenSettings<UnityEngine.Vector2> settings, [NotNull] Action<ReusableTween> setter, [NotNull] Func<ReusableTween, ValueContainer> getter) {
-            var tween = SmoothTweenManager.fetchTween();
+            var tween = SmoothTweenManager.FetchTween();
             tween.intParam = intParam;
             tween.startValue.CopyFrom(ref settings.startValue);
             tween.endValue.CopyFrom(ref settings.endValue);
@@ -1874,7 +1874,7 @@ namespace SmoothTween {
             if (settings.startFromCurrent) {
                 UnityEngine.Debug.LogWarning(Constants.customTweensDontSupportStartFromCurrentWarning);
             }
-            var tween = SmoothTweenManager.fetchTween();
+            var tween = SmoothTweenManager.FetchTween();
             tween.startValue.CopyFrom(ref settings.startValue);
             tween.endValue.CopyFrom(ref settings.endValue);
             tween.propType = PropType.Vector3;
@@ -1908,7 +1908,7 @@ namespace SmoothTween {
             if (settings.startFromCurrent) {
                 UnityEngine.Debug.LogWarning(Constants.customTweensDontSupportStartFromCurrentWarning);
             }
-            var tween = SmoothTweenManager.fetchTween();
+            var tween = SmoothTweenManager.FetchTween();
             tween.startValue.CopyFrom(ref settings.startValue);
             tween.endValue.CopyFrom(ref settings.endValue);
             tween.propType = PropType.Vector3;
@@ -1935,7 +1935,7 @@ namespace SmoothTween {
             return SmoothTweenManager.Animate(tween);
         }
         static Tween animate(object target, ref TweenSettings<UnityEngine.Vector3> settings, [NotNull] Action<ReusableTween> setter, Func<ReusableTween, ValueContainer> getter) {
-            var tween = SmoothTweenManager.fetchTween();
+            var tween = SmoothTweenManager.FetchTween();
             tween.startValue.CopyFrom(ref settings.startValue);
             tween.endValue.CopyFrom(ref settings.endValue);
             tween.propType = PropType.Vector3;
@@ -1943,7 +1943,7 @@ namespace SmoothTween {
             return SmoothTweenManager.Animate(tween);
         }
         static Tween animateWithIntParam([NotNull] object target, int intParam, ref TweenSettings<UnityEngine.Vector3> settings, [NotNull] Action<ReusableTween> setter, [NotNull] Func<ReusableTween, ValueContainer> getter) {
-            var tween = SmoothTweenManager.fetchTween();
+            var tween = SmoothTweenManager.FetchTween();
             tween.intParam = intParam;
             tween.startValue.CopyFrom(ref settings.startValue);
             tween.endValue.CopyFrom(ref settings.endValue);
@@ -1962,7 +1962,7 @@ namespace SmoothTween {
             if (settings.startFromCurrent) {
                 UnityEngine.Debug.LogWarning(Constants.customTweensDontSupportStartFromCurrentWarning);
             }
-            var tween = SmoothTweenManager.fetchTween();
+            var tween = SmoothTweenManager.FetchTween();
             tween.startValue.CopyFrom(ref settings.startValue);
             tween.endValue.CopyFrom(ref settings.endValue);
             tween.propType = PropType.Vector4;
@@ -1996,7 +1996,7 @@ namespace SmoothTween {
             if (settings.startFromCurrent) {
                 UnityEngine.Debug.LogWarning(Constants.customTweensDontSupportStartFromCurrentWarning);
             }
-            var tween = SmoothTweenManager.fetchTween();
+            var tween = SmoothTweenManager.FetchTween();
             tween.startValue.CopyFrom(ref settings.startValue);
             tween.endValue.CopyFrom(ref settings.endValue);
             tween.propType = PropType.Vector4;
@@ -2023,7 +2023,7 @@ namespace SmoothTween {
             return SmoothTweenManager.Animate(tween);
         }
         static Tween animate(object target, ref TweenSettings<UnityEngine.Vector4> settings, [NotNull] Action<ReusableTween> setter, Func<ReusableTween, ValueContainer> getter) {
-            var tween = SmoothTweenManager.fetchTween();
+            var tween = SmoothTweenManager.FetchTween();
             tween.startValue.CopyFrom(ref settings.startValue);
             tween.endValue.CopyFrom(ref settings.endValue);
             tween.propType = PropType.Vector4;
@@ -2031,7 +2031,7 @@ namespace SmoothTween {
             return SmoothTweenManager.Animate(tween);
         }
         static Tween animateWithIntParam([NotNull] object target, int intParam, ref TweenSettings<UnityEngine.Vector4> settings, [NotNull] Action<ReusableTween> setter, [NotNull] Func<ReusableTween, ValueContainer> getter) {
-            var tween = SmoothTweenManager.fetchTween();
+            var tween = SmoothTweenManager.FetchTween();
             tween.intParam = intParam;
             tween.startValue.CopyFrom(ref settings.startValue);
             tween.endValue.CopyFrom(ref settings.endValue);
@@ -2050,7 +2050,7 @@ namespace SmoothTween {
             if (settings.startFromCurrent) {
                 UnityEngine.Debug.LogWarning(Constants.customTweensDontSupportStartFromCurrentWarning);
             }
-            var tween = SmoothTweenManager.fetchTween();
+            var tween = SmoothTweenManager.FetchTween();
             tween.startValue.CopyFrom(ref settings.startValue);
             tween.endValue.CopyFrom(ref settings.endValue);
             tween.propType = PropType.Quaternion;
@@ -2084,7 +2084,7 @@ namespace SmoothTween {
             if (settings.startFromCurrent) {
                 UnityEngine.Debug.LogWarning(Constants.customTweensDontSupportStartFromCurrentWarning);
             }
-            var tween = SmoothTweenManager.fetchTween();
+            var tween = SmoothTweenManager.FetchTween();
             tween.startValue.CopyFrom(ref settings.startValue);
             tween.endValue.CopyFrom(ref settings.endValue);
             tween.propType = PropType.Quaternion;
@@ -2111,7 +2111,7 @@ namespace SmoothTween {
             return SmoothTweenManager.Animate(tween);
         }
         static Tween animate(object target, ref TweenSettings<UnityEngine.Quaternion> settings, [NotNull] Action<ReusableTween> setter, Func<ReusableTween, ValueContainer> getter) {
-            var tween = SmoothTweenManager.fetchTween();
+            var tween = SmoothTweenManager.FetchTween();
             tween.startValue.CopyFrom(ref settings.startValue);
             tween.endValue.CopyFrom(ref settings.endValue);
             tween.propType = PropType.Quaternion;
@@ -2119,7 +2119,7 @@ namespace SmoothTween {
             return SmoothTweenManager.Animate(tween);
         }
         static Tween animateWithIntParam([NotNull] object target, int intParam, ref TweenSettings<UnityEngine.Quaternion> settings, [NotNull] Action<ReusableTween> setter, [NotNull] Func<ReusableTween, ValueContainer> getter) {
-            var tween = SmoothTweenManager.fetchTween();
+            var tween = SmoothTweenManager.FetchTween();
             tween.intParam = intParam;
             tween.startValue.CopyFrom(ref settings.startValue);
             tween.endValue.CopyFrom(ref settings.endValue);
@@ -2138,7 +2138,7 @@ namespace SmoothTween {
             if (settings.startFromCurrent) {
                 UnityEngine.Debug.LogWarning(Constants.customTweensDontSupportStartFromCurrentWarning);
             }
-            var tween = SmoothTweenManager.fetchTween();
+            var tween = SmoothTweenManager.FetchTween();
             tween.startValue.CopyFrom(ref settings.startValue);
             tween.endValue.CopyFrom(ref settings.endValue);
             tween.propType = PropType.Rect;
@@ -2172,7 +2172,7 @@ namespace SmoothTween {
             if (settings.startFromCurrent) {
                 UnityEngine.Debug.LogWarning(Constants.customTweensDontSupportStartFromCurrentWarning);
             }
-            var tween = SmoothTweenManager.fetchTween();
+            var tween = SmoothTweenManager.FetchTween();
             tween.startValue.CopyFrom(ref settings.startValue);
             tween.endValue.CopyFrom(ref settings.endValue);
             tween.propType = PropType.Rect;
@@ -2199,7 +2199,7 @@ namespace SmoothTween {
             return SmoothTweenManager.Animate(tween);
         }
         static Tween animate(object target, ref TweenSettings<UnityEngine.Rect> settings, [NotNull] Action<ReusableTween> setter, Func<ReusableTween, ValueContainer> getter) {
-            var tween = SmoothTweenManager.fetchTween();
+            var tween = SmoothTweenManager.FetchTween();
             tween.startValue.CopyFrom(ref settings.startValue);
             tween.endValue.CopyFrom(ref settings.endValue);
             tween.propType = PropType.Rect;
@@ -2207,7 +2207,7 @@ namespace SmoothTween {
             return SmoothTweenManager.Animate(tween);
         }
         static Tween animateWithIntParam([NotNull] object target, int intParam, ref TweenSettings<UnityEngine.Rect> settings, [NotNull] Action<ReusableTween> setter, [NotNull] Func<ReusableTween, ValueContainer> getter) {
-            var tween = SmoothTweenManager.fetchTween();
+            var tween = SmoothTweenManager.FetchTween();
             tween.intParam = intParam;
             tween.startValue.CopyFrom(ref settings.startValue);
             tween.endValue.CopyFrom(ref settings.endValue);

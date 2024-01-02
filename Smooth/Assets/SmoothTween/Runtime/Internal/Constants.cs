@@ -36,7 +36,7 @@ namespace SmoothTween {
                                                   "For example, if you're animating a window, the 'startValue' can represent the closed (off-screen) position of the window.";
         internal const string endValueTooltip = "End value of a tween.\n\n" +
                                                 "For example, if you're animating a window, the 'endValue' can represent the opened position of the window.";
-        internal const string setTweensCapacityMethod = "'" + nameof(PrimeTweenConfig) + "." + nameof(PrimeTweenConfig.SetTweensCapacity) + "(int capacity)'";
+        internal const string setTweensCapacityMethod = "'" + nameof(PrimeTweenConfig) + "." + "(int capacity)'";
         internal const string maxAliveTweens = "Max alive tweens";
         internal const string sequenceAlreadyStarted = "Sequence has already been started, it's not allowed to ma";
 
