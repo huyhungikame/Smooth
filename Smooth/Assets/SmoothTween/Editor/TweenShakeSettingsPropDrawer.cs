@@ -1,4 +1,3 @@
-using JetBrains.Annotations;
 using SmoothTween;
 using UnityEditor;
 using UnityEngine;
@@ -6,24 +5,31 @@ using static UnityEditor.EditorGUI;
 using static UnityEditor.EditorGUIUtility;
 
 [CustomPropertyDrawer(typeof(ShakeSettings))]
-internal class TweenShakeSettingsPropDrawer : PropertyDrawer {
-    public override float GetPropertyHeight( SerializedProperty property, GUIContent label) {
-        if (!property.isExpanded) {
+internal class TweenShakeSettingsPropDrawer : PropertyDrawer
+{
+    public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+    {
+        if (!property.isExpanded)
+        {
             return singleLineHeight;
         }
+
         var count = 1;
         count++; // frequency
         count++; // strengthPerAxis
         count++; // duration
         count++; // enableFalloff
         property = property.FindPropertyRelative(nameof(ShakeSettings.enableFalloff));
-        if (property.boolValue) {
+        if (property.boolValue)
+        {
             count++; // falloffEase
             property.NextVisible(false);
-            if (property.intValue == -1) {
+            if (property.intValue == -1)
+            {
                 count++; // strengthOverTime
             }
         }
+
         count++; // asymmetry
         count++; // easeBetweenShakes
         count++; // cycles
@@ -35,65 +41,84 @@ internal class TweenShakeSettingsPropDrawer : PropertyDrawer {
         result += standardVerticalSpacing * 2; // extra space
         return result;
     }
-    
-    public override void OnGUI(Rect position,  SerializedProperty property, GUIContent label) {
+
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    {
         var rect = new Rect(position) { height = singleLineHeight };
         PropertyField(rect, property, label);
-        if (!property.isExpanded) {
+        if (!property.isExpanded)
+        {
             return;
         }
+
         moveToNextLine();
         indentLevel++;
         property.NextVisible(true);
-        { // strength
+        {
+            // strength
             propertyField();
         }
-        { // duration
+        {
+            // duration
             property.NextVisible(false);
             TweenSettingsPropDrawer.DrawDuration(rect, property);
             moveToNextLine();
         }
-        { // frequency
+        {
+            // frequency
             property.NextVisible(false);
             var floatValue = property.floatValue;
-            if (floatValue == 0f) {
+            if (floatValue == 0f)
+            {
                 property.floatValue = ShakeSettings.defaultFrequency;
-            } else if (floatValue < 0.1f) {
+            }
+            else if (floatValue < 0.1f)
+            {
                 property.floatValue = 0.1f;
             }
+
             propertyField();
         }
-        { // enableFalloff
+        {
+            // enableFalloff
             property.NextVisible(false);
             propertyField();
             var enableFalloff = property.boolValue;
             property.NextVisible(false);
-            if (enableFalloff) {
+            if (enableFalloff)
+            {
                 // falloffEase
                 propertyField();
                 // strengthOverTime
                 var customFalloffEase = property.intValue == (int)Ease.Custom;
                 property.NextVisible(false);
-                if (customFalloffEase) {
+                if (customFalloffEase)
+                {
                     propertyField();
                 }
-            } else {
+            }
+            else
+            {
                 // skipped strengthOverTime
                 property.NextVisible(false);
             }
         }
         // extra space
         rect.y += standardVerticalSpacing * 2;
-        { // asymmetry
+        {
+            // asymmetry
             property.NextVisible(false);
             propertyField();
         }
-        { // easeBetweenShakes
+        {
+            // easeBetweenShakes
             property.NextVisible(false);
-            if (property.intValue == (int)Ease.Custom) {
+            if (property.intValue == (int)Ease.Custom)
+            {
                 Debug.LogWarning($"Ease.Custom is not supported for {nameof(ShakeSettings.easeBetweenShakes)}.");
                 property.intValue = (int)Ease.Default;
             }
+
             propertyField();
         }
         TweenSettingsPropDrawer.drawCycles(rect, property);
@@ -101,12 +126,14 @@ internal class TweenShakeSettingsPropDrawer : PropertyDrawer {
         TweenSettingsPropDrawer.drawStartDelayTillEnd(ref rect, property);
         indentLevel--;
 
-        void propertyField() {
+        void propertyField()
+        {
             PropertyField(rect, property);
             moveToNextLine();
         }
-        
-        void moveToNextLine() {
+
+        void moveToNextLine()
+        {
             rect.y += singleLineHeight + standardVerticalSpacing;
         }
     }

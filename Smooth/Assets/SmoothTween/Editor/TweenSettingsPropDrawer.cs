@@ -1,4 +1,3 @@
-using JetBrains.Annotations;
 using SmoothTween;
 using UnityEditor;
 using UnityEngine;
@@ -6,27 +5,36 @@ using static UnityEditor.EditorGUI;
 using static UnityEditor.EditorGUIUtility;
 
 [CustomPropertyDrawer(typeof(TweenSettings))]
-internal class TweenSettingsPropDrawer : PropertyDrawer {
-    public override float GetPropertyHeight( SerializedProperty property, GUIContent label) {
-        if (!property.isExpanded) {
+internal class TweenSettingsPropDrawer : PropertyDrawer
+{
+    public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+    {
+        if (!property.isExpanded)
+        {
             return singleLineHeight;
         }
+
         return getPropHeight(property);
     }
 
-    internal static float getPropHeight( SerializedProperty property) {
+    internal static float getPropHeight(SerializedProperty property)
+    {
         var count = 1;
         count++; // duration
         count++; // ease
         var easeIndex = property.FindPropertyRelative(nameof(TweenSettings.ease)).intValue;
-        if (easeIndex == (int)Ease.Custom) {
+        if (easeIndex == (int)Ease.Custom)
+        {
             count++; // customEase
         }
+
         count++; // cycles
         var cycles = property.FindPropertyRelative(nameof(TweenSettings.cycles)).intValue;
-        if (cycles != 0 && cycles != 1) {
+        if (cycles != 0 && cycles != 1)
+        {
             count++; // cycleMode
         }
+
         count++; // startDelay
         count++; // endDelay
         count++; // useUnscaledTime
@@ -36,15 +44,19 @@ internal class TweenSettingsPropDrawer : PropertyDrawer {
         return result;
     }
 
-    public override void OnGUI(Rect position,  SerializedProperty property, GUIContent label) {
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    {
         var rect = new Rect(position) { height = singleLineHeight };
         PropertyField(rect, property, label);
-        if (!property.isExpanded) {
+        if (!property.isExpanded)
+        {
             return;
         }
+
         moveToNextLine(ref rect);
         indentLevel++;
-        { // duration
+        {
+            // duration
             property.NextVisible(true);
             DrawDuration(rect, property);
             moveToNextLine(ref rect);
@@ -53,38 +65,49 @@ internal class TweenSettingsPropDrawer : PropertyDrawer {
         indentLevel--;
     }
 
-    internal static void DrawDuration(Rect rect,  SerializedProperty property) {
-        if (GUI.enabled) {
-            if (property.floatValue == 0f) {
+    internal static void DrawDuration(Rect rect, SerializedProperty property)
+    {
+        if (GUI.enabled)
+        {
+            if (property.floatValue == 0f)
+            {
                 property.floatValue = 1f;
-            } else if (property.floatValue < 0) {
+            }
+            else if (property.floatValue < 0)
+            {
                 property.floatValue = 0.01f;
             }
         }
+
         PropertyField(rect, property);
     }
 
-    internal static void drawEaseTillNext( SerializedProperty property, ref Rect rect) {
-        { // ease
+    internal static void drawEaseTillNext(SerializedProperty property, ref Rect rect)
+    {
+        {
+            // ease
             property.NextVisible(true);
             PropertyField(rect, property);
             moveToNextLine(ref rect);
             // customEase
-            bool isCustom = property.intValue == (int) Ease.Custom;
+            bool isCustom = property.intValue == (int)Ease.Custom;
             property.NextVisible(true);
-            if (isCustom) {
+            if (isCustom)
+            {
                 PropertyField(rect, property);
                 moveToNextLine(ref rect);
             }
         }
         rect.y += standardVerticalSpacing * 2;
-        { // cycles
+        {
+            // cycles
             var cycles = drawCycles(rect, property);
             moveToNextLine(ref rect);
             {
                 // cycleMode
                 property.NextVisible(true);
-                if (cycles != 0 && cycles != 1) {
+                if (cycles != 0 && cycles != 1)
+                {
                     PropertyField(rect, property);
                     moveToNextLine(ref rect);
                 }
@@ -93,41 +116,54 @@ internal class TweenSettingsPropDrawer : PropertyDrawer {
         drawStartDelayTillEnd(ref rect, property);
     }
 
-    internal static void drawStartDelayTillEnd(ref Rect rect,  SerializedProperty property) {
-        { // startDelay, endDelay
-            for (int _ = 0; _ < 2; _++) {
+    internal static void drawStartDelayTillEnd(ref Rect rect, SerializedProperty property)
+    {
+        {
+            // startDelay, endDelay
+            for (int _ = 0; _ < 2; _++)
+            {
                 property.NextVisible(true);
-                if (property.floatValue < 0f) {
+                if (property.floatValue < 0f)
+                {
                     property.floatValue = 0f;
                 }
+
                 PropertyField(rect, property);
                 moveToNextLine(ref rect);
             }
         }
-        { // useUnscaledTime
+        {
+            // useUnscaledTime
             property.NextVisible(true);
             PropertyField(rect, property);
             moveToNextLine(ref rect);
         }
-        { // useFixedUpdate
+        {
+            // useFixedUpdate
             property.NextVisible(true);
             PropertyField(rect, property);
             moveToNextLine(ref rect);
         }
     }
 
-    internal static int drawCycles(Rect rect,  SerializedProperty property) {
+    internal static int drawCycles(Rect rect, SerializedProperty property)
+    {
         property.NextVisible(false);
-        if (property.intValue == 0) {
+        if (property.intValue == 0)
+        {
             property.intValue = 1;
-        } else if (property.intValue < -1) {
+        }
+        else if (property.intValue < -1)
+        {
             property.intValue = -1;
         }
+
         PropertyField(rect, property);
         return property.intValue;
     }
 
-    static void moveToNextLine(ref Rect rect) {
+    static void moveToNextLine(ref Rect rect)
+    {
         rect.y += singleLineHeight + standardVerticalSpacing;
     }
 }

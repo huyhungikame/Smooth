@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using SmoothTween;
 using UnityEditor;
 using UnityEngine;
@@ -6,12 +7,12 @@ using UnityEngine;
 [CustomEditor(typeof(SmoothTweenManager))]
 internal class SmoothTweenManagerInspector : Editor
 {
-    SerializedProperty tweensProp;
-    SerializedProperty fixedUpdateTweensProp;
-    GUIContent aliveTweenGuiContent;
-    GUIContent fixedUpdateTweenGuiContent;
+    private SerializedProperty tweensProp;
+    private SerializedProperty fixedUpdateTweensProp;
+    private GUIContent aliveTweenGuiContent;
+    private GUIContent fixedUpdateTweenGuiContent;
 
-    void OnEnable()
+    private void OnEnable()
     {
         tweensProp = serializedObject.FindProperty(nameof(SmoothTweenManager.tweens));
         fixedUpdateTweensProp = serializedObject.FindProperty(nameof(SmoothTweenManager.fixedUpdateTweens));
@@ -30,37 +31,39 @@ internal class SmoothTweenManagerInspector : Editor
 
         GUILayout.BeginHorizontal();
         GUILayout.Label("Alive tweens", EditorStyles.label);
-        GUILayout.Label(manager.tweensCount.ToString(), EditorStyles.boldLabel);
-        GUILayout.FlexibleSpace();
-        GUILayout.EndHorizontal();
-
-        GUILayout.BeginHorizontal();
-        GUILayout.Label("Tweens capacity", EditorStyles.label);
-        GUILayout.Label((manager.pool.Count + manager.tweensCount).ToString(), EditorStyles.boldLabel);
-        GUILayout.FlexibleSpace();
-        GUILayout.EndHorizontal();
-        EditorGUILayout.HelpBox("Use "  + " to set tweens capacity.\n" +
-                                "To prevent memory allocations during runtime, choose the value that is greater than the maximum number of simultaneous tweens in your game.", MessageType.None);
-
-        drawList(tweensProp, manager.tweens, aliveTweenGuiContent);
-        drawList(fixedUpdateTweensProp, manager.fixedUpdateTweens, fixedUpdateTweenGuiContent);
-
-        void drawList(SerializedProperty tweensProp, List<ReusableTween> list, GUIContent guiContent)
+        if (manager != null)
         {
-            if (tweensProp.isExpanded)
+            GUILayout.Label(manager.tweensCount.ToString(), EditorStyles.boldLabel);
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Tweens capacity", EditorStyles.label);
+            GUILayout.Label((manager.pool.Count + manager.tweensCount).ToString(), EditorStyles.boldLabel);
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+            EditorGUILayout.HelpBox("Use " + " to set tweens capacity.\n" +
+                                    "To prevent memory allocations during runtime, choose the value that is greater than the maximum number of simultaneous tweens in your game.", MessageType.None);
+
+            drawList(tweensProp, manager.tweens, aliveTweenGuiContent);
+            drawList(fixedUpdateTweensProp, manager.fixedUpdateTweens, fixedUpdateTweenGuiContent);
+        }
+
+        return;
+
+        void drawList(SerializedProperty tweensPro, List<ReusableTween> list, GUIContent guiContent)
+        {
+            if (tweensPro.isExpanded)
             {
-                foreach (var tween in list)
+                foreach (var tween in list.Where(tween => tween != null && string.IsNullOrEmpty(tween.debugDescription)))
                 {
-                    if (tween != null && string.IsNullOrEmpty(tween.debugDescription))
-                    {
-                        tween.debugDescription = tween.GetDescription();
-                    }
+                    tween.debugDescription = tween.GetDescription();
                 }
             }
 
             using (new EditorGUI.DisabledScope(true))
             {
-                EditorGUILayout.PropertyField(tweensProp, guiContent);
+                EditorGUILayout.PropertyField(tweensPro, guiContent);
             }
         }
     }

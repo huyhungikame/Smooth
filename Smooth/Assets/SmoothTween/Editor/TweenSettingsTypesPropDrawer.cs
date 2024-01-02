@@ -1,5 +1,4 @@
 #pragma warning disable CS0162
-using JetBrains.Annotations;
 using SmoothTween;
 using UnityEditor;
 using UnityEngine;
@@ -14,13 +13,17 @@ using static UnityEditor.EditorGUIUtility;
  CustomPropertyDrawer(typeof(TweenSettings<Rect>)),
  CustomPropertyDrawer(typeof(TweenSettings<Quaternion>))
 ]
-internal class TweenSettingsTypesPropDrawer : PropertyDrawer {
+internal class TweenSettingsTypesPropDrawer : PropertyDrawer
+{
     const bool drawStartFromCurrent = false;
-    
-    public override float GetPropertyHeight( SerializedProperty property, GUIContent label) {
-        if (!property.isExpanded) {
+
+    public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+    {
+        if (!property.isExpanded)
+        {
             return singleLineHeight;
         }
+
         var count = 0;
         float height = 0f;
         property.NextVisible(true); // startFromCurrent
@@ -31,19 +34,23 @@ internal class TweenSettingsTypesPropDrawer : PropertyDrawer {
         result += standardVerticalSpacing * 2; // extra space
         return result;
 
-        void incrementHeight() {
+        void incrementHeight()
+        {
             property.NextVisible(false);
             count++; // startFromCurrent
             height += EditorGUI.GetPropertyHeight(property, true);
         }
     }
-    
-    public override void OnGUI(Rect position,  SerializedProperty property, GUIContent label) {
+
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    {
         var rect = new Rect(position) { height = singleLineHeight };
         PropertyField(rect, property, label);
-        if (!property.isExpanded) {
+        if (!property.isExpanded)
+        {
             return;
         }
+
         rect.y += singleLineHeight + standardVerticalSpacing;
         indentLevel++;
 
@@ -54,17 +61,18 @@ internal class TweenSettingsTypesPropDrawer : PropertyDrawer {
         {
             var startFromCurrent = property.boolValue;
             property.NextVisible(false);
-            if (!startFromCurrent || !drawStartFromCurrent) {
+            if (!startFromCurrent || !drawStartFromCurrent)
+            {
                 PropertyField(rect, property, true);
-                moveToNextLine(true);    
+                moveToNextLine(true);
             }
         }
-        
+
         // endValue
         property.NextVisible(false);
         PropertyField(rect, property, true);
         moveToNextLine(true);
-        
+
         // duration
         {
             property.NextVisible(false); // settings
@@ -74,10 +82,11 @@ internal class TweenSettingsTypesPropDrawer : PropertyDrawer {
         }
 
         TweenSettingsPropDrawer.drawEaseTillNext(property, ref rect);
-        
+
         indentLevel--;
 
-        void moveToNextLine(bool includeChildren) {
+        void moveToNextLine(bool includeChildren)
+        {
             rect.y += EditorGUI.GetPropertyHeight(property, includeChildren) + standardVerticalSpacing;
         }
     }
