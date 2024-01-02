@@ -19,20 +19,16 @@ namespace SmoothTween {
     public struct TweenSettings {
         public float duration;
         [Tooltip("The easing curve of an animation.\n\n" +
-                 "Default is Ease." + nameof(Ease.OutQuad) + ". The Default ease can be modified via '" + nameof(PrimeTweenConfig) + "." + nameof(PrimeTweenConfig.defaultEase) + "' setting.\n\n" +
+                 "Default is Ease." + nameof(Ease.OutQuad) + ". The Default ease can be modified via '" + nameof(SmoothTweenConfig) + "." + nameof(SmoothTweenConfig.defaultEase) + "' setting.\n\n" +
                  "Set to " + nameof(Ease) + "." + nameof(Ease.Custom) + " to control the easing with custom " + nameof(AnimationCurve) + ".")]
         public Ease ease;
         [Tooltip("A custom Animation Curve that will work as an easing curve.")]
         [CanBeNull] public AnimationCurve customEase;
-        [Tooltip(Constants.cyclesTooltip)]
         public int cycles;
         [Tooltip("See the documentation of each cycle mode by hoovering the dropdown.")]
         public CycleMode cycleMode;
-        [Tooltip(Constants.startDelayTooltip)]
         public float startDelay;
-        [Tooltip(Constants.endDelayTooltip)]
         public float endDelay;
-        [Tooltip(Constants.unscaledTimeTooltip)]
         public bool useUnscaledTime;
         public bool useFixedUpdate;
         [NonSerialized] internal ParametricEase parametricEase;
@@ -98,9 +94,6 @@ namespace SmoothTween {
         }
 
         internal void SetValidValues() {
-            validateFiniteDuration(duration);
-            validateFiniteDuration(startDelay);
-            validateFiniteDuration(endDelay);
             setCyclesTo1If0(ref cycles);
             if (duration != 0f) {
                 duration = Mathf.Max(0.001f, duration);
@@ -110,11 +103,6 @@ namespace SmoothTween {
             if (cycles == 1) {
                 cycleMode = CycleMode.Restart;
             }
-        }
-
-        internal static void validateFiniteDuration(float f) {
-            Assert.IsFalse(float.IsNaN(f), Constants.durationInvalidError);
-            Assert.IsFalse(float.IsInfinity(f), Constants.durationInvalidError);
         }
         
         internal static bool ValidateCustomCurve([NotNull] AnimationCurve curve) {
@@ -137,9 +125,9 @@ namespace SmoothTween {
             var instance = SmoothTweenManager.Instance;
             if (instance == null || instance.validateCustomCurves) {
                 var error = getError();
-                if (error != null) {
-                    Debug.LogWarning($"Custom animation curve is not configured correctly which may have unexpected results: {error}. " +
-                                     Constants.buildWarningCanBeDisabledMessage(nameof(PrimeTweenConfig.validateCustomCurves)));
+                if (error != null)
+                {
+                    Debug.LogWarning($"Custom animation curve is not configured correctly which may have unexpected results: {error}. ");
                 }
                 string getError() {
                     var start = curve[0];

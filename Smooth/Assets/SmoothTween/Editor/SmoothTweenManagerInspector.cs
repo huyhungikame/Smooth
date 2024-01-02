@@ -15,7 +15,6 @@ internal class SmoothTweenManagerInspector : Editor
     {
         tweensProp = serializedObject.FindProperty(nameof(SmoothTweenManager.tweens));
         fixedUpdateTweensProp = serializedObject.FindProperty(nameof(SmoothTweenManager.fixedUpdateTweens));
-        Assert.IsNotNull(tweensProp);
         aliveTweenGuiContent = new GUIContent("Tweens");
         fixedUpdateTweenGuiContent = new GUIContent("Fixed update tweens");
     }
@@ -28,7 +27,6 @@ internal class SmoothTweenManagerInspector : Editor
         }
 
         var manager = target as SmoothTweenManager;
-        Assert.IsNotNull(manager);
 
         GUILayout.BeginHorizontal();
         GUILayout.Label("Alive tweens", EditorStyles.label);
@@ -41,7 +39,7 @@ internal class SmoothTweenManagerInspector : Editor
         GUILayout.Label((manager.pool.Count + manager.tweensCount).ToString(), EditorStyles.boldLabel);
         GUILayout.FlexibleSpace();
         GUILayout.EndHorizontal();
-        EditorGUILayout.HelpBox("Use " + Constants.setTweensCapacityMethod + " to set tweens capacity.\n" +
+        EditorGUILayout.HelpBox("Use "  + " to set tweens capacity.\n" +
                                 "To prevent memory allocations during runtime, choose the value that is greater than the maximum number of simultaneous tweens in your game.", MessageType.None);
 
         drawList(tweensProp, manager.tweens, aliveTweenGuiContent);

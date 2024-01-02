@@ -35,9 +35,8 @@ namespace SmoothTween {
         
         /// <summary>Standard Robert Penner's easing method. Or simply use Ease enum instead.</summary>
         public static Easing Standard(Ease ease) {
-            Assert.AreNotEqual(Ease.Custom, ease);
             if (ease == Ease.Default) {
-                ease = PrimeTweenConfig.defaultEase;
+                ease = SmoothTweenConfig.defaultEase;
             }
             return new Easing(ease, null);
         }

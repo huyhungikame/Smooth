@@ -1606,9 +1606,7 @@ namespace SmoothTween {
             => Custom(new TweenSettings<float>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)), onValueChange);
         public static Tween Custom(float startValue, float endValue, TweenSettings settings, [NotNull] Action<float> onValueChange) => Custom(new TweenSettings<float>(startValue, endValue, settings), onValueChange);
         public static Tween Custom(TweenSettings<float> settings, [NotNull] Action<float> onValueChange) {
-            Assert.IsNotNull(onValueChange);
             if (settings.startFromCurrent) {
-                UnityEngine.Debug.LogWarning(Constants.customTweensDontSupportStartFromCurrentWarning);
             }
             var tween = SmoothTweenManager.FetchTween();
             tween.startValue.CopyFrom(ref settings.startValue);
@@ -1640,9 +1638,7 @@ namespace SmoothTween {
             => Custom_internal(target, new TweenSettings<float>(default, deltaValue, settings), onDeltaChange, true);
         #endif
         static Tween Custom_internal<T>([NotNull] T target, TweenSettings<float> settings, [NotNull] Action<T, float> onValueChange, bool isAdditive = false) where T : class {
-            Assert.IsNotNull(onValueChange);
             if (settings.startFromCurrent) {
-                UnityEngine.Debug.LogWarning(Constants.customTweensDontSupportStartFromCurrentWarning);
             }
             var tween = SmoothTweenManager.FetchTween();
             tween.startValue.CopyFrom(ref settings.startValue);
@@ -1694,9 +1690,7 @@ namespace SmoothTween {
             => Custom(new TweenSettings<UnityEngine.Color>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)), onValueChange);
         public static Tween Custom(UnityEngine.Color startValue, UnityEngine.Color endValue, TweenSettings settings, [NotNull] Action<UnityEngine.Color> onValueChange) => Custom(new TweenSettings<UnityEngine.Color>(startValue, endValue, settings), onValueChange);
         public static Tween Custom(TweenSettings<UnityEngine.Color> settings, [NotNull] Action<UnityEngine.Color> onValueChange) {
-            Assert.IsNotNull(onValueChange);
             if (settings.startFromCurrent) {
-                UnityEngine.Debug.LogWarning(Constants.customTweensDontSupportStartFromCurrentWarning);
             }
             var tween = SmoothTweenManager.FetchTween();
             tween.startValue.CopyFrom(ref settings.startValue);
@@ -1728,9 +1722,7 @@ namespace SmoothTween {
             => Custom_internal(target, new TweenSettings<UnityEngine.Color>(default, deltaValue, settings), onDeltaChange, true);
         #endif
         static Tween Custom_internal<T>([NotNull] T target, TweenSettings<UnityEngine.Color> settings, [NotNull] Action<T, UnityEngine.Color> onValueChange, bool isAdditive = false) where T : class {
-            Assert.IsNotNull(onValueChange);
             if (settings.startFromCurrent) {
-                UnityEngine.Debug.LogWarning(Constants.customTweensDontSupportStartFromCurrentWarning);
             }
             var tween = SmoothTweenManager.FetchTween();
             tween.startValue.CopyFrom(ref settings.startValue);
@@ -1782,9 +1774,7 @@ namespace SmoothTween {
             => Custom(new TweenSettings<UnityEngine.Vector2>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)), onValueChange);
         public static Tween Custom(UnityEngine.Vector2 startValue, UnityEngine.Vector2 endValue, TweenSettings settings, [NotNull] Action<UnityEngine.Vector2> onValueChange) => Custom(new TweenSettings<UnityEngine.Vector2>(startValue, endValue, settings), onValueChange);
         public static Tween Custom(TweenSettings<UnityEngine.Vector2> settings, [NotNull] Action<UnityEngine.Vector2> onValueChange) {
-            Assert.IsNotNull(onValueChange);
             if (settings.startFromCurrent) {
-                UnityEngine.Debug.LogWarning(Constants.customTweensDontSupportStartFromCurrentWarning);
             }
             var tween = SmoothTweenManager.FetchTween();
             tween.startValue.CopyFrom(ref settings.startValue);
@@ -1816,9 +1806,7 @@ namespace SmoothTween {
             => Custom_internal(target, new TweenSettings<UnityEngine.Vector2>(default, deltaValue, settings), onDeltaChange, true);
         #endif
         static Tween Custom_internal<T>([NotNull] T target, TweenSettings<UnityEngine.Vector2> settings, [NotNull] Action<T, UnityEngine.Vector2> onValueChange, bool isAdditive = false) where T : class {
-            Assert.IsNotNull(onValueChange);
             if (settings.startFromCurrent) {
-                UnityEngine.Debug.LogWarning(Constants.customTweensDontSupportStartFromCurrentWarning);
             }
             var tween = SmoothTweenManager.FetchTween();
             tween.startValue.CopyFrom(ref settings.startValue);
@@ -1870,9 +1858,7 @@ namespace SmoothTween {
             => Custom(new TweenSettings<UnityEngine.Vector3>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)), onValueChange);
         public static Tween Custom(UnityEngine.Vector3 startValue, UnityEngine.Vector3 endValue, TweenSettings settings, [NotNull] Action<UnityEngine.Vector3> onValueChange) => Custom(new TweenSettings<UnityEngine.Vector3>(startValue, endValue, settings), onValueChange);
         public static Tween Custom(TweenSettings<UnityEngine.Vector3> settings, [NotNull] Action<UnityEngine.Vector3> onValueChange) {
-            Assert.IsNotNull(onValueChange);
             if (settings.startFromCurrent) {
-                UnityEngine.Debug.LogWarning(Constants.customTweensDontSupportStartFromCurrentWarning);
             }
             var tween = SmoothTweenManager.FetchTween();
             tween.startValue.CopyFrom(ref settings.startValue);
@@ -1904,9 +1890,7 @@ namespace SmoothTween {
             => Custom_internal(target, new TweenSettings<UnityEngine.Vector3>(default, deltaValue, settings), onDeltaChange, true);
         #endif
         static Tween Custom_internal<T>([NotNull] T target, TweenSettings<UnityEngine.Vector3> settings, [NotNull] Action<T, UnityEngine.Vector3> onValueChange, bool isAdditive = false) where T : class {
-            Assert.IsNotNull(onValueChange);
             if (settings.startFromCurrent) {
-                UnityEngine.Debug.LogWarning(Constants.customTweensDontSupportStartFromCurrentWarning);
             }
             var tween = SmoothTweenManager.FetchTween();
             tween.startValue.CopyFrom(ref settings.startValue);
@@ -1958,9 +1942,7 @@ namespace SmoothTween {
             => Custom(new TweenSettings<UnityEngine.Vector4>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)), onValueChange);
         public static Tween Custom(UnityEngine.Vector4 startValue, UnityEngine.Vector4 endValue, TweenSettings settings, [NotNull] Action<UnityEngine.Vector4> onValueChange) => Custom(new TweenSettings<UnityEngine.Vector4>(startValue, endValue, settings), onValueChange);
         public static Tween Custom(TweenSettings<UnityEngine.Vector4> settings, [NotNull] Action<UnityEngine.Vector4> onValueChange) {
-            Assert.IsNotNull(onValueChange);
             if (settings.startFromCurrent) {
-                UnityEngine.Debug.LogWarning(Constants.customTweensDontSupportStartFromCurrentWarning);
             }
             var tween = SmoothTweenManager.FetchTween();
             tween.startValue.CopyFrom(ref settings.startValue);
@@ -1992,9 +1974,7 @@ namespace SmoothTween {
             => Custom_internal(target, new TweenSettings<UnityEngine.Vector4>(default, deltaValue, settings), onDeltaChange, true);
         #endif
         static Tween Custom_internal<T>([NotNull] T target, TweenSettings<UnityEngine.Vector4> settings, [NotNull] Action<T, UnityEngine.Vector4> onValueChange, bool isAdditive = false) where T : class {
-            Assert.IsNotNull(onValueChange);
             if (settings.startFromCurrent) {
-                UnityEngine.Debug.LogWarning(Constants.customTweensDontSupportStartFromCurrentWarning);
             }
             var tween = SmoothTweenManager.FetchTween();
             tween.startValue.CopyFrom(ref settings.startValue);
@@ -2046,9 +2026,7 @@ namespace SmoothTween {
             => Custom(new TweenSettings<UnityEngine.Quaternion>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)), onValueChange);
         public static Tween Custom(UnityEngine.Quaternion startValue, UnityEngine.Quaternion endValue, TweenSettings settings, [NotNull] Action<UnityEngine.Quaternion> onValueChange) => Custom(new TweenSettings<UnityEngine.Quaternion>(startValue, endValue, settings), onValueChange);
         public static Tween Custom(TweenSettings<UnityEngine.Quaternion> settings, [NotNull] Action<UnityEngine.Quaternion> onValueChange) {
-            Assert.IsNotNull(onValueChange);
             if (settings.startFromCurrent) {
-                UnityEngine.Debug.LogWarning(Constants.customTweensDontSupportStartFromCurrentWarning);
             }
             var tween = SmoothTweenManager.FetchTween();
             tween.startValue.CopyFrom(ref settings.startValue);
@@ -2080,9 +2058,7 @@ namespace SmoothTween {
             => Custom_internal(target, new TweenSettings<UnityEngine.Quaternion>(default, deltaValue, settings), onDeltaChange, true);
         #endif
         static Tween Custom_internal<T>([NotNull] T target, TweenSettings<UnityEngine.Quaternion> settings, [NotNull] Action<T, UnityEngine.Quaternion> onValueChange, bool isAdditive = false) where T : class {
-            Assert.IsNotNull(onValueChange);
             if (settings.startFromCurrent) {
-                UnityEngine.Debug.LogWarning(Constants.customTweensDontSupportStartFromCurrentWarning);
             }
             var tween = SmoothTweenManager.FetchTween();
             tween.startValue.CopyFrom(ref settings.startValue);
@@ -2134,9 +2110,7 @@ namespace SmoothTween {
             => Custom(new TweenSettings<UnityEngine.Rect>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)), onValueChange);
         public static Tween Custom(UnityEngine.Rect startValue, UnityEngine.Rect endValue, TweenSettings settings, [NotNull] Action<UnityEngine.Rect> onValueChange) => Custom(new TweenSettings<UnityEngine.Rect>(startValue, endValue, settings), onValueChange);
         public static Tween Custom(TweenSettings<UnityEngine.Rect> settings, [NotNull] Action<UnityEngine.Rect> onValueChange) {
-            Assert.IsNotNull(onValueChange);
             if (settings.startFromCurrent) {
-                UnityEngine.Debug.LogWarning(Constants.customTweensDontSupportStartFromCurrentWarning);
             }
             var tween = SmoothTweenManager.FetchTween();
             tween.startValue.CopyFrom(ref settings.startValue);
@@ -2168,9 +2142,7 @@ namespace SmoothTween {
             => Custom_internal(target, new TweenSettings<UnityEngine.Rect>(default, deltaValue, settings), onDeltaChange, true);
         #endif
         static Tween Custom_internal<T>([NotNull] T target, TweenSettings<UnityEngine.Rect> settings, [NotNull] Action<T, UnityEngine.Rect> onValueChange, bool isAdditive = false) where T : class {
-            Assert.IsNotNull(onValueChange);
             if (settings.startFromCurrent) {
-                UnityEngine.Debug.LogWarning(Constants.customTweensDontSupportStartFromCurrentWarning);
             }
             var tween = SmoothTweenManager.FetchTween();
             tween.startValue.CopyFrom(ref settings.startValue);

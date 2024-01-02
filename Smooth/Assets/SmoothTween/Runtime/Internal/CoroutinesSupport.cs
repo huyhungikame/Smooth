@@ -27,7 +27,6 @@ namespace SmoothTween {
 
         object IEnumerator.Current {
             get {
-                Assert.IsTrue(isAlive);
                 return null;
             }
         }
@@ -52,7 +51,6 @@ namespace SmoothTween {
 
         object IEnumerator.Current {
             get {
-                Assert.IsTrue(isAlive);
                 return null;
             }
         }
@@ -65,9 +63,6 @@ namespace SmoothTween {
         bool isRunning;
 
         internal void SetTween(Tween _tween) {
-            Assert.IsFalse(isRunning);
-            Assert.IsTrue(!tween.IsCreated || tween.id == _tween.id);
-            Assert.IsTrue(_tween.isAlive);
             tween = _tween;
             isRunning = true;
         }
@@ -87,8 +82,6 @@ namespace SmoothTween {
 
         object IEnumerator.Current {
             get {
-                Assert.IsTrue(tween.isAlive);
-				Assert.IsTrue(isRunning);
                 return null;
             }
         }

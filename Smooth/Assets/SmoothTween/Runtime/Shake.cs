@@ -14,7 +14,7 @@ namespace SmoothTween {
         /// If the camera is perspective, shakes all angles.<br/>
         /// If the camera is orthographic, shakes the z angle and x/y coordinates.<br/>
         /// Reference strengthFactor values - light: 0.2, medium: 0.5, heavy: 1.0.</summary>
-        public static Sequence ShakeCamera([NotNull] Camera camera, float strengthFactor, float duration = 0.5f, float frequency = ShakeSettings.defaultFrequency, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = PrimeTweenConfig.defaultUseUnscaledTimeForShakes) {
+        public static Sequence ShakeCamera([NotNull] Camera camera, float strengthFactor, float duration = 0.5f, float frequency = ShakeSettings.defaultFrequency, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = SmoothTweenConfig.defaultUseUnscaledTimeForShakes) {
             var transform = camera.transform;
             if (camera.orthographic) {
                 var orthoPosStrength = strengthFactor * camera.orthographicSize * 0.03f;
@@ -25,7 +25,7 @@ namespace SmoothTween {
         }
 
         public static Tween ShakeLocalPosition([NotNull] Transform target, Vector3 strength, float duration, float frequency = ShakeSettings.defaultFrequency, bool enableFalloff = true, Ease easeBetweenShakes = Ease.Default, float asymmetryFactor = 0f, int cycles = 1,
-            float startDelay = 0, float endDelay = 0, bool useUnscaledTime = PrimeTweenConfig.defaultUseUnscaledTimeForShakes) 
+            float startDelay = 0, float endDelay = 0, bool useUnscaledTime = SmoothTweenConfig.defaultUseUnscaledTimeForShakes) 
             => ShakeLocalPosition(target, new ShakeSettings(strength, duration, frequency, enableFalloff, easeBetweenShakes, asymmetryFactor, cycles, startDelay, endDelay, useUnscaledTime));
         [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         public static Tween ShakeLocalPosition([NotNull] Transform target, ShakeSettings settings) {
@@ -34,12 +34,12 @@ namespace SmoothTween {
             }, _ => (_.unityTarget as Transform).localPosition.ToContainer());
         }
         public static Tween PunchLocalPosition([NotNull] Transform target, Vector3 strength, float duration, float frequency = ShakeSettings.defaultFrequency, bool enableFalloff = true, Ease easeBetweenShakes = Ease.Default, float asymmetryFactor = 0f, int cycles = 1,
-            float startDelay = 0, float endDelay = 0, bool useUnscaledTime = PrimeTweenConfig.defaultUseUnscaledTimeForShakes) 
+            float startDelay = 0, float endDelay = 0, bool useUnscaledTime = SmoothTweenConfig.defaultUseUnscaledTimeForShakes) 
             => PunchLocalPosition(target, new ShakeSettings(strength, duration, frequency, enableFalloff, easeBetweenShakes, asymmetryFactor, cycles, startDelay, endDelay, useUnscaledTime));
         public static Tween PunchLocalPosition([NotNull] Transform target, ShakeSettings settings) => ShakeLocalPosition(target, settings.WithPunch());
 
         public static Tween ShakeLocalRotation([NotNull] Transform target, Vector3 strength, float duration, float frequency = ShakeSettings.defaultFrequency, bool enableFalloff = true, Ease easeBetweenShakes = Ease.Default, float asymmetryFactor = 0f, int cycles = 1,
-            float startDelay = 0, float endDelay = 0, bool useUnscaledTime = PrimeTweenConfig.defaultUseUnscaledTimeForShakes) 
+            float startDelay = 0, float endDelay = 0, bool useUnscaledTime = SmoothTweenConfig.defaultUseUnscaledTimeForShakes) 
             => ShakeLocalRotation(target, new ShakeSettings(strength, duration, frequency, enableFalloff, easeBetweenShakes, asymmetryFactor, cycles, startDelay, endDelay, useUnscaledTime));
         [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         public static Tween ShakeLocalRotation([NotNull] Transform target, ShakeSettings settings) {
@@ -48,12 +48,12 @@ namespace SmoothTween {
             }, t => (t.unityTarget as Transform).localRotation.ToContainer());
         }
         public static Tween PunchLocalRotation([NotNull] Transform target, Vector3 strength, float duration, float frequency = ShakeSettings.defaultFrequency, bool enableFalloff = true, Ease easeBetweenShakes = Ease.Default, float asymmetryFactor = 0f, int cycles = 1,
-            float startDelay = 0, float endDelay = 0, bool useUnscaledTime = PrimeTweenConfig.defaultUseUnscaledTimeForShakes) 
+            float startDelay = 0, float endDelay = 0, bool useUnscaledTime = SmoothTweenConfig.defaultUseUnscaledTimeForShakes) 
             => PunchLocalRotation(target, new ShakeSettings(strength, duration, frequency, enableFalloff, easeBetweenShakes, asymmetryFactor, cycles, startDelay, endDelay, useUnscaledTime));
         public static Tween PunchLocalRotation([NotNull] Transform target, ShakeSettings settings) => ShakeLocalRotation(target, settings.WithPunch());
 
         public static Tween ShakeScale([NotNull] Transform target, Vector3 strength, float duration, float frequency = ShakeSettings.defaultFrequency, bool enableFalloff = true, Ease easeBetweenShakes = Ease.Default, float asymmetryFactor = 0f, int cycles = 1,
-            float startDelay = 0, float endDelay = 0, bool useUnscaledTime = PrimeTweenConfig.defaultUseUnscaledTimeForShakes) 
+            float startDelay = 0, float endDelay = 0, bool useUnscaledTime = SmoothTweenConfig.defaultUseUnscaledTimeForShakes) 
             => ShakeScale(target, new ShakeSettings(strength, duration, frequency, enableFalloff, easeBetweenShakes, asymmetryFactor, cycles, startDelay, endDelay, useUnscaledTime));
         [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         public static Tween ShakeScale([NotNull] Transform target, ShakeSettings settings) {
@@ -62,13 +62,11 @@ namespace SmoothTween {
             }, t => (t.unityTarget as Transform).localScale.ToContainer());
         }
         public static Tween PunchScale([NotNull] Transform target, Vector3 strength, float duration, float frequency = ShakeSettings.defaultFrequency, bool enableFalloff = true, Ease easeBetweenShakes = Ease.Default, float asymmetryFactor = 0f, int cycles = 1,
-            float startDelay = 0, float endDelay = 0, bool useUnscaledTime = PrimeTweenConfig.defaultUseUnscaledTimeForShakes) 
+            float startDelay = 0, float endDelay = 0, bool useUnscaledTime = SmoothTweenConfig.defaultUseUnscaledTimeForShakes) 
             => PunchScale(target, new ShakeSettings(strength, duration, frequency, enableFalloff, easeBetweenShakes, asymmetryFactor, cycles, startDelay, endDelay, useUnscaledTime));
         public static Tween PunchScale([NotNull] Transform target, ShakeSettings settings) => ShakeScale(target, settings.WithPunch());
 
         static Tween shake(TweenType tweenType, PropType propType, [NotNull] Transform target, ShakeSettings settings, [NotNull] Action<ReusableTween, Vector3> onValueChange, [NotNull] Func<ReusableTween, ValueContainer> getter) {
-            Assert.IsNotNull(onValueChange);
-            Assert.IsNotNull(getter);
             var tween = SmoothTweenManager.FetchTween();
             tween.propType = propType;
             prepareShakeData(settings, tween);
@@ -77,7 +75,6 @@ namespace SmoothTween {
             var tweenSettings = settings.tweenSettings;
             tween.Setup(target, ref tweenSettings, state => {
                 var _onValueChange = state.customOnValueChange as Action<ReusableTween, Vector3>;
-                Assert.IsNotNull(_onValueChange);
                 var shakeVal = getShakeVal(state);
                 _onValueChange(state, shakeVal);
             }, getter, true);
@@ -106,7 +103,6 @@ namespace SmoothTween {
         }
 
         public static Tween ShakeCustom<T>([NotNull] T target, Vector3 startValue, ShakeSettings settings, [NotNull] Action<T, Vector3> onValueChange) where T : class {
-            Assert.IsNotNull(onValueChange);
             var tween = SmoothTweenManager.FetchTween();
             tween.propType = PropType.Vector3;
             tween.tweenType = TweenType.ShakeCustom;
@@ -116,7 +112,6 @@ namespace SmoothTween {
             var tweenSettings = settings.tweenSettings;
             tween.Setup(target, ref tweenSettings, _tween => {
                 var _onValueChange = _tween.customOnValueChange as Action<T, Vector3>;
-                Assert.IsNotNull(_onValueChange);
                 var _target = _tween.target as T;
                 var val = _tween.startValue.Vector3Val + getShakeVal(_tween);
                 try {
@@ -139,7 +134,6 @@ namespace SmoothTween {
             return tween.shakeData.getNextVal(tween) * calcFadeInOutFactor();
             float calcFadeInOutFactor() {
                 var elapsedTimeInterpolating = tween.easedInterpolationFactor * tween.settings.duration;
-                Assert.IsTrue(elapsedTimeInterpolating >= 0f);
                 var oneShakeDuration = 1f / tween.shakeData.frequency;
                 float fadeInDuration = oneShakeDuration * 0.5f;
                 if (elapsedTimeInterpolating < fadeInDuration) {
@@ -223,7 +217,6 @@ namespace SmoothTween {
             }
             
             internal void onCycleComplete() {
-                Assert.IsTrue(isAlive);
                 resetAfterCycle();
                 sign = isPunch || Random.value < 0.5f;
                 to = generateShakePoint();
@@ -239,13 +232,11 @@ namespace SmoothTween {
                         mainAxisIndex = i;
                     }
                 }
-                Assert.IsTrue(mainAxisIndex >= 0);
                 return mainAxisIndex;
             }
 
             internal Vector3 getNextVal([NotNull] ReusableTween tween) {
                 var interpolationFactor = tween.easedInterpolationFactor;
-                Assert.IsTrue(interpolationFactor <= 1);
 
                 int cyclesDiff = tween.getCyclesDone() - prevCyclesDone;
                 prevCyclesDone = tween.getCyclesDone();
@@ -309,7 +300,6 @@ namespace SmoothTween {
                 if (falloffEase != Ease.Custom) {
                     return 1 - StandardEasing.Evaluate(interpolationFactor, falloffEase);
                 }
-                Assert.IsNotNull(customStrengthOverTime);
                 return customStrengthOverTime.Evaluate(interpolationFactor);
             }
             

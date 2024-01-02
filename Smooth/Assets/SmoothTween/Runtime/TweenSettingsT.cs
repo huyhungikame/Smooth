@@ -2,7 +2,8 @@ using System;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace SmoothTween {
+namespace SmoothTween
+{
     /// <summary>Contains 'start' and 'end' values of an animation in addition to <see cref="TweenSettings"/>. Can be serialized and tweaked from the Inspector in Unity 2020.1+.<br/>
     /// Use this struct when the 'start' and 'end' values of an animation are known in advance.</summary>
     /// <example>Tweak animation from the Inspector, then pass the settings to the Tween method:
@@ -19,40 +20,51 @@ namespace SmoothTween {
     /// Tween.Position(transform, tweenSettings);
     /// </code></example>
     [Serializable]
-    public struct TweenSettings<T> where T: struct {
-        [Tooltip(Constants.startFromCurrentTooltip)] public bool startFromCurrent;
-        [Tooltip(Constants.startValueTooltip)] public T startValue;
-        [Tooltip(Constants.endValueTooltip)] public T endValue;
+    public struct TweenSettings<T> where T : struct
+    {
+        public bool startFromCurrent;
+        public T startValue;
+        public T endValue;
         public TweenSettings settings;
 
-        public TweenSettings(T endValue, TweenSettings settings) {
+        public TweenSettings(T endValue, TweenSettings settings)
+        {
             startFromCurrent = true;
             startValue = default;
             this.endValue = endValue;
             this.settings = settings;
         }
 
-        public TweenSettings(T startValue, T endValue, TweenSettings settings) {
+        public TweenSettings(T startValue, T endValue, TweenSettings settings)
+        {
             startFromCurrent = false;
             this.startValue = startValue;
             this.endValue = endValue;
             this.settings = settings;
         }
 
-        public TweenSettings(T endValue, float duration, Ease ease = Ease.Default, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false, bool useFixedUpdate = false)
-            : this(endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime, useFixedUpdate)) {
+        public TweenSettings(T endValue, float duration, Ease ease = Ease.Default, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0,
+            bool useUnscaledTime = false, bool useFixedUpdate = false)
+            : this(endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime, useFixedUpdate))
+        {
         }
 
-        public TweenSettings(T startValue, T endValue, float duration, Ease ease = Ease.Default, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false, bool useFixedUpdate = false)
-            : this(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime, useFixedUpdate)) {
+        public TweenSettings(T startValue, T endValue, float duration, Ease ease = Ease.Default, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0,
+            bool useUnscaledTime = false, bool useFixedUpdate = false)
+            : this(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime, useFixedUpdate))
+        {
         }
 
-        public TweenSettings(T endValue, float duration, Easing customEase, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false, bool useFixedUpdate = false)
-            : this(endValue, new TweenSettings(duration, customEase, cycles, cycleMode, startDelay, endDelay, useUnscaledTime, useFixedUpdate)) {
+        public TweenSettings(T endValue, float duration, Easing customEase, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0,
+            bool useUnscaledTime = false, bool useFixedUpdate = false)
+            : this(endValue, new TweenSettings(duration, customEase, cycles, cycleMode, startDelay, endDelay, useUnscaledTime, useFixedUpdate))
+        {
         }
 
-        public TweenSettings(T startValue, T endValue, float duration, Easing customEase, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false, bool useFixedUpdate = false)
-            : this(startValue, endValue, new TweenSettings(duration, customEase, cycles, cycleMode, startDelay, endDelay, useUnscaledTime, useFixedUpdate)) {
+        public TweenSettings(T startValue, T endValue, float duration, Easing customEase, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0,
+            bool useUnscaledTime = false, bool useFixedUpdate = false)
+            : this(startValue, endValue, new TweenSettings(duration, customEase, cycles, cycleMode, startDelay, endDelay, useUnscaledTime, useFixedUpdate))
+        {
         }
 
         /// <summary>Use this method to choose the direction of an animation based on the '<paramref name="toEndValue"/>' parameter.</summary>
@@ -70,18 +82,24 @@ namespace SmoothTween {
         /// }
         /// </code></example>
         public
-            #if UNITY_2020_2_OR_NEWER
+#if UNITY_2020_2_OR_NEWER
             readonly
-            #endif
-            TweenSettings<T> WithDirection(bool toEndValue, bool _startFromCurrent = true) {
-            if (startFromCurrent) {
-                Debug.LogWarning(nameof(startFromCurrent) + " is already enabled on this TweenSettings. The " + nameof(WithDirection) + "() should be called on the TweenSettings once to choose the direction.");
+#endif
+            TweenSettings<T> WithDirection(bool toEndValue, bool _startFromCurrent = true)
+        {
+            if (startFromCurrent)
+            {
+                Debug.LogWarning(nameof(startFromCurrent) + " is already enabled on this TweenSettings. The " + nameof(WithDirection) +
+                                 "() should be called on the TweenSettings once to choose the direction.");
             }
+
             var result = this;
             result.startFromCurrent = _startFromCurrent;
-            if (toEndValue) {
+            if (toEndValue)
+            {
                 return result;
             }
+
             (result.startValue, result.endValue) = (result.endValue, result.startValue);
             return result;
         }
@@ -97,18 +115,20 @@ namespace SmoothTween {
         /// }
         /// </code></example>
         public
-            #if UNITY_2020_2_OR_NEWER
+#if UNITY_2020_2_OR_NEWER
             readonly
-            #endif
-            TweenSettings<T> WithDirection(bool toEndValue, T currentValue) {
-                var result = this;
-                if (result.startFromCurrent) {
-                    result.startFromCurrent = false;
-                    Debug.LogWarning(Constants.customTweensDontSupportStartFromCurrentWarning);
-                }
-                result.startValue = currentValue;
-                result.endValue = toEndValue ? endValue : startValue;
-                return result;
+#endif
+            TweenSettings<T> WithDirection(bool toEndValue, T currentValue)
+        {
+            var result = this;
+            if (result.startFromCurrent)
+            {
+                result.startFromCurrent = false;
             }
+
+            result.startValue = currentValue;
+            result.endValue = toEndValue ? endValue : startValue;
+            return result;
+        }
     }
 }
