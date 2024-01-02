@@ -2,7 +2,7 @@
     "name": "PrimeTween.Editor",
     "rootNamespace": "",
     "references": [
-        "PrimeTween.Runtime"
+        "SmoothTween.Runtime"
     ],
     "includePlatforms": [
         "Editor"
