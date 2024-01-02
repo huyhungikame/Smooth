@@ -14,10 +14,11 @@ namespace SmoothTween.Runtime
         [SerializeField] internal List<TweenContainer> m_FixedUpdateTween;
         internal Queue<TweenContainer> m_Pool;
         internal int tweenCount => m_Tween.Count + m_FixedUpdateTween.Count;
-        internal int currentPoolCapacity { get; private set; }
         internal int updateDepth;
-
+        internal Ease defaultEase = Ease.OutQuad;
         private int m_ProcessedCount;
+        internal static readonly object dummyTarget = new object();
+        internal int m_LastId;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         public static void BeforeSceneLoad()
@@ -110,6 +111,18 @@ namespace SmoothTween.Runtime
         {
             tween.Reset();
             m_Pool.Enqueue(tween);
+        }
+
+        internal static TweenContainer FetchContainer()
+        {
+            return Instance.FetchContainer_internal();
+        }
+
+        private TweenContainer FetchContainer_internal()
+        {
+            var result = m_Pool.Count == 0 ? new TweenContainer() : m_Pool.Dequeue();
+            result.id = ++m_LastId;
+            return result;
         }
     }
 }

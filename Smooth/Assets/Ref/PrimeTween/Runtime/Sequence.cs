@@ -96,33 +96,33 @@ namespace PrimeTween {
             return true;
         }
         
-        public static Sequence Create(int cycles = 1, CycleMode cycleMode = CycleMode.Restart, Ease sequenceEase = Ease.Linear, bool useUnscaledTime = false, bool useFixedUpdate = false) {
-            #if UNITY_EDITOR
-            if (Constants.warnNoInstance) {
-                return default;
-            }
-            #endif
-            var tween = PrimeTweenManager.fetchTween();
-            tween.propType = PropType.Float;
-            tween.tweenType = TweenType.MainSequence;
-            if (cycleMode == CycleMode.Incremental) {
-                Debug.LogError($"Sequence doesn't support CycleMode.Incremental. Parameter {nameof(sequenceEase)} is applied to the sequence's 'timeline', and incrementing the 'timeline' doesn't make sense. For the same reason, {nameof(sequenceEase)} is clamped to [0:1] range.");
-                cycleMode = CycleMode.Restart;
-            }
-            if (sequenceEase == Ease.Custom) {
-                Debug.LogError("Sequence doesn't support Ease.Custom.");
-                sequenceEase = Ease.Linear;
-            }
-            if (sequenceEase == Ease.Default) {
-                sequenceEase = Ease.Linear;
-            }
-            var settings = new TweenSettings(0f, sequenceEase, cycles, cycleMode, 0f, 0f, useUnscaledTime, useFixedUpdate);
-            tween.Setup(PrimeTweenManager.dummyTarget, ref settings, _ => {}, null, false);
-            tween.intParam = emptySequenceTag;
-            var root = PrimeTweenManager.addTween(tween);
-            Assert.IsTrue(root.isAlive);
-            return new Sequence(root);
-        }
+        // public static Sequence Create(int cycles = 1, CycleMode cycleMode = CycleMode.Restart, Ease sequenceEase = Ease.Linear, bool useUnscaledTime = false, bool useFixedUpdate = false) {
+        //     #if UNITY_EDITOR
+        //     if (Constants.warnNoInstance) {
+        //         return default;
+        //     }
+        //     #endif
+        //     var tween = PrimeTweenManager.fetchTween();
+        //     tween.propType = PropType.Float;
+        //     tween.tweenType = TweenType.MainSequence;
+        //     if (cycleMode == CycleMode.Incremental) {
+        //         Debug.LogError($"Sequence doesn't support CycleMode.Incremental. Parameter {nameof(sequenceEase)} is applied to the sequence's 'timeline', and incrementing the 'timeline' doesn't make sense. For the same reason, {nameof(sequenceEase)} is clamped to [0:1] range.");
+        //         cycleMode = CycleMode.Restart;
+        //     }
+        //     if (sequenceEase == Ease.Custom) {
+        //         Debug.LogError("Sequence doesn't support Ease.Custom.");
+        //         sequenceEase = Ease.Linear;
+        //     }
+        //     if (sequenceEase == Ease.Default) {
+        //         sequenceEase = Ease.Linear;
+        //     }
+        //     var settings = new TweenSettings(0f, sequenceEase, cycles, cycleMode, 0f, 0f, useUnscaledTime, useFixedUpdate);
+        //     tween.Setup(PrimeTweenManager.dummyTarget, ref settings, _ => {}, null, false);
+        //     tween.intParam = emptySequenceTag;
+        //     var root = PrimeTweenManager.addTween(tween);
+        //     Assert.IsTrue(root.isAlive);
+        //     return new Sequence(root);
+        // }
 
         public static Sequence Create(Tween firstTween) {
             #if UNITY_EDITOR

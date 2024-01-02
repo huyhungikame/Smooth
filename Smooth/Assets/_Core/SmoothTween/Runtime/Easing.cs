@@ -31,33 +31,26 @@ namespace SmoothTween
 
         public static implicit operator Easing(Ease ease) => Standard(ease);
 
-        /// <summary>Standard Robert Penner's easing method. Or simply use Ease enum instead.</summary>
         public static Easing Standard(Ease ease)
         {
-            Assert.AreNotEqual(Ease.Custom, ease);
             if (ease == Ease.Default)
             {
-                ease = PrimeTweenConfig.defaultEase;
+                ease = SmoothConfig.defaultEase;
             }
 
             return new Easing(ease, null);
         }
 
-        public static implicit operator Easing([NotNull] AnimationCurve curve) => Curve(curve);
+        public static implicit operator Easing(AnimationCurve curve) => Curve(curve);
 
-        /// <summary>AnimationCurve to use as an easing function. Or simply use AnimationCurve instead.</summary>
-        public static Easing Curve([NotNull] AnimationCurve curve) => new Easing(Ease.Custom, curve);
+        public static Easing Curve(AnimationCurve curve) => new Easing(Ease.Custom, curve);
 
-        /// <summary>Customizes the bounce <see cref="strength"/> of Ease.OutBounce.</summary>
         public static Easing Bounce(float strength) => new Easing(ParametricEase.Bounce, strength);
 
-        /// <summary>Customizes the exact <see cref="amplitude"/> of the first bounce in meters/angles.</summary>
         public static Easing BounceExact(float amplitude) => new Easing(ParametricEase.BounceExact, amplitude);
 
-        /// <summary>Customizes the overshoot <see cref="strength"/> of Ease.OutBack.</summary>
         public static Easing Overshoot(float strength) => new Easing(ParametricEase.Overshoot, strength * StandardEasing.backEaseConst);
 
-        /// <summary>Customizes the <see cref="strength"/> and oscillation <see cref="period"/> of Ease.OutElastic.</summary>
         public static Easing Elastic(float strength, float period = 0.3f)
         {
             if (strength < 1)
@@ -99,7 +92,7 @@ namespace SmoothTween
                     }
 
                     period /= duration;
-                    float phase = period / twoPi * Mathf.Asin(1f / strength);
+                    var phase = period / twoPi * Mathf.Asin(1f / strength);
                     return t > 0.9999f ? 1 : strength * decay * Mathf.Sin((t - phase) * twoPi / period) + 1f;
                 case ParametricEase.Bounce:
                     return Bounce(t, tween, 1);
@@ -113,9 +106,9 @@ namespace SmoothTween
             }
         }
 
-        const float firstBounceAmpl = 0.75f;
+        private const float firstBounceAmpl = 0.75f;
 
-        static float Bounce(float t, [NotNull] ReusableTween tween, float strengthFactor)
+        private static float Bounce(float t, TweenContainer tween, float strengthFactor)
         {
             const float n1 = 7.5625f;
             const float d1 = 2.75f;
@@ -124,7 +117,7 @@ namespace SmoothTween
                 return n1 * t * t;
             }
 
-            return 1 - (1 - bounce()) * tween.settings.parametricEaseStrength * strengthFactor;
+            return 1 - (1 - bounce()) * tween.data.parametricEaseStrength * strengthFactor;
 
             float bounce()
             {

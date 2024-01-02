@@ -35,13 +35,13 @@ namespace PrimeTween {
         // [SerializeField] int cyclesDone;
         // const int iniCyclesDone = -1;
 
-        internal object customOnValueChange;
+        // internal object customOnValueChange;
         internal int intParam;
         // Action<ReusableTween> onValueChange;
         
         // [CanBeNull] Action<ReusableTween> onComplete;
-        [CanBeNull] object onCompleteCallback;
-        [CanBeNull] object onCompleteTarget;
+        // [CanBeNull] object onCompleteCallback;
+        // [CanBeNull] object onCompleteTarget;
         
         // internal float waitDelay;
         // internal Sequence sequence;
@@ -54,10 +54,10 @@ namespace PrimeTween {
         // internal bool startFromCurrent;
 
         // bool stoppedEmergently;
-        internal readonly TweenCoroutineEnumerator coroutineEnumerator = new TweenCoroutineEnumerator();
+        // internal readonly TweenCoroutineEnumerator coroutineEnumerator = new TweenCoroutineEnumerator();
         // internal float timeScale = 1f;
-        bool warnIgnoredOnCompleteIfTargetDestroyed = true;
-        internal Tween.ShakeData shakeData;
+        // bool warnIgnoredOnCompleteIfTargetDestroyed = true;
+        // internal Tween.ShakeData shakeData;
         // State state;
 
         // internal bool updateAndCheckIfRunning(float dt) {
@@ -315,64 +315,48 @@ namespace PrimeTween {
         //     warnIgnoredOnCompleteIfTargetDestroyed = true;
         //     clearOnUpdate();
         // }
+        
 
-        /// <param name="warnIfTargetDestroyed">https://github.com/KyryloKuzyk/PrimeTween/discussions/4</param>
-        internal void OnComplete([NotNull] Action _onComplete, bool warnIfTargetDestroyed) {
-            Assert.IsNotNull(_onComplete);
-            validateOnCompleteAssignment();
-            warnIgnoredOnCompleteIfTargetDestroyed = warnIfTargetDestroyed;
-            onCompleteCallback = _onComplete;
-            onComplete = tween => {
-                var callback = tween.onCompleteCallback as Action;
-                Assert.IsNotNull(callback);
-                try {
-                    callback();
-                } catch (Exception e) {
-                    tween.handleOnCompleteException(e);
-                }
-            };
-        }
+        // internal void OnComplete<T>([NotNull] T _target, [NotNull] Action<T> _onComplete, bool warnIfTargetDestroyed) where T : class {
+        //     if (_target == null || isDestroyedUnityObject(_target)) {
+        //         Debug.LogError($"{nameof(_target)} is null or has been destroyed. {Constants.onCompleteCallbackIgnored}");
+        //         return;
+        //     }
+        //     Assert.IsNotNull(_onComplete);
+        //     validateOnCompleteAssignment();
+        //     warnIgnoredOnCompleteIfTargetDestroyed = warnIfTargetDestroyed;
+        //     onCompleteTarget = _target;
+        //     onCompleteCallback = _onComplete;
+        //     onComplete = tween => {
+        //         var callback = tween.onCompleteCallback as Action<T>;
+        //         Assert.IsNotNull(callback);
+        //         var _onCompleteTarget = tween.onCompleteTarget as T;
+        //         if (isDestroyedUnityObject(_onCompleteTarget)) {
+        //             tween.warnOnCompleteIgnored(true);
+        //             return;
+        //         }
+        //         try {
+        //             callback(_onCompleteTarget);
+        //         } catch (Exception e) {
+        //             tween.handleOnCompleteException(e);
+        //         }
+        //     };
+        // }
 
-        internal void OnComplete<T>([NotNull] T _target, [NotNull] Action<T> _onComplete, bool warnIfTargetDestroyed) where T : class {
-            if (_target == null || isDestroyedUnityObject(_target)) {
-                Debug.LogError($"{nameof(_target)} is null or has been destroyed. {Constants.onCompleteCallbackIgnored}");
-                return;
-            }
-            Assert.IsNotNull(_onComplete);
-            validateOnCompleteAssignment();
-            warnIgnoredOnCompleteIfTargetDestroyed = warnIfTargetDestroyed;
-            onCompleteTarget = _target;
-            onCompleteCallback = _onComplete;
-            onComplete = tween => {
-                var callback = tween.onCompleteCallback as Action<T>;
-                Assert.IsNotNull(callback);
-                var _onCompleteTarget = tween.onCompleteTarget as T;
-                if (isDestroyedUnityObject(_onCompleteTarget)) {
-                    tween.warnOnCompleteIgnored(true);
-                    return;
-                }
-                try {
-                    callback(_onCompleteTarget);
-                } catch (Exception e) {
-                    tween.handleOnCompleteException(e);
-                }
-            };
-        }
-
-        void handleOnCompleteException(Exception e) {
-            // Design decision: if a tween is inside a Sequence and user's tween.OnComplete() throws an exception, the Sequence should continue
-            Debug.LogError($"Tween's onComplete callback raised exception, tween: {GetDescription()}, exception:\n{e}", unityTarget);
-        }
+        // void handleOnCompleteException(Exception e) {
+        //     // Design decision: if a tween is inside a Sequence and user's tween.OnComplete() throws an exception, the Sequence should continue
+        //     Debug.LogError($"Tween's onComplete callback raised exception, tween: {GetDescription()}, exception:\n{e}", unityTarget);
+        // }
 
         // internal static bool isDestroyedUnityObject<T>(T obj) where T: class => obj is UnityEngine.Object unityObject && unityObject == null;
 
-        void validateOnCompleteAssignment() {
-            const string msg = "Tween already has an onComplete callback. Adding more callbacks is not allowed.\n" +
-                               "Workaround: wrap a tween in a Sequence by calling Sequence.Create(tween) and use multiple ChainCallback().\n";
-            Assert.IsNull(onCompleteTarget, msg);
-            Assert.IsNull(onCompleteCallback, msg);
-            Assert.IsNull(onComplete, msg);
-        }
+        // void validateOnCompleteAssignment() {
+        //     const string msg = "Tween already has an onComplete callback. Adding more callbacks is not allowed.\n" +
+        //                        "Workaround: wrap a tween in a Sequence by calling Sequence.Create(tween) and use multiple ChainCallback().\n";
+        //     Assert.IsNull(onCompleteTarget, msg);
+        //     Assert.IsNull(onCompleteCallback, msg);
+        //     Assert.IsNull(onComplete, msg);
+        // }
 
         /// _getter is null for custom tweens
         internal void Setup([CanBeNull] object _target, ref TweenSettings _settings, [NotNull] Action<ReusableTween> _onValueChange, [CanBeNull] Func<ReusableTween, ValueContainer> _getter, bool _startFromCurrent) {
@@ -457,44 +441,43 @@ namespace PrimeTween {
 
         // internal bool isUnityTargetDestroyed() => isDestroyedUnityObject(unityTarget);
 
-        internal bool HasOnComplete => onComplete != null;
+        // internal bool HasOnComplete => onComplete != null;
 
-        [NotNull]
-        internal string GetDescription() {
-            string result = "";
-            if (!_isAlive) {
-                result += " - ";
-            }
-            if (target != PrimeTweenManager.dummyTarget) {
-                result += $"{(unityTarget != null ? unityTarget.name : target?.GetType().Name)} / ";
-            }
-            var duration = settings.duration;
-            if (tweenType == TweenType.Delay) {
-                if (duration == 0f && onComplete != null) {
-                    result += "Callback";
-                } else {
-                    result += $"Delay / duration {duration}";
-                }
-            } else {
-                if (tweenType == TweenType.MainSequence) {
-                    result += $"Sequence {id}";
-                } else if (tweenType == TweenType.NestedSequence) {
-                    result += $"Sequence {id} (nested)";
-                } else {
-                    result += $"{(tweenType != TweenType.None ? tweenType.ToString() : propType.ToString())}" ;
-                }
-                result += " / duration ";
-                /*if (waitDelay != 0f) {
-                    result += $"{waitDelay}+";
-                }*/
-                result += $"{duration}";
-            }
-            result += $" / id {id}";
-            if (sequence.IsCreated && tweenType != TweenType.MainSequence) {
-                result += $" / sequence {sequence.root.id}";
-            }
-            return result;
-        }
+        // internal string GetDescription() {
+        //     string result = "";
+        //     if (!_isAlive) {
+        //         result += " - ";
+        //     }
+        //     if (target != PrimeTweenManager.dummyTarget) {
+        //         result += $"{(unityTarget != null ? unityTarget.name : target?.GetType().Name)} / ";
+        //     }
+        //     var duration = settings.duration;
+        //     if (tweenType == TweenType.Delay) {
+        //         if (duration == 0f && onComplete != null) {
+        //             result += "Callback";
+        //         } else {
+        //             result += $"Delay / duration {duration}";
+        //         }
+        //     } else {
+        //         if (tweenType == TweenType.MainSequence) {
+        //             result += $"Sequence {id}";
+        //         } else if (tweenType == TweenType.NestedSequence) {
+        //             result += $"Sequence {id} (nested)";
+        //         } else {
+        //             result += $"{(tweenType != TweenType.None ? tweenType.ToString() : propType.ToString())}" ;
+        //         }
+        //         result += " / duration ";
+        //         /*if (waitDelay != 0f) {
+        //             result += $"{waitDelay}+";
+        //         }*/
+        //         result += $"{duration}";
+        //     }
+        //     result += $" / id {id}";
+        //     if (sequence.IsCreated && tweenType != TweenType.MainSequence) {
+        //         result += $" / sequence {sequence.root.id}";
+        //     }
+        //     return result;
+        // }
     
         internal float calcDurationWithWaitDependencies() {
             var cycles = settings.cycles;
@@ -617,21 +600,21 @@ namespace PrimeTween {
         //     }
         // }
 
-        internal void ForceComplete() {
-            Assert.IsFalse(sequence.IsCreated);
-            kill(); // protects from recursive call
-            if (isUnityTargetDestroyed()) {
-                warnOnCompleteIgnored(true);
-                return;
-            }
-            cyclesDone = settings.cycles; 
-            ReportOnValueChange(calcEasedT(1f, settings.cycles));
-            if (stoppedEmergently) {
-                return;
-            }
-            ReportOnComplete();
-            Assert.IsFalse(_isAlive);
-        }
+        // internal void ForceComplete() {
+        //     Assert.IsFalse(sequence.IsCreated);
+        //     kill(); // protects from recursive call
+        //     if (isUnityTargetDestroyed()) {
+        //         warnOnCompleteIgnored(true);
+        //         return;
+        //     }
+        //     cyclesDone = settings.cycles; 
+        //     ReportOnValueChange(calcEasedT(1f, settings.cycles));
+        //     if (stoppedEmergently) {
+        //         return;
+        //     }
+        //     ReportOnComplete();
+        //     Assert.IsFalse(_isAlive);
+        // }
 
         internal void warnOnCompleteIgnored(bool isTargetDestroyed) {
             if (HasOnComplete && warnIgnoredOnCompleteIfTargetDestroyed) {
@@ -697,16 +680,16 @@ namespace PrimeTween {
 
         // internal bool canManipulate() => !IsInSequence() || isMainSequenceRoot();
         
-        internal bool trySetPause(bool isPaused) {
-            if (_isPaused == isPaused) {
-                return false;
-            }
-            _isPaused = isPaused;
-            return true;
-        }
+        // internal bool trySetPause(bool isPaused) {
+        //     if (_isPaused == isPaused) {
+        //         return false;
+        //     }
+        //     _isPaused = isPaused;
+        //     return true;
+        // }
 
-        [CanBeNull] object onUpdateTarget;
-        object onUpdateCallback;
+        // [CanBeNull] object onUpdateTarget;
+        // object onUpdateCallback;
         // Action<ReusableTween> onUpdate;
 
         internal void SetOnUpdate<T>(T _target, [NotNull] Action<T, Tween> _onUpdate) where T : class {
@@ -734,45 +717,45 @@ namespace PrimeTween {
             }
         }
         
-        void clearOnUpdate() {
-            onUpdateTarget = null;
-            onUpdateCallback = null;
-            onUpdate = null;
-        }
+        // void clearOnUpdate() {
+        //     onUpdateTarget = null;
+        //     onUpdateCallback = null;
+        //     onUpdate = null;
+        // }
 
-        public override string ToString() {
-            return GetDescription();
-        }
+        // public override string ToString() {
+        //     return GetDescription();
+        // }
         
-        enum State { 
-            Before, Running, After
-        }
+        // enum State { 
+        //     Before, Running, After
+        // }
         
-        internal float getElapsedTimeTotal() {
-            var result = elapsedTimeTotal;
-            var durationTotal = getDurationTotal();
-            if (result == float.MaxValue) {
-                return durationTotal;
-            }
-            return Mathf.Clamp(result, 0f, durationTotal);
-        }
+        // internal float getElapsedTimeTotal() {
+        //     var result = elapsedTimeTotal;
+        //     var durationTotal = getDurationTotal();
+        //     if (result == float.MaxValue) {
+        //         return durationTotal;
+        //     }
+        //     return Mathf.Clamp(result, 0f, durationTotal);
+        // }
 
-        internal float getDurationTotal() {
-            var cyclesTotal = settings.cycles;
-            if (cyclesTotal == -1) {
-                return float.PositiveInfinity;
-            }
-            Assert.AreNotEqual(0, cyclesTotal);
-            return cycleDuration * cyclesTotal;
-        }
+        // internal float getDurationTotal() {
+        //     var cyclesTotal = settings.cycles;
+        //     if (cyclesTotal == -1) {
+        //         return float.PositiveInfinity;
+        //     }
+        //     Assert.AreNotEqual(0, cyclesTotal);
+        //     return cycleDuration * cyclesTotal;
+        // }
 
-        internal int getCyclesDone() {
-            int result = cyclesDone;
-            if (result == iniCyclesDone) {
-                return 0;
-            }
-            Assert.IsTrue(result >= 0);
-            return result;
-        }
+        // internal int getCyclesDone() {
+        //     int result = cyclesDone;
+        //     if (result == iniCyclesDone) {
+        //         return 0;
+        //     }
+        //     Assert.IsTrue(result >= 0);
+        //     return result;
+        // }
     }
 }

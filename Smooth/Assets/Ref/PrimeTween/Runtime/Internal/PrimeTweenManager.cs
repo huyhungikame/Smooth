@@ -16,7 +16,7 @@ using UnityEditor;
 namespace PrimeTween {
     [AddComponentMenu("")]
     internal class PrimeTweenManager : MonoBehaviour {
-        internal static PrimeTweenManager Instance;
+        // internal static PrimeTweenManager Instance;
         // #if UNITY_EDITOR
         // static bool isHotReload = true;
         // #endif
@@ -34,9 +34,9 @@ namespace PrimeTween {
         // internal int currentPoolCapacity { get; private set; }
         internal int maxSimultaneousTweensCount { get; private set; }
         
-        [HideInInspector] 
-        internal int lastId;
-        internal Ease defaultEase = Ease.OutQuad;
+        // [HideInInspector] 
+        // internal int lastId;
+        // internal Ease defaultEase = Ease.OutQuad;
         internal const Ease defaultShakeEase = Ease.OutQuad;
         internal bool warnTweenOnDisabledTarget = true;
         internal bool warnZeroDuration = true;
@@ -258,37 +258,37 @@ namespace PrimeTween {
             return result.IsCreated ? result : (Tween?)null;
         }
 
-        [NotNull]
-        internal static ReusableTween fetchTween() {
-            #if UNITY_EDITOR
-            if (Constants.warnNoInstance) {
-                return new ReusableTween();
-            }
-            #endif
-            return Instance.fetchTween_internal();
-        }
+        // [NotNull]
+        // internal static ReusableTween fetchTween() {
+        //     #if UNITY_EDITOR
+        //     if (Constants.warnNoInstance) {
+        //         return new ReusableTween();
+        //     }
+        //     #endif
+        //     return Instance.fetchTween_internal();
+        // }
 
-        [NotNull]
-        ReusableTween fetchTween_internal() {
-            ReusableTween result;
-            if (pool.Count == 0) {
-                result = new ReusableTween();
-                if (tweensCount + 1 > currentPoolCapacity) {
-                    var newCapacity = currentPoolCapacity == 0 ? 4 : currentPoolCapacity * 2;
-                    Debug.LogWarning($"Tweens capacity has been increased from {currentPoolCapacity} to {newCapacity}. Please increase the capacity manually to prevent memory allocations at runtime by calling {Constants.setTweensCapacityMethod}.\n" +
-                                     $"To know the highest number of simultaneously running tweens, please observe the '{nameof(PrimeTweenManager)}/{Constants.maxAliveTweens}' in Inspector.\n");
-                    currentPoolCapacity = newCapacity;
-                }
-            } else {
-                var lastIndex = pool.Count - 1;
-                result = pool[lastIndex];
-                pool.RemoveAt(lastIndex);    
-            }
-            lastId++;
-            Assert.AreEqual(-1, result.id);
-            result.id = lastId;
-            return result;
-        }
+        // [NotNull]
+        // ReusableTween fetchTween_internal() {
+        //     ReusableTween result;
+        //     if (pool.Count == 0) {
+        //         result = new ReusableTween();
+        //         if (tweensCount + 1 > currentPoolCapacity) {
+        //             var newCapacity = currentPoolCapacity == 0 ? 4 : currentPoolCapacity * 2;
+        //             Debug.LogWarning($"Tweens capacity has been increased from {currentPoolCapacity} to {newCapacity}. Please increase the capacity manually to prevent memory allocations at runtime by calling {Constants.setTweensCapacityMethod}.\n" +
+        //                              $"To know the highest number of simultaneously running tweens, please observe the '{nameof(PrimeTweenManager)}/{Constants.maxAliveTweens}' in Inspector.\n");
+        //             currentPoolCapacity = newCapacity;
+        //         }
+        //     } else {
+        //         var lastIndex = pool.Count - 1;
+        //         result = pool[lastIndex];
+        //         pool.RemoveAt(lastIndex);    
+        //     }
+        //     lastId++;
+        //     Assert.AreEqual(-1, result.id);
+        //     result.id = lastId;
+        //     return result;
+        // }
 
         internal static Tween Animate([NotNull] ReusableTween tween) {
             checkDuration(tween.target, tween.settings.duration);

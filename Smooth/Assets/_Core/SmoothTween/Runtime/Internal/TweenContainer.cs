@@ -25,15 +25,18 @@ namespace SmoothTween.Runtime
         internal bool startFromCurrent;
         internal bool isAdditive;
         internal float cycleDuration;
-
+        internal object customOnValueChange;
+        internal Smooth.ShakeData shakeData;
         internal PropType propType;
         internal SmoothType smoothType;
         internal ValueContainer diff;
         [SerializeField] internal ValueContainer startValue;
         [SerializeField] internal ValueContainer endValue;
-
+        private object onCompleteCallback;
+        private object onCompleteTarget;
         internal float timeScale = 1f;
-
+        private object onUpdateTarget;
+        private object onUpdateCallback;
         [SerializeField] internal SmoothData data;
         [SerializeField] private int m_CyclesDone;
 
@@ -43,7 +46,7 @@ namespace SmoothTween.Runtime
         private const int iniCyclesDone = -1;
 
         private State m_State;
-
+        internal readonly TweenCoroutineEnumerator coroutineEnumerator = new TweenCoroutineEnumerator();
         private Action<TweenContainer> onComplete;
         internal Func<TweenContainer, ValueContainer> getter;
         private Action<TweenContainer> onValueChange;
@@ -52,6 +55,7 @@ namespace SmoothTween.Runtime
         internal bool CanManipulate() => !IsInSequence() || IsMainSequenceRoot();
         internal bool IsInSequence() => smoothSequence.IsCreated;
         internal bool IsMainSequenceRoot() => smoothType == SmoothType.MainSequence;
+        internal bool HasOnComplete() => onComplete != null;
 
         internal bool UpdateAndCheckIfRunning(float dt)
         {
@@ -395,8 +399,134 @@ namespace SmoothTween.Runtime
             coroutineEnumerator.resetEnumerator();
             smoothType = SmoothType.None;
             timeScale = 1f;
-            warnIgnoredOnCompleteIfTargetDestroyed = true;
-            clearOnUpdate();
+            ClearOnUpdate();
+        }
+
+        internal void OnComplete<T>(T _target, Action<T> _onComplete) where T : class
+        {
+            if (_target == null)
+            {
+                Debug.LogError($"{nameof(_target)} is null or has been destroyed.");
+                return;
+            }
+
+            onCompleteTarget = _target;
+            onCompleteCallback = _onComplete;
+            onComplete = static tween =>
+            {
+                var callback = tween.onCompleteCallback as Action<T>;
+                var _onCompleteTarget = tween.onCompleteTarget as T;
+                callback?.Invoke(_onCompleteTarget);
+            };
+        }
+
+        private void ClearOnUpdate()
+        {
+            onUpdateTarget = null;
+            onUpdateCallback = null;
+            onUpdate = null;
+        }
+
+        internal int GetCyclesDone()
+        {
+            var result = m_CyclesDone;
+            return result == iniCyclesDone ? 0 : result;
+        }
+
+        internal float GetElapsedTimeTotal()
+        {
+            var result = elapsedTimeTotal;
+            var durationTotal = GetDurationTotal();
+            // ReSharper disable once CompareOfFloatsByEqualityOperator
+            return result == float.MaxValue ? durationTotal : Mathf.Clamp(result, 0f, durationTotal);
+        }
+
+        internal void ForceComplete()
+        {
+            Kill();
+            m_CyclesDone = data.cycles;
+            ReportOnValueChange(CalcEasedT(1f, data.cycles));
+            if (m_StoppedEmergent)
+            {
+                return;
+            }
+
+            ReportOnComplete();
+        }
+
+        internal bool TrySetPause(bool _isPaused)
+        {
+            if (isPaused == _isPaused)
+            {
+                return false;
+            }
+
+            isPaused = _isPaused;
+            return true;
+        }
+
+        internal float GetDurationTotal()
+        {
+            var cyclesTotal = data.cycles;
+            if (cyclesTotal == -1)
+            {
+                return float.PositiveInfinity;
+            }
+
+            return cycleDuration * cyclesTotal;
+        }
+
+        internal string GetDescription()
+        {
+            var result = "";
+            if (!isAlive)
+            {
+                result += " - ";
+            }
+
+            if (target != SmoothTweenManager.dummyTarget)
+            {
+                result += $"{(unityTarget != null ? unityTarget.name : target?.GetType().Name)} / ";
+            }
+
+            var duration = data.duration;
+            if (smoothType == SmoothType.Delay)
+            {
+                if (duration == 0f && onComplete != null)
+                {
+                    result += "Callback";
+                }
+                else
+                {
+                    result += $"Delay / duration {duration}";
+                }
+            }
+            else
+            {
+                if (smoothType == SmoothType.MainSequence)
+                {
+                    result += $"Sequence {id}";
+                }
+                else if (smoothType == SmoothType.NestedSequence)
+                {
+                    result += $"Sequence {id} (nested)";
+                }
+                else
+                {
+                    result += $"{(smoothType != SmoothType.None ? smoothType.ToString() : propType.ToString())}";
+                }
+
+                result += " / duration ";
+                result += $"{duration}";
+            }
+
+            result += $" / id {id}";
+            if (smoothSequence.IsCreated && smoothType != SmoothType.MainSequence)
+            {
+                result += $" / sequence {smoothSequence.root.id}";
+            }
+
+            return result;
         }
     }
 }
