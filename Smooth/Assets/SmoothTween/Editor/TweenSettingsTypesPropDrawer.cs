@@ -5,14 +5,14 @@ using UnityEngine;
 using static UnityEditor.EditorGUI;
 using static UnityEditor.EditorGUIUtility;
 
-// [CustomPropertyDrawer(typeof(TweenSettings<float>)),
-//  CustomPropertyDrawer(typeof(TweenSettings<Color>)),
-//  CustomPropertyDrawer(typeof(TweenSettings<Vector2>)),
-//  CustomPropertyDrawer(typeof(TweenSettings<Vector3>)),
-//  CustomPropertyDrawer(typeof(TweenSettings<Vector4>)),
-//  CustomPropertyDrawer(typeof(TweenSettings<Rect>)),
-//  CustomPropertyDrawer(typeof(TweenSettings<Quaternion>))
-// ]
+[CustomPropertyDrawer(typeof(TweenSettings<float>)),
+ CustomPropertyDrawer(typeof(TweenSettings<Color>)),
+ CustomPropertyDrawer(typeof(TweenSettings<Vector2>)),
+ CustomPropertyDrawer(typeof(TweenSettings<Vector3>)),
+ CustomPropertyDrawer(typeof(TweenSettings<Vector4>)),
+ CustomPropertyDrawer(typeof(TweenSettings<Rect>)),
+ CustomPropertyDrawer(typeof(TweenSettings<Quaternion>))
+]
 internal class TweenSettingsTypesPropDrawer : PropertyDrawer
 {
     const bool drawStartFromCurrent = false;
