@@ -8,8 +8,8 @@ namespace PrimeTween {
         bool isAlive { get; }
         void Stop();
         void Complete();
-        TResult OnComplete([NotNull] Action onComplete, bool warnIfTargetDestroyed = true);
-        TResult OnComplete<T>([NotNull] T target, [NotNull] Action<T> onComplete, bool warnIfTargetDestroyed = true) where T : class;
+        TResult OnComplete( Action onComplete, bool warnIfTargetDestroyed = true);
+        TResult OnComplete<T>( T target,  Action<T> onComplete, bool warnIfTargetDestroyed = true) where T : class;
         Sequence Group(Tween tween);
         Sequence Chain(Tween tween);
         Sequence Group(Sequence sequence);

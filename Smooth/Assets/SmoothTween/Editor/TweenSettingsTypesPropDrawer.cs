@@ -17,7 +17,7 @@ using static UnityEditor.EditorGUIUtility;
 internal class TweenSettingsTypesPropDrawer : PropertyDrawer {
     const bool drawStartFromCurrent = false;
     
-    public override float GetPropertyHeight([NotNull] SerializedProperty property, GUIContent label) {
+    public override float GetPropertyHeight( SerializedProperty property, GUIContent label) {
         if (!property.isExpanded) {
             return singleLineHeight;
         }
@@ -38,7 +38,7 @@ internal class TweenSettingsTypesPropDrawer : PropertyDrawer {
         }
     }
     
-    public override void OnGUI(Rect position, [NotNull] SerializedProperty property, GUIContent label) {
+    public override void OnGUI(Rect position,  SerializedProperty property, GUIContent label) {
         var rect = new Rect(position) { height = singleLineHeight };
         PropertyField(rect, property, label);
         if (!property.isExpanded) {

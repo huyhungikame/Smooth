@@ -47,23 +47,23 @@ namespace SmoothTween {
         const string localScaleRenamed = "please use 'Scale' instead of 'LocalScale'.";
         
         [EditorBrowsable(EditorBrowsableState.Never)] [Obsolete(localScaleRenamed)]
-        public static Tween LocalScale([NotNull] Transform target, Vector3 endValue, float duration, Ease ease = Ease.Default, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false) 
+        public static Tween LocalScale( Transform target, Vector3 endValue, float duration, Ease ease = Ease.Default, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false) 
             => LocalScale(target, new TweenSettings<Vector3>(endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
         [EditorBrowsable(EditorBrowsableState.Never)] [Obsolete(localScaleRenamed)]
-        public static Tween LocalScale([NotNull] Transform target, Vector3 endValue, float duration, Easing ease, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false) 
+        public static Tween LocalScale( Transform target, Vector3 endValue, float duration, Easing ease, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false) 
             => LocalScale(target, new TweenSettings<Vector3>(endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
         [EditorBrowsable(EditorBrowsableState.Never)] [Obsolete(localScaleRenamed)]
-        public static Tween LocalScale([NotNull] Transform target, Vector3 startValue, Vector3 endValue, float duration, Ease ease = Ease.Default, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false) 
+        public static Tween LocalScale( Transform target, Vector3 startValue, Vector3 endValue, float duration, Ease ease = Ease.Default, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false) 
             => LocalScale(target, new TweenSettings<Vector3>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
         [EditorBrowsable(EditorBrowsableState.Never)] [Obsolete(localScaleRenamed)]
-        public static Tween LocalScale([NotNull] Transform target, Vector3 startValue, Vector3 endValue, float duration, Easing ease, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false) 
+        public static Tween LocalScale( Transform target, Vector3 startValue, Vector3 endValue, float duration, Easing ease, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false) 
             => LocalScale(target, new TweenSettings<Vector3>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
         [EditorBrowsable(EditorBrowsableState.Never)] [Obsolete(localScaleRenamed)]
-        public static Tween LocalScale([NotNull] Transform target, Vector3 endValue, TweenSettings settings) => LocalScale(target, new TweenSettings<Vector3>(endValue, settings));
+        public static Tween LocalScale( Transform target, Vector3 endValue, TweenSettings settings) => LocalScale(target, new TweenSettings<Vector3>(endValue, settings));
         [EditorBrowsable(EditorBrowsableState.Never)] [Obsolete(localScaleRenamed)]
-        public static Tween LocalScale([NotNull] Transform target, Vector3 startValue, Vector3 endValue, TweenSettings settings) => LocalScale(target, new TweenSettings<Vector3>(startValue, endValue, settings));
+        public static Tween LocalScale( Transform target, Vector3 startValue, Vector3 endValue, TweenSettings settings) => LocalScale(target, new TweenSettings<Vector3>(startValue, endValue, settings));
         [EditorBrowsable(EditorBrowsableState.Never)] [Obsolete(localScaleRenamed)]
-        public static Tween LocalScale([NotNull] Transform target, TweenSettings<Vector3> settings) {
+        public static Tween LocalScale( Transform target, TweenSettings<Vector3> settings) {
             return animate(target, ref settings, _tween => {
                 var _target = _tween.target as Transform;
                 var val = _tween.Vector3Val;
@@ -72,23 +72,23 @@ namespace SmoothTween {
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)] [Obsolete(localScaleRenamed)]
-        public static Tween LocalScaleX([NotNull] Transform target, Single endValue, float duration, Ease ease = Ease.Default, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false) 
+        public static Tween LocalScaleX( Transform target, Single endValue, float duration, Ease ease = Ease.Default, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false) 
             => LocalScaleX(target, new TweenSettings<float>(endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
         [EditorBrowsable(EditorBrowsableState.Never)] [Obsolete(localScaleRenamed)]
-        public static Tween LocalScaleX([NotNull] Transform target, Single endValue, float duration, Easing ease, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false) 
+        public static Tween LocalScaleX( Transform target, Single endValue, float duration, Easing ease, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false) 
             => LocalScaleX(target, new TweenSettings<float>(endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
         [EditorBrowsable(EditorBrowsableState.Never)] [Obsolete(localScaleRenamed)]
-        public static Tween LocalScaleX([NotNull] Transform target, Single startValue, Single endValue, float duration, Ease ease = Ease.Default, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false) 
+        public static Tween LocalScaleX( Transform target, Single startValue, Single endValue, float duration, Ease ease = Ease.Default, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false) 
             => LocalScaleX(target, new TweenSettings<float>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
         [EditorBrowsable(EditorBrowsableState.Never)] [Obsolete(localScaleRenamed)]
-        public static Tween LocalScaleX([NotNull] Transform target, Single startValue, Single endValue, float duration, Easing ease, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false) 
+        public static Tween LocalScaleX( Transform target, Single startValue, Single endValue, float duration, Easing ease, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false) 
             => LocalScaleX(target, new TweenSettings<float>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
         [EditorBrowsable(EditorBrowsableState.Never)] [Obsolete(localScaleRenamed)]
-        public static Tween LocalScaleX([NotNull] Transform target, Single endValue, TweenSettings settings) => LocalScaleX(target, new TweenSettings<float>(endValue, settings));
+        public static Tween LocalScaleX( Transform target, Single endValue, TweenSettings settings) => LocalScaleX(target, new TweenSettings<float>(endValue, settings));
         [EditorBrowsable(EditorBrowsableState.Never)] [Obsolete(localScaleRenamed)]
-        public static Tween LocalScaleX([NotNull] Transform target, Single startValue, Single endValue, TweenSettings settings) => LocalScaleX(target, new TweenSettings<float>(startValue, endValue, settings));
+        public static Tween LocalScaleX( Transform target, Single startValue, Single endValue, TweenSettings settings) => LocalScaleX(target, new TweenSettings<float>(startValue, endValue, settings));
         [EditorBrowsable(EditorBrowsableState.Never)] [Obsolete(localScaleRenamed)]
-        public static Tween LocalScaleX([NotNull] Transform target, TweenSettings<float> settings) {
+        public static Tween LocalScaleX( Transform target, TweenSettings<float> settings) {
             return animate(target, ref settings, _tween => {
                 var _target = _tween.target as Transform;
                 var val = _tween.FloatVal;
@@ -97,23 +97,23 @@ namespace SmoothTween {
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)] [Obsolete(localScaleRenamed)]
-        public static Tween LocalScaleY([NotNull] Transform target, Single endValue, float duration, Ease ease = Ease.Default, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false) 
+        public static Tween LocalScaleY( Transform target, Single endValue, float duration, Ease ease = Ease.Default, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false) 
             => LocalScaleY(target, new TweenSettings<float>(endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
         [EditorBrowsable(EditorBrowsableState.Never)] [Obsolete(localScaleRenamed)]
-        public static Tween LocalScaleY([NotNull] Transform target, Single endValue, float duration, Easing ease, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false) 
+        public static Tween LocalScaleY( Transform target, Single endValue, float duration, Easing ease, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false) 
             => LocalScaleY(target, new TweenSettings<float>(endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
         [EditorBrowsable(EditorBrowsableState.Never)] [Obsolete(localScaleRenamed)]
-        public static Tween LocalScaleY([NotNull] Transform target, Single startValue, Single endValue, float duration, Ease ease = Ease.Default, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false) 
+        public static Tween LocalScaleY( Transform target, Single startValue, Single endValue, float duration, Ease ease = Ease.Default, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false) 
             => LocalScaleY(target, new TweenSettings<float>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
         [EditorBrowsable(EditorBrowsableState.Never)] [Obsolete(localScaleRenamed)]
-        public static Tween LocalScaleY([NotNull] Transform target, Single startValue, Single endValue, float duration, Easing ease, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false) 
+        public static Tween LocalScaleY( Transform target, Single startValue, Single endValue, float duration, Easing ease, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false) 
             => LocalScaleY(target, new TweenSettings<float>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
         [EditorBrowsable(EditorBrowsableState.Never)] [Obsolete(localScaleRenamed)]
-        public static Tween LocalScaleY([NotNull] Transform target, Single endValue, TweenSettings settings) => LocalScaleY(target, new TweenSettings<float>(endValue, settings));
+        public static Tween LocalScaleY( Transform target, Single endValue, TweenSettings settings) => LocalScaleY(target, new TweenSettings<float>(endValue, settings));
         [EditorBrowsable(EditorBrowsableState.Never)] [Obsolete(localScaleRenamed)]
-        public static Tween LocalScaleY([NotNull] Transform target, Single startValue, Single endValue, TweenSettings settings) => LocalScaleY(target, new TweenSettings<float>(startValue, endValue, settings));
+        public static Tween LocalScaleY( Transform target, Single startValue, Single endValue, TweenSettings settings) => LocalScaleY(target, new TweenSettings<float>(startValue, endValue, settings));
         [EditorBrowsable(EditorBrowsableState.Never)] [Obsolete(localScaleRenamed)]
-        public static Tween LocalScaleY([NotNull] Transform target, TweenSettings<float> settings) {
+        public static Tween LocalScaleY( Transform target, TweenSettings<float> settings) {
             return animate(target, ref settings, _tween => {
                 var _target = _tween.target as Transform;
                 var val = _tween.FloatVal;
@@ -122,23 +122,23 @@ namespace SmoothTween {
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)] [Obsolete(localScaleRenamed)]
-        public static Tween LocalScaleZ([NotNull] Transform target, Single endValue, float duration, Ease ease = Ease.Default, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false) 
+        public static Tween LocalScaleZ( Transform target, Single endValue, float duration, Ease ease = Ease.Default, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false) 
             => LocalScaleZ(target, new TweenSettings<float>(endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
         [EditorBrowsable(EditorBrowsableState.Never)] [Obsolete(localScaleRenamed)]
-        public static Tween LocalScaleZ([NotNull] Transform target, Single endValue, float duration, Easing ease, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false) 
+        public static Tween LocalScaleZ( Transform target, Single endValue, float duration, Easing ease, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false) 
             => LocalScaleZ(target, new TweenSettings<float>(endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
         [EditorBrowsable(EditorBrowsableState.Never)] [Obsolete(localScaleRenamed)]
-        public static Tween LocalScaleZ([NotNull] Transform target, Single startValue, Single endValue, float duration, Ease ease = Ease.Default, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false) 
+        public static Tween LocalScaleZ( Transform target, Single startValue, Single endValue, float duration, Ease ease = Ease.Default, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false) 
             => LocalScaleZ(target, new TweenSettings<float>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
         [EditorBrowsable(EditorBrowsableState.Never)] [Obsolete(localScaleRenamed)]
-        public static Tween LocalScaleZ([NotNull] Transform target, Single startValue, Single endValue, float duration, Easing ease, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false) 
+        public static Tween LocalScaleZ( Transform target, Single startValue, Single endValue, float duration, Easing ease, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false) 
             => LocalScaleZ(target, new TweenSettings<float>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
         [EditorBrowsable(EditorBrowsableState.Never)] [Obsolete(localScaleRenamed)]
-        public static Tween LocalScaleZ([NotNull] Transform target, Single endValue, TweenSettings settings) => LocalScaleZ(target, new TweenSettings<float>(endValue, settings));
+        public static Tween LocalScaleZ( Transform target, Single endValue, TweenSettings settings) => LocalScaleZ(target, new TweenSettings<float>(endValue, settings));
         [EditorBrowsable(EditorBrowsableState.Never)] [Obsolete(localScaleRenamed)]
-        public static Tween LocalScaleZ([NotNull] Transform target, Single startValue, Single endValue, TweenSettings settings) => LocalScaleZ(target, new TweenSettings<float>(startValue, endValue, settings));
+        public static Tween LocalScaleZ( Transform target, Single startValue, Single endValue, TweenSettings settings) => LocalScaleZ(target, new TweenSettings<float>(startValue, endValue, settings));
         [EditorBrowsable(EditorBrowsableState.Never)] [Obsolete(localScaleRenamed)]
-        public static Tween LocalScaleZ([NotNull] Transform target, TweenSettings<float> settings) {
+        public static Tween LocalScaleZ( Transform target, TweenSettings<float> settings) {
             return animate(target, ref settings, _tween => {
                 var _target = _tween.target as Transform;
                 var val = _tween.FloatVal;
@@ -147,37 +147,37 @@ namespace SmoothTween {
         }
         
         [EditorBrowsable(EditorBrowsableState.Never)] [Obsolete(localScaleRenamed)]
-        public static Tween LocalScale([NotNull] Transform target, Single endValue, float duration, Ease ease = Ease.Default, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false) 
+        public static Tween LocalScale( Transform target, Single endValue, float duration, Ease ease = Ease.Default, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false) 
             => LocalScale(target, new TweenSettings<float>(endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
         [EditorBrowsable(EditorBrowsableState.Never)] [Obsolete(localScaleRenamed)]
-        public static Tween LocalScale([NotNull] Transform target, Single endValue, float duration, Easing ease, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false) 
+        public static Tween LocalScale( Transform target, Single endValue, float duration, Easing ease, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false) 
             => LocalScale(target, new TweenSettings<float>(endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
         [EditorBrowsable(EditorBrowsableState.Never)] [Obsolete(localScaleRenamed)]
-        public static Tween LocalScale([NotNull] Transform target, Single startValue, Single endValue, float duration, Ease ease = Ease.Default, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false) 
+        public static Tween LocalScale( Transform target, Single startValue, Single endValue, float duration, Ease ease = Ease.Default, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false) 
             => LocalScale(target, new TweenSettings<float>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
         [EditorBrowsable(EditorBrowsableState.Never)] [Obsolete(localScaleRenamed)]
-        public static Tween LocalScale([NotNull] Transform target, Single startValue, Single endValue, float duration, Easing ease, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false) 
+        public static Tween LocalScale( Transform target, Single startValue, Single endValue, float duration, Easing ease, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false) 
             => LocalScale(target, new TweenSettings<float>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
         [EditorBrowsable(EditorBrowsableState.Never)] [Obsolete(localScaleRenamed)]
-        public static Tween LocalScale([NotNull] Transform target, Single endValue, TweenSettings settings) => LocalScale(target, new TweenSettings<float>(endValue, settings));
+        public static Tween LocalScale( Transform target, Single endValue, TweenSettings settings) => LocalScale(target, new TweenSettings<float>(endValue, settings));
         [EditorBrowsable(EditorBrowsableState.Never)] [Obsolete(localScaleRenamed)]
-        public static Tween LocalScale([NotNull] Transform target, Single startValue, Single endValue, TweenSettings settings) => LocalScale(target, new TweenSettings<float>(startValue, endValue, settings));
+        public static Tween LocalScale( Transform target, Single startValue, Single endValue, TweenSettings settings) => LocalScale(target, new TweenSettings<float>(startValue, endValue, settings));
         [EditorBrowsable(EditorBrowsableState.Never)] [Obsolete(localScaleRenamed)]
-        public static Tween LocalScale([NotNull] Transform target, TweenSettings<float> uniformScaleSettings) => Scale(target, uniformScaleSettings);
+        public static Tween LocalScale( Transform target, TweenSettings<float> uniformScaleSettings) => Scale(target, uniformScaleSettings);
         
         
         [EditorBrowsable(EditorBrowsableState.Never)] [Obsolete(localScaleRenamed)]
-        public static Tween ShakeLocalScale([NotNull] Transform target, Vector3 strength, float duration, float frequency = ShakeSettings.defaultFrequency, bool enableFalloff = true, Ease easeBetweenShakes = Ease.Default, float asymmetryFactor = 0f, int cycles = 1,
+        public static Tween ShakeLocalScale( Transform target, Vector3 strength, float duration, float frequency = ShakeSettings.defaultFrequency, bool enableFalloff = true, Ease easeBetweenShakes = Ease.Default, float asymmetryFactor = 0f, int cycles = 1,
             float startDelay = 0, float endDelay = 0, bool useUnscaledTime = SmoothTweenConfig.defaultUseUnscaledTimeForShakes) 
             => ShakeScale(target, new ShakeSettings(strength, duration, frequency, enableFalloff, easeBetweenShakes, asymmetryFactor, cycles, startDelay, endDelay, useUnscaledTime));
         [EditorBrowsable(EditorBrowsableState.Never)] [Obsolete(localScaleRenamed)]
-        public static Tween ShakeLocalScale([NotNull] Transform target, ShakeSettings settings) => ShakeScale(target, settings);
+        public static Tween ShakeLocalScale( Transform target, ShakeSettings settings) => ShakeScale(target, settings);
         [EditorBrowsable(EditorBrowsableState.Never)] [Obsolete(localScaleRenamed)]
-        public static Tween PunchLocalScale([NotNull] Transform target, Vector3 strength, float duration, float frequency = ShakeSettings.defaultFrequency, bool enableFalloff = true, Ease easeBetweenShakes = Ease.Default, float asymmetryFactor = 0f, int cycles = 1,
+        public static Tween PunchLocalScale( Transform target, Vector3 strength, float duration, float frequency = ShakeSettings.defaultFrequency, bool enableFalloff = true, Ease easeBetweenShakes = Ease.Default, float asymmetryFactor = 0f, int cycles = 1,
             float startDelay = 0, float endDelay = 0, bool useUnscaledTime = SmoothTweenConfig.defaultUseUnscaledTimeForShakes) 
             => PunchScale(target, new ShakeSettings(strength, duration, frequency, enableFalloff, easeBetweenShakes, asymmetryFactor, cycles, startDelay, endDelay, useUnscaledTime));
         [EditorBrowsable(EditorBrowsableState.Never)] [Obsolete(localScaleRenamed)]
-        public static Tween PunchLocalScale([NotNull] Transform target, ShakeSettings settings) => ShakeScale(target, settings.WithPunch());
+        public static Tween PunchLocalScale( Transform target, ShakeSettings settings) => ShakeScale(target, settings.WithPunch());
     }
     
     public partial struct Sequence {

@@ -41,10 +41,10 @@ namespace SmoothTween {
             return new Easing(ease, null);
         }
 
-        public static implicit operator Easing([NotNull] AnimationCurve curve) => Curve(curve);
+        public static implicit operator Easing( AnimationCurve curve) => Curve(curve);
         
         /// <summary>AnimationCurve to use as an easing function. Or simply use AnimationCurve instead.</summary>
-        public static Easing Curve([NotNull] AnimationCurve curve) => new Easing(Ease.Custom, curve);
+        public static Easing Curve( AnimationCurve curve) => new Easing(Ease.Custom, curve);
 
         /// <summary>Customizes the bounce <see cref="strength"/> of Ease.OutBounce.</summary>
         public static Easing Bounce(float strength) => new Easing(ParametricEase.Bounce, strength);
@@ -63,7 +63,7 @@ namespace SmoothTween {
             return new Easing(ParametricEase.Elastic, strength, Mathf.Max(0.1f, period));
         }
 
-        internal static float Evaluate(float t, [NotNull] ReusableTween tween) {
+        internal static float Evaluate(float t,  ReusableTween tween) {
             var settings = tween.settings;
             var strength = settings.parametricEaseStrength;
             var period = settings.parametricEasePeriod;
@@ -103,7 +103,7 @@ namespace SmoothTween {
         }
 
         const float firstBounceAmpl = 0.75f;
-        static float Bounce(float t, [NotNull] ReusableTween tween, float strengthFactor) {
+        static float Bounce(float t,  ReusableTween tween, float strengthFactor) {
             const float n1 = 7.5625f;
             const float d1 = 2.75f;
             if (t < 1 / d1) {

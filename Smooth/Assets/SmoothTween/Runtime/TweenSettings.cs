@@ -105,7 +105,7 @@ namespace SmoothTween {
             }
         }
         
-        internal static bool ValidateCustomCurve([NotNull] AnimationCurve curve) {
+        internal static bool ValidateCustomCurve( AnimationCurve curve) {
             #if UNITY_ASSERTIONS && !PRIME_TWEEN_DISABLE_ASSERTIONS
             if (curve.length < 2) {
                 Debug.LogError("Custom animation curve should have at least 2 keyframes, please edit the curve in Inspector.");
@@ -117,7 +117,7 @@ namespace SmoothTween {
             #endif
         }
 
-        internal static bool ValidateCustomCurveKeyframes([NotNull] AnimationCurve curve) {
+        internal static bool ValidateCustomCurveKeyframes( AnimationCurve curve) {
             #if UNITY_ASSERTIONS && !PRIME_TWEEN_DISABLE_ASSERTIONS
             if (!ValidateCustomCurve(curve)) {
                 return false;

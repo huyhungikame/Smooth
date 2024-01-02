@@ -222,7 +222,7 @@ namespace SmoothTween
             return this;
         }
 
-        public Sequence ChainCallback<T>([NotNull] T target, [NotNull] Action<T> callback, bool warnIfTargetDestroyed = true) where T : class
+        public Sequence ChainCallback<T>( T target,  Action<T> callback, bool warnIfTargetDestroyed = true) where T : class
         {
             if (!tryManipulate())
             {
@@ -350,7 +350,7 @@ namespace SmoothTween
             }
         }
 
-        static void releaseTween([NotNull] ReusableTween tween)
+        static void releaseTween( ReusableTween tween)
         {
             // Debug.Log($"sequence {id} releaseTween {tween.id}");
             tween.next = default;

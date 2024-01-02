@@ -45,7 +45,7 @@ namespace SmoothTween
 
         internal bool IsCreated => id != 0;
 
-        internal Tween([NotNull] ReusableTween tween)
+        internal Tween( ReusableTween tween)
         {
             id = tween.id;
             this.tween = tween;
@@ -128,7 +128,7 @@ namespace SmoothTween
             }
         }
 
-        [NotNull]
+        
         public override string ToString() => isAlive ? tween.GetDescription() : $"DEAD / id {id}";
 
         /// Elapsed time of all cycles.

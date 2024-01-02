@@ -362,7 +362,7 @@ namespace SmoothTween
 
 
         /// _getter is null for custom tweens
-        internal void Setup([CanBeNull] object _target, ref TweenSettings _settings, [NotNull] Action<ReusableTween> _onValueChange, [CanBeNull] Func<ReusableTween, ValueContainer> _getter,
+        internal void Setup([CanBeNull] object _target, ref TweenSettings _settings,  Action<ReusableTween> _onValueChange, [CanBeNull] Func<ReusableTween, ValueContainer> _getter,
             bool _startFromCurrent)
         {
             if (_settings.ease == Ease.Default)
@@ -443,7 +443,7 @@ namespace SmoothTween
 
         internal bool HasOnComplete => onComplete != null;
 
-        [NotNull]
+        
         internal string GetDescription()
         {
             string result = "";
@@ -758,7 +758,7 @@ namespace SmoothTween
         object onUpdateCallback;
         Action<ReusableTween> onUpdate;
 
-        internal void SetOnUpdate<T>(T _target, [NotNull] Action<T, Tween> _onUpdate) where T : class
+        internal void SetOnUpdate<T>(T _target,  Action<T, Tween> _onUpdate) where T : class
         {
             onUpdateTarget = _target;
             onUpdateCallback = _onUpdate;

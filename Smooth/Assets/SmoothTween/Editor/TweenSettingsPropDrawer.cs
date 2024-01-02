@@ -7,14 +7,14 @@ using static UnityEditor.EditorGUIUtility;
 
 [CustomPropertyDrawer(typeof(TweenSettings))]
 internal class TweenSettingsPropDrawer : PropertyDrawer {
-    public override float GetPropertyHeight([NotNull] SerializedProperty property, GUIContent label) {
+    public override float GetPropertyHeight( SerializedProperty property, GUIContent label) {
         if (!property.isExpanded) {
             return singleLineHeight;
         }
         return getPropHeight(property);
     }
 
-    internal static float getPropHeight([NotNull] SerializedProperty property) {
+    internal static float getPropHeight( SerializedProperty property) {
         var count = 1;
         count++; // duration
         count++; // ease
@@ -36,7 +36,7 @@ internal class TweenSettingsPropDrawer : PropertyDrawer {
         return result;
     }
 
-    public override void OnGUI(Rect position, [NotNull] SerializedProperty property, GUIContent label) {
+    public override void OnGUI(Rect position,  SerializedProperty property, GUIContent label) {
         var rect = new Rect(position) { height = singleLineHeight };
         PropertyField(rect, property, label);
         if (!property.isExpanded) {
@@ -53,7 +53,7 @@ internal class TweenSettingsPropDrawer : PropertyDrawer {
         indentLevel--;
     }
 
-    internal static void DrawDuration(Rect rect, [NotNull] SerializedProperty property) {
+    internal static void DrawDuration(Rect rect,  SerializedProperty property) {
         if (GUI.enabled) {
             if (property.floatValue == 0f) {
                 property.floatValue = 1f;
@@ -64,7 +64,7 @@ internal class TweenSettingsPropDrawer : PropertyDrawer {
         PropertyField(rect, property);
     }
 
-    internal static void drawEaseTillNext([NotNull] SerializedProperty property, ref Rect rect) {
+    internal static void drawEaseTillNext( SerializedProperty property, ref Rect rect) {
         { // ease
             property.NextVisible(true);
             PropertyField(rect, property);
@@ -93,7 +93,7 @@ internal class TweenSettingsPropDrawer : PropertyDrawer {
         drawStartDelayTillEnd(ref rect, property);
     }
 
-    internal static void drawStartDelayTillEnd(ref Rect rect, [NotNull] SerializedProperty property) {
+    internal static void drawStartDelayTillEnd(ref Rect rect,  SerializedProperty property) {
         { // startDelay, endDelay
             for (int _ = 0; _ < 2; _++) {
                 property.NextVisible(true);
@@ -116,7 +116,7 @@ internal class TweenSettingsPropDrawer : PropertyDrawer {
         }
     }
 
-    internal static int drawCycles(Rect rect, [NotNull] SerializedProperty property) {
+    internal static int drawCycles(Rect rect,  SerializedProperty property) {
         property.NextVisible(false);
         if (property.intValue == 0) {
             property.intValue = 1;

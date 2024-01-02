@@ -7,7 +7,7 @@ using static UnityEditor.EditorGUIUtility;
 
 [CustomPropertyDrawer(typeof(ShakeSettings))]
 internal class TweenShakeSettingsPropDrawer : PropertyDrawer {
-    public override float GetPropertyHeight([NotNull] SerializedProperty property, GUIContent label) {
+    public override float GetPropertyHeight( SerializedProperty property, GUIContent label) {
         if (!property.isExpanded) {
             return singleLineHeight;
         }
@@ -36,7 +36,7 @@ internal class TweenShakeSettingsPropDrawer : PropertyDrawer {
         return result;
     }
     
-    public override void OnGUI(Rect position, [NotNull] SerializedProperty property, GUIContent label) {
+    public override void OnGUI(Rect position,  SerializedProperty property, GUIContent label) {
         var rect = new Rect(position) { height = singleLineHeight };
         PropertyField(rect, property, label);
         if (!property.isExpanded) {
