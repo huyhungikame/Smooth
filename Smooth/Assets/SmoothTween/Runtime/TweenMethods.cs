@@ -79,12 +79,14 @@ namespace SmoothTween
 
         public static int SetPausedAll(bool isPaused, object onTarget = null)
         {
-            return isPaused ? SmoothTweenManager.ProcessAll(onTarget, tween => { return tween.TrySetPause(true); }) : SmoothTweenManager.ProcessAll(onTarget, tween => { return tween.TrySetPause(false); });
+            return isPaused
+                ? SmoothTweenManager.ProcessAll(onTarget, tween => { return tween.TrySetPause(true); })
+                : SmoothTweenManager.ProcessAll(onTarget, tween => { return tween.TrySetPause(false); });
         }
 
         public static Tween Delay<T>(T target, float duration, Action<T> onComplete, bool useUnscaledTime = false) where T : class
         {
-            var maybeDelay = delay_internal(target, duration, useUnscaledTime);
+            var maybeDelay = Delay_Internal(target, duration, useUnscaledTime);
             if (!maybeDelay.HasValue)
             {
                 return default;
@@ -95,373 +97,373 @@ namespace SmoothTween
             return delay;
         }
 
-        static Tween? delay_internal(object target, float duration, bool useUnscaledTime)
+        private static Tween? Delay_Internal(object target, float duration, bool useUnscaledTime)
         {
             return SmoothTweenManager.DelayWithoutDurationCheck(target, duration, useUnscaledTime);
         }
 
-        public static Tween MaterialColor(Material target, int propertyId, Color endValue, float duration, Ease ease = default, int cycles = 1, CycleMode cycleMode = CycleMode.Restart,
-            float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
-            => MaterialColor(target, propertyId, new TweenSettings<Color>(endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
-
-        public static Tween MaterialColor(Material target, int propertyId, Color endValue, float duration, Easing ease, int cycles = 1, CycleMode cycleMode = CycleMode.Restart,
-            float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
-            => MaterialColor(target, propertyId, new TweenSettings<Color>(endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
-
-        public static Tween MaterialColor(Material target, int propertyId, Color startValue, Color endValue, float duration, Ease ease = default, int cycles = 1,
-            CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
-            => MaterialColor(target, propertyId, new TweenSettings<Color>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
-
-        public static Tween MaterialColor(Material target, int propertyId, Color startValue, Color endValue, float duration, Easing ease, int cycles = 1,
-            CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
-            => MaterialColor(target, propertyId, new TweenSettings<Color>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
-
-        public static Tween MaterialColor(Material target, int propertyId, Color endValue, TweenSettings settings) =>
-            MaterialColor(target, propertyId, new TweenSettings<Color>(endValue, settings));
-
-        public static Tween MaterialColor(Material target, int propertyId, Color startValue, Color endValue, TweenSettings settings) =>
-            MaterialColor(target, propertyId, new TweenSettings<Color>(startValue, endValue, settings));
-
-        public static Tween MaterialColor(Material target, int propertyId, TweenSettings<Color> settings)
-        {
-            return animateWithIntParam(target, propertyId, ref settings,
-                tween => (tween.unityTarget as Material).SetColor(tween.intParam, tween.ColorVal),
-                tween => (tween.unityTarget as Material).GetColor(tween.intParam).ToContainer());
-        }
-
-        public static Tween MaterialProperty(Material target, int propertyId, float endValue, float duration, Ease ease = default, int cycles = 1, CycleMode cycleMode = CycleMode.Restart,
-            float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
-            => MaterialProperty(target, propertyId, new TweenSettings<float>(endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
-
-        public static Tween MaterialProperty(Material target, int propertyId, float endValue, float duration, Easing ease, int cycles = 1, CycleMode cycleMode = CycleMode.Restart,
-            float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
-            => MaterialProperty(target, propertyId, new TweenSettings<float>(endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
-
-        public static Tween MaterialProperty(Material target, int propertyId, float startValue, float endValue, float duration, Ease ease = default, int cycles = 1,
-            CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
-            => MaterialProperty(target, propertyId, new TweenSettings<float>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
-
-        public static Tween MaterialProperty(Material target, int propertyId, float startValue, float endValue, float duration, Easing ease, int cycles = 1,
-            CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
-            => MaterialProperty(target, propertyId, new TweenSettings<float>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
-
-        public static Tween MaterialProperty(Material target, int propertyId, float endValue, TweenSettings settings) =>
-            MaterialProperty(target, propertyId, new TweenSettings<float>(endValue, settings));
-
-        public static Tween MaterialProperty(Material target, int propertyId, float startValue, float endValue, TweenSettings settings) =>
-            MaterialProperty(target, propertyId, new TweenSettings<float>(startValue, endValue, settings));
-
-        public static Tween MaterialProperty(Material target, int propertyId, TweenSettings<float> settings)
-        {
-            return animateWithIntParam(target, propertyId, ref settings,
-                tween => (tween.unityTarget as Material).SetFloat(tween.intParam, tween.FloatVal),
-                tween => (tween.unityTarget as Material).GetFloat(tween.intParam).ToContainer());
-        }
-
-        public static Tween MaterialAlpha(Material target, int propertyId, float endValue, float duration, Ease ease = default, int cycles = 1, CycleMode cycleMode = CycleMode.Restart,
-            float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
-            => MaterialAlpha(target, propertyId, new TweenSettings<float>(endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
-
-        public static Tween MaterialAlpha(Material target, int propertyId, float endValue, float duration, Easing ease, int cycles = 1, CycleMode cycleMode = CycleMode.Restart,
-            float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
-            => MaterialAlpha(target, propertyId, new TweenSettings<float>(endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
-
-        public static Tween MaterialAlpha(Material target, int propertyId, float startValue, float endValue, float duration, Ease ease = default, int cycles = 1,
-            CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
-            => MaterialAlpha(target, propertyId, new TweenSettings<float>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
-
-        public static Tween MaterialAlpha(Material target, int propertyId, float startValue, float endValue, float duration, Easing ease, int cycles = 1,
-            CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
-            => MaterialAlpha(target, propertyId, new TweenSettings<float>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
-
-        public static Tween MaterialAlpha(Material target, int propertyId, float endValue, TweenSettings settings) =>
-            MaterialAlpha(target, propertyId, new TweenSettings<float>(endValue, settings));
-
-        public static Tween MaterialAlpha(Material target, int propertyId, float startValue, float endValue, TweenSettings settings) =>
-            MaterialAlpha(target, propertyId, new TweenSettings<float>(startValue, endValue, settings));
-
-        public static Tween MaterialAlpha(Material target, int propertyId, TweenSettings<float> settings)
-        {
-            return animateWithIntParam(target, propertyId, ref settings,
-                tween =>
-                {
-                    var _target = tween.unityTarget as Material;
-                    var _propId = tween.intParam;
-                    _target.SetColor(_propId, _target.GetColor(_propId).WithAlpha(tween.FloatVal));
-                },
-                tween => (tween.unityTarget as Material).GetColor(tween.intParam).a.ToContainer());
-        }
-
-        public static Tween MaterialTextureOffset(Material target, int propertyId, Vector2 endValue, float duration, Ease ease = default, int cycles = 1,
-            CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
-            => MaterialTextureOffset(target, propertyId, new TweenSettings<Vector2>(endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
-
-        public static Tween MaterialTextureOffset(Material target, int propertyId, Vector2 endValue, float duration, Easing ease, int cycles = 1, CycleMode cycleMode = CycleMode.Restart,
-            float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
-            => MaterialTextureOffset(target, propertyId, new TweenSettings<Vector2>(endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
-
-        public static Tween MaterialTextureOffset(Material target, int propertyId, Vector2 startValue, Vector2 endValue, float duration, Ease ease = default, int cycles = 1,
-            CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
-            => MaterialTextureOffset(target, propertyId, new TweenSettings<Vector2>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
-
-        public static Tween MaterialTextureOffset(Material target, int propertyId, Vector2 startValue, Vector2 endValue, float duration, Easing ease, int cycles = 1,
-            CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
-            => MaterialTextureOffset(target, propertyId, new TweenSettings<Vector2>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
-
-        public static Tween MaterialTextureOffset(Material target, int propertyId, Vector2 endValue, TweenSettings settings) =>
-            MaterialTextureOffset(target, propertyId, new TweenSettings<Vector2>(endValue, settings));
-
-        public static Tween MaterialTextureOffset(Material target, int propertyId, Vector2 startValue, Vector2 endValue, TweenSettings settings) =>
-            MaterialTextureOffset(target, propertyId, new TweenSettings<Vector2>(startValue, endValue, settings));
-
-        public static Tween MaterialTextureOffset(Material target, int propertyId, TweenSettings<Vector2> settings)
-        {
-            return animateWithIntParam(target, propertyId, ref settings,
-                tween => (tween.unityTarget as Material).SetTextureOffset(tween.intParam, tween.Vector2Val),
-                tween => (tween.unityTarget as Material).GetTextureOffset(tween.intParam).ToContainer());
-        }
-
-        public static Tween MaterialTextureScale(Material target, int propertyId, Vector2 endValue, float duration, Ease ease = default, int cycles = 1,
-            CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
-            => MaterialTextureScale(target, propertyId, new TweenSettings<Vector2>(endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
-
-        public static Tween MaterialTextureScale(Material target, int propertyId, Vector2 endValue, float duration, Easing ease, int cycles = 1, CycleMode cycleMode = CycleMode.Restart,
-            float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
-            => MaterialTextureScale(target, propertyId, new TweenSettings<Vector2>(endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
-
-        public static Tween MaterialTextureScale(Material target, int propertyId, Vector2 startValue, Vector2 endValue, float duration, Ease ease = default, int cycles = 1,
-            CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
-            => MaterialTextureScale(target, propertyId, new TweenSettings<Vector2>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
-
-        public static Tween MaterialTextureScale(Material target, int propertyId, Vector2 startValue, Vector2 endValue, float duration, Easing ease, int cycles = 1,
-            CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
-            => MaterialTextureScale(target, propertyId, new TweenSettings<Vector2>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
-
-        public static Tween MaterialTextureScale(Material target, int propertyId, Vector2 endValue, TweenSettings settings) =>
-            MaterialTextureScale(target, propertyId, new TweenSettings<Vector2>(endValue, settings));
-
-        public static Tween MaterialTextureScale(Material target, int propertyId, Vector2 startValue, Vector2 endValue, TweenSettings settings) =>
-            MaterialTextureScale(target, propertyId, new TweenSettings<Vector2>(startValue, endValue, settings));
-
-        public static Tween MaterialTextureScale(Material target, int propertyId, TweenSettings<Vector2> settings)
-        {
-            return animateWithIntParam(target, propertyId, ref settings,
-                tween => (tween.unityTarget as Material).SetTextureScale(tween.intParam, tween.Vector2Val),
-                tween => (tween.unityTarget as Material).GetTextureScale(tween.intParam).ToContainer());
-        }
-
-        public static Tween MaterialProperty(Material target, int propertyId, Vector4 endValue, float duration, Ease ease = default, int cycles = 1, CycleMode cycleMode = CycleMode.Restart,
-            float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
-            => MaterialProperty(target, propertyId, new TweenSettings<Vector4>(endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
-
-        public static Tween MaterialProperty(Material target, int propertyId, Vector4 endValue, float duration, Easing ease, int cycles = 1, CycleMode cycleMode = CycleMode.Restart,
-            float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
-            => MaterialProperty(target, propertyId, new TweenSettings<Vector4>(endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
-
-        public static Tween MaterialProperty(Material target, int propertyId, Vector4 startValue, Vector4 endValue, float duration, Ease ease = default, int cycles = 1,
-            CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
-            => MaterialProperty(target, propertyId, new TweenSettings<Vector4>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
-
-        public static Tween MaterialProperty(Material target, int propertyId, Vector4 startValue, Vector4 endValue, float duration, Easing ease, int cycles = 1,
-            CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
-            => MaterialProperty(target, propertyId, new TweenSettings<Vector4>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
-
-        public static Tween MaterialProperty(Material target, int propertyId, Vector4 endValue, TweenSettings settings) =>
-            MaterialProperty(target, propertyId, new TweenSettings<Vector4>(endValue, settings));
-
-        public static Tween MaterialProperty(Material target, int propertyId, Vector4 startValue, Vector4 endValue, TweenSettings settings) =>
-            MaterialProperty(target, propertyId, new TweenSettings<Vector4>(startValue, endValue, settings));
-
-        public static Tween MaterialProperty(Material target, int propertyId, TweenSettings<Vector4> settings)
-        {
-            return animateWithIntParam(target, propertyId, ref settings,
-                tween => (tween.unityTarget as Material).SetVector(tween.intParam, tween.Vector4Val),
-                tween => (tween.unityTarget as Material).GetVector(tween.intParam).ToContainer());
-        }
-
-        // No 'startFromCurrent' overload
-        public static Tween EulerAngles(Transform target, Vector3 startValue, Vector3 endValue, float duration, Ease ease = Ease.Default, int cycles = 1,
-            CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
-            => EulerAngles(target, new TweenSettings<Vector3>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
-
-        public static Tween EulerAngles(Transform target, Vector3 startValue, Vector3 endValue, float duration, Easing ease, int cycles = 1, CycleMode cycleMode = CycleMode.Restart,
-            float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
-            => EulerAngles(target, new TweenSettings<Vector3>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
-
-        public static Tween EulerAngles(Transform target, Vector3 startValue, Vector3 endValue, TweenSettings settings) =>
-            EulerAngles(target, new TweenSettings<Vector3>(startValue, endValue, settings));
-
-        public static Tween EulerAngles(Transform target, TweenSettings<Vector3> settings)
-        {
-            validateEulerAnglesData(ref settings);
-            return animate(target, ref settings, _ => { (_.unityTarget as Transform).eulerAngles = _.Vector3Val; }, _ => (_.unityTarget as Transform).eulerAngles.ToContainer());
-        }
-
-        public static Tween LocalEulerAngles(Transform target, Vector3 startValue, Vector3 endValue, float duration, Ease ease = Ease.Default, int cycles = 1,
-            CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
-            => LocalEulerAngles(target, new TweenSettings<Vector3>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
-
-        public static Tween LocalEulerAngles(Transform target, Vector3 startValue, Vector3 endValue, float duration, Easing ease, int cycles = 1, CycleMode cycleMode = CycleMode.Restart,
-            float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
-            => LocalEulerAngles(target, new TweenSettings<Vector3>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
-
-        public static Tween LocalEulerAngles(Transform target, Vector3 startValue, Vector3 endValue, TweenSettings settings) =>
-            LocalEulerAngles(target, new TweenSettings<Vector3>(startValue, endValue, settings));
-
-        public static Tween LocalEulerAngles(Transform target, TweenSettings<Vector3> settings)
-        {
-            validateEulerAnglesData(ref settings);
-            return animate(target, ref settings, _ => { (_.unityTarget as Transform).localEulerAngles = _.Vector3Val; }, _ => (_.unityTarget as Transform).localEulerAngles.ToContainer());
-        }
-
-        static void validateEulerAnglesData(ref TweenSettings<Vector3> settings)
-        {
-            if (settings.startFromCurrent)
-            {
-                settings.startFromCurrent = false;
-                Debug.LogWarning(
-                    "Animating euler angles from the current value may produce unexpected results because there is more than one way to represent the current rotation using Euler angles.\n" +
-                    "'" + nameof(TweenSettings<float>.startFromCurrent) + "' was ignored.\n" +
-                    "More info: https://docs.unity3d.com/ScriptReference/Transform-eulerAngles.html\n");
-            }
-        }
-
-        // Called from TweenGenerated.cs
-        public static Tween Scale(Transform target, TweenSettings<float> uniformScaleSettings)
-        {
-            var remapped = new TweenSettings<Vector3>(uniformScaleSettings.startValue * Vector3.one, uniformScaleSettings.endValue * Vector3.one, uniformScaleSettings.settings)
-                { startFromCurrent = uniformScaleSettings.startFromCurrent };
-            return Scale(target, remapped);
-        }
-
-        public static Tween Rotation(Transform target, TweenSettings<Vector3> eulerAnglesSettings) => Rotation(target, toQuaternion(eulerAnglesSettings));
-        public static Tween LocalRotation(Transform target, TweenSettings<Vector3> localEulerAnglesSettings) => LocalRotation(target, toQuaternion(localEulerAnglesSettings));
-
-        static TweenSettings<Quaternion> toQuaternion(TweenSettings<Vector3> s) => new TweenSettings<Quaternion>(Quaternion.Euler(s.startValue), Quaternion.Euler(s.endValue), s.settings)
-            { startFromCurrent = s.startFromCurrent };
-
-#if TEXT_MESH_PRO_INSTALLED
-        public static Tween TextMaxVisibleCharacters(TMPro.TMP_Text target, TweenSettings<int> settings)
-        {
-            int oldCount = target.textInfo.characterCount;
-            target.ForceMeshUpdate();
-            if (oldCount != target.textInfo.characterCount)
-            {
-                Debug.LogWarning("Please call TMP_Text.ForceMeshUpdate() before animating maxVisibleCharacters.");
-            }
-
-            var floatSettings = new TweenSettings<float>(settings.startValue, settings.endValue, settings.settings);
-            return animate(target, ref floatSettings, _tween =>
-            {
-                var _target = _tween.target as TMPro.TMP_Text;
-                _target.maxVisibleCharacters = Mathf.RoundToInt(_tween.FloatVal);
-            }, t => new ValueContainer { FloatVal = (t.target as TMPro.TMP_Text).maxVisibleCharacters });
-        }
-#endif
-
-        public static Tween GlobalTimeScale(Single endValue, float duration, Ease ease = Ease.Default, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0,
-            float endDelay = 0)
-            => GlobalTimeScale(new TweenSettings<float>(endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, true)));
-
-        public static Tween GlobalTimeScale(Single endValue, float duration, Easing ease, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0)
-            => GlobalTimeScale(new TweenSettings<float>(endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, true)));
-
-        public static Tween GlobalTimeScale(Single startValue, Single endValue, float duration, Ease ease = Ease.Default, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0,
-            float endDelay = 0)
-            => GlobalTimeScale(new TweenSettings<float>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, true)));
-
-        public static Tween GlobalTimeScale(Single startValue, Single endValue, float duration, Easing ease, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0,
-            float endDelay = 0)
-            => GlobalTimeScale(new TweenSettings<float>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, true)));
-
-        public static Tween GlobalTimeScale(Single endValue, TweenSettings settings) => GlobalTimeScale(new TweenSettings<float>(endValue, settings));
-        public static Tween GlobalTimeScale(Single startValue, Single endValue, TweenSettings settings) => GlobalTimeScale(new TweenSettings<float>(startValue, endValue, settings));
-
-        public static Tween GlobalTimeScale(TweenSettings<float> settings)
-        {
-            clampTimescale(ref settings.startValue);
-            clampTimescale(ref settings.endValue);
-            if (!settings.settings.useUnscaledTime)
-            {
-                Debug.LogWarning("Setting " + nameof(TweenSettings.useUnscaledTime) + " to true to animate Time.timeScale correctly.");
-                settings.settings.useUnscaledTime = true;
-            }
-
-            return animate(SmoothTweenManager.dummyTarget, ref settings, t => Time.timeScale = t.FloatVal, _ => Time.timeScale.ToContainer());
-
-            void clampTimescale(ref float value)
-            {
-                if (value < 0)
-                {
-                    Debug.LogError($"timeScale should be >= 0, but was {value}");
-                    value = 0;
-                }
-            }
-        }
-
-        public static Tween TweenTimeScale(Tween tween, TweenSettings<float> settings)
-        {
-            if (!tween.TryManipulate())
-            {
-                return default;
-            }
-
-            var result = animate(tween.tween, ref settings, t =>
-            {
-                var target = t.target as ReusableTween;
-                if (t.intParam != target.id)
-                {
-                    t.EmergencyStop();
-                    return;
-                }
-
-                target.timeScale = t.FloatVal;
-            }, t => (t.target as ReusableTween).timeScale.ToContainer());
-            result.tween.intParam = tween.id;
-            return result;
-        }
-
-        public static Tween TweenTimeScale(Sequence sequence, TweenSettings<float> settings) => TweenTimeScale(sequence.root, settings);
-
-#if PRIME_TWEEN_EXPERIMENTAL
-        /// <summary>Similar to position animation with Ease.OutBounce, but gives the ability to customize the bounce behaviour by specifying the exact bounce amplitude, number of bounces, and bounce stiffness.</summary>
-        public static Sequence PositionOutBounce( Transform target, Vector3 endValue, float duration, float bounceAmplitude, int numBounces = 2, float stiffness = 0.5f, bool useUnscaledTime =
- false)
-            => CustomOutBounce(target, (t, s) => Position(t, s), endValue, duration, bounceAmplitude, numBounces, stiffness, t => t.position, useUnscaledTime);
-
-        /// <summary>Similar to position animation with Ease.OutBounce, but gives the ability to customize the bounce behaviour by specifying the exact bounce amplitude, number of bounces, and bounce stiffness.</summary>
-        public static Sequence LocalPositionOutBounce( Transform target, Vector3 endValue, float duration, float bounceAmplitude, int numBounces = 2, float stiffness =
- 0.5f, bool useUnscaledTime = false)
-            => CustomOutBounce(target, (t, s) => LocalPosition(t, s), endValue, duration, bounceAmplitude, numBounces, stiffness, t => t.localPosition, useUnscaledTime);
-
-        static Sequence CustomOutBounce( Transform target,  Func<Transform, TweenSettings<Vector3>, Tween> animFunc, Vector3 endValue, float duration, float bounceAmplitude, int numBounces, float stiffness,  Func<Transform, Vector3> getPos, bool useUnscaledTime) {
-            if (bounceAmplitude == 0) {
-                Debug.LogWarning("Please provide non-zero " + nameof(bounceAmplitude) + ".");
-            }
-            if (numBounces < 0 || numBounces > 10) {
-                Debug.LogError("'" + nameof(numBounces) + "' should be >= 0 and <= 10.");
-                numBounces = Mathf.Clamp(numBounces, 0, 10);
-            }
-            if (stiffness < 0 || stiffness > 5) {
-                Debug.LogError("'" + nameof(stiffness) + "' should be >= 0 and <= 5.");
-                stiffness = Mathf.Clamp(stiffness, 0, 5);
-            }
-            stiffness += 1;
-            // move durations: x + x/stiffness + x/stiffness^2 + x/stiffness^3...
-            float x = 1;
-            for (int i = 1; i <= numBounces; i++) {
-                x += 1 / Mathf.Pow(stiffness, i);
-            }
-            var curDur = duration / x;
-            var sequence = Sequence.Create(animFunc(target, new TweenSettings<Vector3>(endValue, curDur, Ease.InSine, useUnscaledTime: useUnscaledTime)));
-            var bounceVector = (getPos(target) - endValue).normalized * bounceAmplitude;
-            for (int i = 1; i <= numBounces; i++) {
-                curDur /= stiffness;
-                sequence.Chain(animFunc(target, new TweenSettings<Vector3>(endValue + bounceVector, curDur / 2f, Ease.OutSine, 2, CycleMode.Rewind, useUnscaledTime: useUnscaledTime)));
-                bounceVector /= stiffness * 2;
-            }
-            return sequence;
-        }
-#endif // PRIME_TWEEN_EXPERIMENTAL
+        // public static Tween MaterialColor(Material target, int propertyId, Color endValue, float duration, Ease ease = default, int cycles = 1, CycleMode cycleMode = CycleMode.Restart,
+        //     float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
+        //     => MaterialColor(target, propertyId, new TweenSettings<Color>(endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
+        //
+        // public static Tween MaterialColor(Material target, int propertyId, Color endValue, float duration, Easing ease, int cycles = 1, CycleMode cycleMode = CycleMode.Restart,
+        //     float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
+        //     => MaterialColor(target, propertyId, new TweenSettings<Color>(endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
+        //
+        // public static Tween MaterialColor(Material target, int propertyId, Color startValue, Color endValue, float duration, Ease ease = default, int cycles = 1,
+        //     CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
+        //     => MaterialColor(target, propertyId, new TweenSettings<Color>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
+        //
+        // public static Tween MaterialColor(Material target, int propertyId, Color startValue, Color endValue, float duration, Easing ease, int cycles = 1,
+        //     CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
+        //     => MaterialColor(target, propertyId, new TweenSettings<Color>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
+        //
+        // public static Tween MaterialColor(Material target, int propertyId, Color endValue, TweenSettings settings) =>
+        //     MaterialColor(target, propertyId, new TweenSettings<Color>(endValue, settings));
+        //
+        // public static Tween MaterialColor(Material target, int propertyId, Color startValue, Color endValue, TweenSettings settings) =>
+        //     MaterialColor(target, propertyId, new TweenSettings<Color>(startValue, endValue, settings));
+        //
+        // public static Tween MaterialColor(Material target, int propertyId, TweenSettings<Color> settings)
+        // {
+        //     return animateWithIntParam(target, propertyId, ref settings,
+        //         tween => (tween.unityTarget as Material).SetColor(tween.intParam, tween.ColorVal),
+        //         tween => (tween.unityTarget as Material).GetColor(tween.intParam).ToContainer());
+        // }
+        //
+        // public static Tween MaterialProperty(Material target, int propertyId, float endValue, float duration, Ease ease = default, int cycles = 1, CycleMode cycleMode = CycleMode.Restart,
+        //     float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
+        //     => MaterialProperty(target, propertyId, new TweenSettings<float>(endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
+        //
+        // public static Tween MaterialProperty(Material target, int propertyId, float endValue, float duration, Easing ease, int cycles = 1, CycleMode cycleMode = CycleMode.Restart,
+        //     float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
+        //     => MaterialProperty(target, propertyId, new TweenSettings<float>(endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
+        //
+        // public static Tween MaterialProperty(Material target, int propertyId, float startValue, float endValue, float duration, Ease ease = default, int cycles = 1,
+        //     CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
+        //     => MaterialProperty(target, propertyId, new TweenSettings<float>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
+        //
+        // public static Tween MaterialProperty(Material target, int propertyId, float startValue, float endValue, float duration, Easing ease, int cycles = 1,
+        //     CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
+        //     => MaterialProperty(target, propertyId, new TweenSettings<float>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
+        //
+        // public static Tween MaterialProperty(Material target, int propertyId, float endValue, TweenSettings settings) =>
+        //     MaterialProperty(target, propertyId, new TweenSettings<float>(endValue, settings));
+        //
+        // public static Tween MaterialProperty(Material target, int propertyId, float startValue, float endValue, TweenSettings settings) =>
+        //     MaterialProperty(target, propertyId, new TweenSettings<float>(startValue, endValue, settings));
+        //
+        // public static Tween MaterialProperty(Material target, int propertyId, TweenSettings<float> settings)
+        // {
+        //     return animateWithIntParam(target, propertyId, ref settings,
+        //         tween => (tween.unityTarget as Material).SetFloat(tween.intParam, tween.FloatVal),
+        //         tween => (tween.unityTarget as Material).GetFloat(tween.intParam).ToContainer());
+        // }
+        //
+        // public static Tween MaterialAlpha(Material target, int propertyId, float endValue, float duration, Ease ease = default, int cycles = 1, CycleMode cycleMode = CycleMode.Restart,
+        //     float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
+        //     => MaterialAlpha(target, propertyId, new TweenSettings<float>(endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
+        //
+        // public static Tween MaterialAlpha(Material target, int propertyId, float endValue, float duration, Easing ease, int cycles = 1, CycleMode cycleMode = CycleMode.Restart,
+        //     float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
+        //     => MaterialAlpha(target, propertyId, new TweenSettings<float>(endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
+        //
+        // public static Tween MaterialAlpha(Material target, int propertyId, float startValue, float endValue, float duration, Ease ease = default, int cycles = 1,
+        //     CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
+        //     => MaterialAlpha(target, propertyId, new TweenSettings<float>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
+        //
+        // public static Tween MaterialAlpha(Material target, int propertyId, float startValue, float endValue, float duration, Easing ease, int cycles = 1,
+        //     CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
+        //     => MaterialAlpha(target, propertyId, new TweenSettings<float>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
+        //
+        // public static Tween MaterialAlpha(Material target, int propertyId, float endValue, TweenSettings settings) =>
+        //     MaterialAlpha(target, propertyId, new TweenSettings<float>(endValue, settings));
+        //
+        // public static Tween MaterialAlpha(Material target, int propertyId, float startValue, float endValue, TweenSettings settings) =>
+        //     MaterialAlpha(target, propertyId, new TweenSettings<float>(startValue, endValue, settings));
+        //
+        // public static Tween MaterialAlpha(Material target, int propertyId, TweenSettings<float> settings)
+        // {
+        //     return animateWithIntParam(target, propertyId, ref settings,
+        //         tween =>
+        //         {
+        //             var _target = tween.unityTarget as Material;
+        //             var _propId = tween.intParam;
+        //             _target.SetColor(_propId, _target.GetColor(_propId).WithAlpha(tween.FloatVal));
+        //         },
+        //         tween => (tween.unityTarget as Material).GetColor(tween.intParam).a.ToContainer());
+        // }
+        //
+        // public static Tween MaterialTextureOffset(Material target, int propertyId, Vector2 endValue, float duration, Ease ease = default, int cycles = 1,
+        //     CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
+        //     => MaterialTextureOffset(target, propertyId, new TweenSettings<Vector2>(endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
+        //
+        // public static Tween MaterialTextureOffset(Material target, int propertyId, Vector2 endValue, float duration, Easing ease, int cycles = 1, CycleMode cycleMode = CycleMode.Restart,
+        //     float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
+        //     => MaterialTextureOffset(target, propertyId, new TweenSettings<Vector2>(endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
+        //
+        // public static Tween MaterialTextureOffset(Material target, int propertyId, Vector2 startValue, Vector2 endValue, float duration, Ease ease = default, int cycles = 1,
+        //     CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
+        //     => MaterialTextureOffset(target, propertyId, new TweenSettings<Vector2>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
+        //
+        // public static Tween MaterialTextureOffset(Material target, int propertyId, Vector2 startValue, Vector2 endValue, float duration, Easing ease, int cycles = 1,
+        //     CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
+        //     => MaterialTextureOffset(target, propertyId, new TweenSettings<Vector2>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
+        //
+        // public static Tween MaterialTextureOffset(Material target, int propertyId, Vector2 endValue, TweenSettings settings) =>
+        //     MaterialTextureOffset(target, propertyId, new TweenSettings<Vector2>(endValue, settings));
+        //
+        // public static Tween MaterialTextureOffset(Material target, int propertyId, Vector2 startValue, Vector2 endValue, TweenSettings settings) =>
+        //     MaterialTextureOffset(target, propertyId, new TweenSettings<Vector2>(startValue, endValue, settings));
+        //
+        // public static Tween MaterialTextureOffset(Material target, int propertyId, TweenSettings<Vector2> settings)
+        // {
+        //     return animateWithIntParam(target, propertyId, ref settings,
+        //         tween => (tween.unityTarget as Material).SetTextureOffset(tween.intParam, tween.Vector2Val),
+        //         tween => (tween.unityTarget as Material).GetTextureOffset(tween.intParam).ToContainer());
+        // }
+        //
+        // public static Tween MaterialTextureScale(Material target, int propertyId, Vector2 endValue, float duration, Ease ease = default, int cycles = 1,
+        //     CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
+        //     => MaterialTextureScale(target, propertyId, new TweenSettings<Vector2>(endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
+        //
+        // public static Tween MaterialTextureScale(Material target, int propertyId, Vector2 endValue, float duration, Easing ease, int cycles = 1, CycleMode cycleMode = CycleMode.Restart,
+        //     float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
+        //     => MaterialTextureScale(target, propertyId, new TweenSettings<Vector2>(endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
+        //
+        // public static Tween MaterialTextureScale(Material target, int propertyId, Vector2 startValue, Vector2 endValue, float duration, Ease ease = default, int cycles = 1,
+        //     CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
+        //     => MaterialTextureScale(target, propertyId, new TweenSettings<Vector2>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
+        //
+        // public static Tween MaterialTextureScale(Material target, int propertyId, Vector2 startValue, Vector2 endValue, float duration, Easing ease, int cycles = 1,
+        //     CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
+        //     => MaterialTextureScale(target, propertyId, new TweenSettings<Vector2>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
+        //
+        // public static Tween MaterialTextureScale(Material target, int propertyId, Vector2 endValue, TweenSettings settings) =>
+        //     MaterialTextureScale(target, propertyId, new TweenSettings<Vector2>(endValue, settings));
+        //
+        // public static Tween MaterialTextureScale(Material target, int propertyId, Vector2 startValue, Vector2 endValue, TweenSettings settings) =>
+        //     MaterialTextureScale(target, propertyId, new TweenSettings<Vector2>(startValue, endValue, settings));
+        //
+        // public static Tween MaterialTextureScale(Material target, int propertyId, TweenSettings<Vector2> settings)
+        // {
+        //     return animateWithIntParam(target, propertyId, ref settings,
+        //         tween => (tween.unityTarget as Material).SetTextureScale(tween.intParam, tween.Vector2Val),
+        //         tween => (tween.unityTarget as Material).GetTextureScale(tween.intParam).ToContainer());
+        // }
+        //
+        // public static Tween MaterialProperty(Material target, int propertyId, Vector4 endValue, float duration, Ease ease = default, int cycles = 1, CycleMode cycleMode = CycleMode.Restart,
+        //     float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
+        //     => MaterialProperty(target, propertyId, new TweenSettings<Vector4>(endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
+        //
+        // public static Tween MaterialProperty(Material target, int propertyId, Vector4 endValue, float duration, Easing ease, int cycles = 1, CycleMode cycleMode = CycleMode.Restart,
+        //     float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
+        //     => MaterialProperty(target, propertyId, new TweenSettings<Vector4>(endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
+        //
+        // public static Tween MaterialProperty(Material target, int propertyId, Vector4 startValue, Vector4 endValue, float duration, Ease ease = default, int cycles = 1,
+        //     CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
+        //     => MaterialProperty(target, propertyId, new TweenSettings<Vector4>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
+        //
+        // public static Tween MaterialProperty(Material target, int propertyId, Vector4 startValue, Vector4 endValue, float duration, Easing ease, int cycles = 1,
+        //     CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
+        //     => MaterialProperty(target, propertyId, new TweenSettings<Vector4>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
+        //
+        // public static Tween MaterialProperty(Material target, int propertyId, Vector4 endValue, TweenSettings settings) =>
+        //     MaterialProperty(target, propertyId, new TweenSettings<Vector4>(endValue, settings));
+        //
+        // public static Tween MaterialProperty(Material target, int propertyId, Vector4 startValue, Vector4 endValue, TweenSettings settings) =>
+        //     MaterialProperty(target, propertyId, new TweenSettings<Vector4>(startValue, endValue, settings));
+        //
+        // public static Tween MaterialProperty(Material target, int propertyId, TweenSettings<Vector4> settings)
+        // {
+        //     return animateWithIntParam(target, propertyId, ref settings,
+        //         tween => (tween.unityTarget as Material).SetVector(tween.intParam, tween.Vector4Val),
+        //         tween => (tween.unityTarget as Material).GetVector(tween.intParam).ToContainer());
+        // }
+        //
+        // // No 'startFromCurrent' overload
+        // public static Tween EulerAngles(Transform target, Vector3 startValue, Vector3 endValue, float duration, Ease ease = Ease.Default, int cycles = 1,
+        //     CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
+        //     => EulerAngles(target, new TweenSettings<Vector3>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
+        //
+        // public static Tween EulerAngles(Transform target, Vector3 startValue, Vector3 endValue, float duration, Easing ease, int cycles = 1, CycleMode cycleMode = CycleMode.Restart,
+        //     float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
+        //     => EulerAngles(target, new TweenSettings<Vector3>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
+        //
+        // public static Tween EulerAngles(Transform target, Vector3 startValue, Vector3 endValue, TweenSettings settings) =>
+        //     EulerAngles(target, new TweenSettings<Vector3>(startValue, endValue, settings));
+        //
+        // public static Tween EulerAngles(Transform target, TweenSettings<Vector3> settings)
+        // {
+        //     validateEulerAnglesData(ref settings);
+        //     return animate(target, ref settings, _ => { (_.unityTarget as Transform).eulerAngles = _.Vector3Val; }, _ => (_.unityTarget as Transform).eulerAngles.ToContainer());
+        // }
+
+//         public static Tween LocalEulerAngles(Transform target, Vector3 startValue, Vector3 endValue, float duration, Ease ease = Ease.Default, int cycles = 1,
+//             CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
+//             => LocalEulerAngles(target, new TweenSettings<Vector3>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
+//
+//         public static Tween LocalEulerAngles(Transform target, Vector3 startValue, Vector3 endValue, float duration, Easing ease, int cycles = 1, CycleMode cycleMode = CycleMode.Restart,
+//             float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
+//             => LocalEulerAngles(target, new TweenSettings<Vector3>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, useUnscaledTime)));
+//
+//         public static Tween LocalEulerAngles(Transform target, Vector3 startValue, Vector3 endValue, TweenSettings settings) =>
+//             LocalEulerAngles(target, new TweenSettings<Vector3>(startValue, endValue, settings));
+//
+//         public static Tween LocalEulerAngles(Transform target, TweenSettings<Vector3> settings)
+//         {
+//             validateEulerAnglesData(ref settings);
+//             return animate(target, ref settings, _ => { (_.unityTarget as Transform).localEulerAngles = _.Vector3Val; }, _ => (_.unityTarget as Transform).localEulerAngles.ToContainer());
+//         }
+//
+//         static void validateEulerAnglesData(ref TweenSettings<Vector3> settings)
+//         {
+//             if (settings.startFromCurrent)
+//             {
+//                 settings.startFromCurrent = false;
+//                 Debug.LogWarning(
+//                     "Animating euler angles from the current value may produce unexpected results because there is more than one way to represent the current rotation using Euler angles.\n" +
+//                     "'" + nameof(TweenSettings<float>.startFromCurrent) + "' was ignored.\n" +
+//                     "More info: https://docs.unity3d.com/ScriptReference/Transform-eulerAngles.html\n");
+//             }
+//         }
+//
+//         // Called from TweenGenerated.cs
+//         public static Tween Scale(Transform target, TweenSettings<float> uniformScaleSettings)
+//         {
+//             var remapped = new TweenSettings<Vector3>(uniformScaleSettings.startValue * Vector3.one, uniformScaleSettings.endValue * Vector3.one, uniformScaleSettings.settings)
+//                 { startFromCurrent = uniformScaleSettings.startFromCurrent };
+//             return Scale(target, remapped);
+//         }
+//
+//         public static Tween Rotation(Transform target, TweenSettings<Vector3> eulerAnglesSettings) => Rotation(target, toQuaternion(eulerAnglesSettings));
+//         public static Tween LocalRotation(Transform target, TweenSettings<Vector3> localEulerAnglesSettings) => LocalRotation(target, toQuaternion(localEulerAnglesSettings));
+//
+//         static TweenSettings<Quaternion> toQuaternion(TweenSettings<Vector3> s) => new TweenSettings<Quaternion>(Quaternion.Euler(s.startValue), Quaternion.Euler(s.endValue), s.settings)
+//             { startFromCurrent = s.startFromCurrent };
+//
+// #if TEXT_MESH_PRO_INSTALLED
+//         public static Tween TextMaxVisibleCharacters(TMPro.TMP_Text target, TweenSettings<int> settings)
+//         {
+//             int oldCount = target.textInfo.characterCount;
+//             target.ForceMeshUpdate();
+//             if (oldCount != target.textInfo.characterCount)
+//             {
+//                 Debug.LogWarning("Please call TMP_Text.ForceMeshUpdate() before animating maxVisibleCharacters.");
+//             }
+//
+//             var floatSettings = new TweenSettings<float>(settings.startValue, settings.endValue, settings.settings);
+//             return animate(target, ref floatSettings, _tween =>
+//             {
+//                 var _target = _tween.target as TMPro.TMP_Text;
+//                 _target.maxVisibleCharacters = Mathf.RoundToInt(_tween.FloatVal);
+//             }, t => new ValueContainer { FloatVal = (t.target as TMPro.TMP_Text).maxVisibleCharacters });
+//         }
+// #endif
+//
+//         public static Tween GlobalTimeScale(Single endValue, float duration, Ease ease = Ease.Default, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0,
+//             float endDelay = 0)
+//             => GlobalTimeScale(new TweenSettings<float>(endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, true)));
+//
+//         public static Tween GlobalTimeScale(Single endValue, float duration, Easing ease, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0)
+//             => GlobalTimeScale(new TweenSettings<float>(endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, true)));
+//
+//         public static Tween GlobalTimeScale(Single startValue, Single endValue, float duration, Ease ease = Ease.Default, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0,
+//             float endDelay = 0)
+//             => GlobalTimeScale(new TweenSettings<float>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, true)));
+//
+//         public static Tween GlobalTimeScale(Single startValue, Single endValue, float duration, Easing ease, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0,
+//             float endDelay = 0)
+//             => GlobalTimeScale(new TweenSettings<float>(startValue, endValue, new TweenSettings(duration, ease, cycles, cycleMode, startDelay, endDelay, true)));
+//
+//         public static Tween GlobalTimeScale(Single endValue, TweenSettings settings) => GlobalTimeScale(new TweenSettings<float>(endValue, settings));
+//         public static Tween GlobalTimeScale(Single startValue, Single endValue, TweenSettings settings) => GlobalTimeScale(new TweenSettings<float>(startValue, endValue, settings));
+//
+//         public static Tween GlobalTimeScale(TweenSettings<float> settings)
+//         {
+//             clampTimescale(ref settings.startValue);
+//             clampTimescale(ref settings.endValue);
+//             if (!settings.settings.useUnscaledTime)
+//             {
+//                 Debug.LogWarning("Setting " + nameof(TweenSettings.useUnscaledTime) + " to true to animate Time.timeScale correctly.");
+//                 settings.settings.useUnscaledTime = true;
+//             }
+//
+//             return animate(SmoothTweenManager.dummyTarget, ref settings, t => Time.timeScale = t.FloatVal, _ => Time.timeScale.ToContainer());
+//
+//             void clampTimescale(ref float value)
+//             {
+//                 if (value < 0)
+//                 {
+//                     Debug.LogError($"timeScale should be >= 0, but was {value}");
+//                     value = 0;
+//                 }
+//             }
+//         }
+//
+//         public static Tween TweenTimeScale(Tween tween, TweenSettings<float> settings)
+//         {
+//             if (!tween.TryManipulate())
+//             {
+//                 return default;
+//             }
+//
+//             var result = animate(tween.tween, ref settings, t =>
+//             {
+//                 var target = t.target as ReusableTween;
+//                 if (t.intParam != target.id)
+//                 {
+//                     t.EmergencyStop();
+//                     return;
+//                 }
+//
+//                 target.timeScale = t.FloatVal;
+//             }, t => (t.target as ReusableTween).timeScale.ToContainer());
+//             result.tween.intParam = tween.id;
+//             return result;
+//         }
+//
+//         public static Tween TweenTimeScale(Sequence sequence, TweenSettings<float> settings) => TweenTimeScale(sequence.root, settings);
+//
+// #if PRIME_TWEEN_EXPERIMENTAL
+//         /// <summary>Similar to position animation with Ease.OutBounce, but gives the ability to customize the bounce behaviour by specifying the exact bounce amplitude, number of bounces, and bounce stiffness.</summary>
+//         public static Sequence PositionOutBounce( Transform target, Vector3 endValue, float duration, float bounceAmplitude, int numBounces = 2, float stiffness = 0.5f, bool useUnscaledTime =
+//  false)
+//             => CustomOutBounce(target, (t, s) => Position(t, s), endValue, duration, bounceAmplitude, numBounces, stiffness, t => t.position, useUnscaledTime);
+//
+//         /// <summary>Similar to position animation with Ease.OutBounce, but gives the ability to customize the bounce behaviour by specifying the exact bounce amplitude, number of bounces, and bounce stiffness.</summary>
+//         public static Sequence LocalPositionOutBounce( Transform target, Vector3 endValue, float duration, float bounceAmplitude, int numBounces = 2, float stiffness =
+//  0.5f, bool useUnscaledTime = false)
+//             => CustomOutBounce(target, (t, s) => LocalPosition(t, s), endValue, duration, bounceAmplitude, numBounces, stiffness, t => t.localPosition, useUnscaledTime);
+//
+//         static Sequence CustomOutBounce( Transform target,  Func<Transform, TweenSettings<Vector3>, Tween> animFunc, Vector3 endValue, float duration, float bounceAmplitude, int numBounces, float stiffness,  Func<Transform, Vector3> getPos, bool useUnscaledTime) {
+//             if (bounceAmplitude == 0) {
+//                 Debug.LogWarning("Please provide non-zero " + nameof(bounceAmplitude) + ".");
+//             }
+//             if (numBounces < 0 || numBounces > 10) {
+//                 Debug.LogError("'" + nameof(numBounces) + "' should be >= 0 and <= 10.");
+//                 numBounces = Mathf.Clamp(numBounces, 0, 10);
+//             }
+//             if (stiffness < 0 || stiffness > 5) {
+//                 Debug.LogError("'" + nameof(stiffness) + "' should be >= 0 and <= 5.");
+//                 stiffness = Mathf.Clamp(stiffness, 0, 5);
+//             }
+//             stiffness += 1;
+//             // move durations: x + x/stiffness + x/stiffness^2 + x/stiffness^3...
+//             float x = 1;
+//             for (int i = 1; i <= numBounces; i++) {
+//                 x += 1 / Mathf.Pow(stiffness, i);
+//             }
+//             var curDur = duration / x;
+//             var sequence = Sequence.Create(animFunc(target, new TweenSettings<Vector3>(endValue, curDur, Ease.InSine, useUnscaledTime: useUnscaledTime)));
+//             var bounceVector = (getPos(target) - endValue).normalized * bounceAmplitude;
+//             for (int i = 1; i <= numBounces; i++) {
+//                 curDur /= stiffness;
+//                 sequence.Chain(animFunc(target, new TweenSettings<Vector3>(endValue + bounceVector, curDur / 2f, Ease.OutSine, 2, CycleMode.Rewind, useUnscaledTime: useUnscaledTime)));
+//                 bounceVector /= stiffness * 2;
+//             }
+//             return sequence;
+//         }
+// #endif // PRIME_TWEEN_EXPERIMENTAL
     }
 }
