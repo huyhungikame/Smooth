@@ -1,5 +1,5 @@
 using JetBrains.Annotations;
-using PrimeTween;
+using SmoothTween;
 using UnityEngine;
 
 public class DebugInspectorTest : MonoBehaviour {

@@ -1,5 +1,5 @@
 using JetBrains.Annotations;
-using PrimeTween;
+using SmoothTween;
 using UnityEditor;
 using UnityEngine;
 using static UnityEditor.EditorGUI;

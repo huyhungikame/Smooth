@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Diagnostics;
-using PrimeTween;
+using SmoothTween;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Assert = UnityEngine.Assertions.Assert;

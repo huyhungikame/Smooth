@@ -1,6 +1,6 @@
 using UnityAssert = UnityEngine.Assertions;
 
-namespace PrimeTween {
+namespace SmoothTween {
     internal static class Assert {
         #if UNITY_ASSERTIONS && !PRIME_TWEEN_DISABLE_ASSERTIONS
         internal static void IsTrue(bool condition, string msg = null) => UnityAssert.Assert.IsTrue(condition, msg);

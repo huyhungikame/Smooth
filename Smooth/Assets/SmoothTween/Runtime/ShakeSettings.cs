@@ -2,7 +2,7 @@ using System;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace PrimeTween {
+namespace SmoothTween {
     /// <summary>
     /// ShakeSettings contains all properties needed for a shake or punch (frequency, strength per axis, duration, etc.). Can be serialized and tweaked from the Inspector.<br/>
     /// Shake methods are: Tween.ShakeLocalPosition(), Tween.ShakeLocalRotation(), Tween.ShakeScale(), and Tween.ShakeCustom().<br/><br/>

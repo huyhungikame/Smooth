@@ -1,5 +1,5 @@
 using System;
-using PrimeTween;
+using SmoothTween;
 using UnityEngine;
 
 public class Demo : MonoBehaviour

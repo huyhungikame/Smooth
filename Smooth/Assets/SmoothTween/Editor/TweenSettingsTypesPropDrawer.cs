@@ -1,6 +1,6 @@
 #pragma warning disable CS0162
 using JetBrains.Annotations;
-using PrimeTween;
+using SmoothTween;
 using UnityEditor;
 using UnityEngine;
 using static UnityEditor.EditorGUI;

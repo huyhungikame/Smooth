@@ -10,7 +10,7 @@ using System.Linq;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace PrimeTween {
+namespace SmoothTween {
     /// <summary>An ordered group of tweens and callbacks. Tweens in a sequence can run in parallel to one another with <see cref="Group"/> and sequentially with <see cref="Chain"/>.<br/>
     /// To make tweens in a Sequence overlap each other, use <see cref="TweenSettings.startDelay"/> and <see cref="TweenSettings.endDelay"/>.</summary>
     /// <example><code>

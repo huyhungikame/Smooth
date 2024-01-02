@@ -5,7 +5,7 @@ using System;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace PrimeTween {
+namespace SmoothTween {
     public partial struct Tween {
         /// <summary>Returns the number of alive tweens.</summary>
         /// <param name="onTarget">If specified, returns the number of running tweens on the target. Please note: if target is specified, this method call has O(n) complexity where n is the total number of running tweens.</param>

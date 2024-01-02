@@ -6,7 +6,7 @@ using JetBrains.Annotations;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
-namespace PrimeTween {
+namespace SmoothTween {
     [Serializable]
     internal class ReusableTween {
         #if UNITY_EDITOR

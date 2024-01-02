@@ -8,7 +8,7 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 using SuppressMessage = System.Diagnostics.CodeAnalysis.SuppressMessageAttribute;
 
-namespace PrimeTween {
+namespace SmoothTween {
     public partial struct Tween {
         /// <summary>Shakes the camera.<br/>
         /// If the camera is perspective, shakes all angles.<br/>

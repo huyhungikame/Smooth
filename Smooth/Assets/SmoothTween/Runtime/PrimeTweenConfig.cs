@@ -1,7 +1,7 @@
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace PrimeTween {
+namespace SmoothTween {
     /// Global PrimeTween configuration.
     [PublicAPI]
     public static partial class PrimeTweenConfig {

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Linq;
 using JetBrains.Annotations;
 
-namespace PrimeTween {
+namespace SmoothTween {
     public partial struct Tween : IEnumerator {
         /// <summary>Use this method to wait for a Tween in coroutines.</summary>
         /// <example><code>

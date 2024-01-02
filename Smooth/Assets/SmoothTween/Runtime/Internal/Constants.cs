@@ -1,8 +1,8 @@
 using JetBrains.Annotations;
 using UnityEngine;
-using T = PrimeTween.TweenSettings<float>;
+using T = SmoothTween.TweenSettings<float>;
 
-namespace PrimeTween {
+namespace SmoothTween {
     internal static class Constants {
         internal const string onCompleteCallbackIgnored = "Tween's " + nameof(Tween.OnComplete) + " callback was ignored.";
         internal const string durationInvalidError = "Tween's duration is invalid.";
@@ -27,11 +27,11 @@ namespace PrimeTween {
                                                 "Or can be used to postpone the execution of the onComplete callback.";
         internal const string infiniteTweenInSequenceError = "It's not allowed to have infinite tweens (cycles == -1) in a sequence. If you want the sequence to repeat forever, " + nameof(Sequence.SetRemainingCycles) + "(-1) on the parent sequence instead.";
         internal const string customTweensDontSupportStartFromCurrentWarning =
-            "Custom tweens don't support the '" + nameof(T.startFromCurrent) + "' because they don't know the current value of animated property.\n" +
+            "Custom tweens don't support the '" + nameof(TweenSettings<>.startFromCurrent) + "' because they don't know the current value of animated property.\n" +
             "This means that the animated value will be changed abruptly if a new tween is started mid-way.\n" +
-            "Please pass the current value to the '" + nameof(T) + "." + nameof(T.WithDirection) + "(bool toEndValue, T currentValue)' method or use the constructor that accepts the '" + nameof(T.startValue) + "'.\n";
+            "Please pass the current value to the '" + nameof(TweenSettings<>) + "." + nameof(TweenSettings<>.WithDirection) + "(bool toEndValue, T currentValue)' method or use the constructor that accepts the '" + nameof(TweenSettings<>.startValue) + "'.\n";
         internal const string startFromCurrentTooltip = "If true, the current value of an animated property will be used instead of the 'startValue'.\n\n" +
-                                                        "This field typically should not be manipulated directly. Instead, it's set by TweenSettings(T endValue, TweenSettings settings) constructor or by " + nameof(T.WithDirection) + "() method.";
+                                                        "This field typically should not be manipulated directly. Instead, it's set by TweenSettings(T endValue, TweenSettings settings) constructor or by " + nameof(TweenSettings<>.WithDirection) + "() method.";
         internal const string startValueTooltip = "Start value of a tween.\n\n" +
                                                   "For example, if you're animating a window, the 'startValue' can represent the closed (off-screen) position of the window.";
         internal const string endValueTooltip = "End value of a tween.\n\n" +

@@ -13,7 +13,7 @@
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace PrimeTween {
+namespace SmoothTween {
     [PublicAPI]
     internal static class StandardEasing {
         const float halfPi = Mathf.PI / 2f;

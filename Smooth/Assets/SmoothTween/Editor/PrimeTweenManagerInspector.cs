@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using PrimeTween;
+using SmoothTween;
 using UnityEditor;
 using UnityEngine;
 

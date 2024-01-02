@@ -1,5 +1,5 @@
 
-namespace PrimeTween {
+namespace SmoothTween {
     internal enum PropType {
         None = 0,
         Float,
