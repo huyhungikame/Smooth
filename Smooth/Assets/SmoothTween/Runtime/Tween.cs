@@ -252,7 +252,7 @@ namespace SmoothTween
                     {
                         if (tween.IsMainSequenceRoot())
                         {
-                            tween.sequence.releaseTweens();
+                            tween.sequence.ReleaseTweens();
                         }
                         else
                         {

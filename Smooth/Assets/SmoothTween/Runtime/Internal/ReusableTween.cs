@@ -117,7 +117,7 @@ namespace SmoothTween
                     bool ForceChildrenToPos()
                     {
                         var simulatedSequenceElapsedTime = isForwardCycle ? float.MaxValue : negativeElapsedTime;
-                        foreach (var t in sequence.getSelfChildren(isForwardCycle))
+                        foreach (var t in sequence.GetSelfChildren(isForwardCycle))
                         {
                             var tween = t.tween;
                             tween.updateSequenceChild(simulatedSequenceElapsedTime, isRestart);
@@ -145,7 +145,7 @@ namespace SmoothTween
                             // print($"restart to pos: {!isForwardCycle}");
                             var simulatedSequenceElapsedTime = !isForwardCycle ? float.MaxValue : negativeElapsedTime;
                             prevEasedT = simulatedSequenceElapsedTime;
-                            foreach (var t in sequence.getSelfChildren(!isForwardCycle))
+                            foreach (var t in sequence.GetSelfChildren(!isForwardCycle))
                             {
                                 var tween = t.tween;
                                 tween.updateSequenceChild(simulatedSequenceElapsedTime, true);
@@ -164,7 +164,7 @@ namespace SmoothTween
                 {
                     if (IsMainSequenceRoot() && !isPaused)
                     {
-                        sequence.releaseTweens();
+                        sequence.ReleaseTweens();
                     }
 
                     return;
@@ -174,7 +174,7 @@ namespace SmoothTween
             easedInterpolationFactor = Mathf.Clamp01(easedInterpolationFactor);
             bool isForward = easedInterpolationFactor > prevEasedT;
             float sequenceElapsedTime = easedInterpolationFactor * cycleDuration;
-            foreach (var t in sequence.getSelfChildren(isForward))
+            foreach (var t in sequence.GetSelfChildren(isForward))
             {
                 t.tween.updateSequenceChild(sequenceElapsedTime, isRestart);
                 if (!sequence.isAlive)
@@ -677,7 +677,7 @@ namespace SmoothTween
                     mainSequence = parent;
                 }
 
-                mainSequence.emergencyStop();
+                mainSequence.EmergencyStop();
             }
             else if (isAlive)
             {
