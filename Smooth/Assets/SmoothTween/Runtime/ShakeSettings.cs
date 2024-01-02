@@ -34,7 +34,7 @@ namespace SmoothTween {
                  "'1' means the shake is asymmetrical and will happen between the initial position and the value of the '" + nameof(strength) + "' vector.\n\n" +
                  "When used with punches, can be treated as the resistance to 'recoil': '0' is full recoil, '1' is no recoil.")]
         [Range(0f, 1f)] public float asymmetry;
-        /// <see cref="PrimeTweenManager.defaultShakeEase"/>
+        /// <see cref="SmoothTweenManager.defaultShakeEase"/>
         [Tooltip("Ease between adjacent shake points.\n\n" +
                  "Default is Ease.OutQuad.")]
         public Ease easeBetweenShakes;

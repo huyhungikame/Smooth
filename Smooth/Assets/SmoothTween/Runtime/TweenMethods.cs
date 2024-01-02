@@ -15,7 +15,7 @@ namespace SmoothTween {
                 return default;
             }
             #endif
-            var manager = PrimeTweenManager.Instance;
+            var manager = SmoothTweenManager.Instance;
             if (onTarget == null && manager.updateDepth == 0) {
                 int result = manager.tweensCount;
                 #if PRIME_TWEEN_SAFETY_CHECKS
@@ -23,7 +23,7 @@ namespace SmoothTween {
                 #endif
                 return result;
             }
-            return PrimeTweenManager.processAll(onTarget, _ => true); // call processAll to filter null tweens
+            return SmoothTweenManager.processAll(onTarget, _ => true); // call processAll to filter null tweens
         }
 
         #if PRIME_TWEEN_EXPERIMENTAL
@@ -40,7 +40,7 @@ namespace SmoothTween {
         /// If <see cref="onTarget"/> is provided, stops only tweens on this target (stopping a tween inside a Sequence is not allowed).</summary>
         /// <returns>The number of stopped tweens.</returns>
         public static int StopAll([CanBeNull] object onTarget = null) {
-            var result = PrimeTweenManager.processAll(onTarget, tween => {
+            var result = SmoothTweenManager.processAll(onTarget, tween => {
                 if (tween.IsInSequence()) {
                     if (tween.isMainSequenceRoot()) {
                         tween.sequence.Stop();
@@ -59,7 +59,7 @@ namespace SmoothTween {
         /// If <see cref="onTarget"/> is provided, completes only tweens on this target (completing a tween inside a Sequence is not allowed).</summary>
         /// <returns>The number of completed tweens.</returns>
         public static int CompleteAll([CanBeNull] object onTarget = null) {
-            var result = PrimeTweenManager.processAll(onTarget, tween => {
+            var result = SmoothTweenManager.processAll(onTarget, tween => {
                 if (tween.IsInSequence()) {
                     if (tween.isMainSequenceRoot()) {
                         tween.sequence.Complete();
@@ -76,7 +76,7 @@ namespace SmoothTween {
 
         static void forceUpdateManagerIfTargetIsNull([CanBeNull] object onTarget) {
             if (onTarget == null) {
-                var manager = PrimeTweenManager.Instance;
+                var manager = SmoothTweenManager.Instance;
                 if (manager != null) {
                     if (manager.updateDepth == 0) {
                         manager.FixedUpdate();
@@ -92,11 +92,11 @@ namespace SmoothTween {
         /// <returns>The number of paused/unpaused tweens.</returns>
         public static int SetPausedAll(bool isPaused, [CanBeNull] object onTarget = null) {
             if (isPaused) {
-                return PrimeTweenManager.processAll(onTarget, tween => {
+                return SmoothTweenManager.processAll(onTarget, tween => {
                     return tween.trySetPause(true);
                 });
             }
-            return PrimeTweenManager.processAll(onTarget, tween => {
+            return SmoothTweenManager.processAll(onTarget, tween => {
                 return tween.trySetPause(false);
             });
         }
@@ -106,7 +106,7 @@ namespace SmoothTween {
         /// It's preferable to use the <see cref="Delay{T}"/> overload because it checks if the UnityEngine.Object target is still alive before calling the <see cref="onComplete"/>.</summary>
         /// <param name="warnIfTargetDestroyed">https://github.com/KyryloKuzyk/PrimeTween/discussions/4</param>
         public static Tween Delay(float duration, [CanBeNull] Action onComplete = null, bool useUnscaledTime = false, bool warnIfTargetDestroyed = true) {
-            return delay(PrimeTweenManager.dummyTarget, duration, onComplete, useUnscaledTime, warnIfTargetDestroyed);
+            return delay(SmoothTweenManager.dummyTarget, duration, onComplete, useUnscaledTime, warnIfTargetDestroyed);
         }
         /// <param name="warnIfTargetDestroyed">https://github.com/KyryloKuzyk/PrimeTween/discussions/4</param>
         public static Tween Delay([NotNull] object target, float duration, [CanBeNull] Action onComplete = null, bool useUnscaledTime = false, bool warnIfTargetDestroyed = true) {
@@ -143,8 +143,8 @@ namespace SmoothTween {
         }
 
         static Tween? delay_internal([CanBeNull] object target, float duration, bool useUnscaledTime) {
-            PrimeTweenManager.checkDuration(target, duration);
-            return PrimeTweenManager.delayWithoutDurationCheck(target, duration, useUnscaledTime);
+            SmoothTweenManager.checkDuration(target, duration);
+            return SmoothTweenManager.delayWithoutDurationCheck(target, duration, useUnscaledTime);
         }
 
         public static Tween MaterialColor([NotNull] Material target, int propertyId, Color endValue, float duration, Ease ease = default, int cycles = 1, CycleMode cycleMode = CycleMode.Restart, float startDelay = 0, float endDelay = 0, bool useUnscaledTime = false)
@@ -317,7 +317,7 @@ namespace SmoothTween {
                 Debug.LogWarning("Setting " + nameof(TweenSettings.useUnscaledTime) + " to true to animate Time.timeScale correctly.");
                 settings.settings.useUnscaledTime = true;
             }
-            return animate(PrimeTweenManager.dummyTarget, ref settings, t => Time.timeScale = t.FloatVal, _ => Time.timeScale.ToContainer());
+            return animate(SmoothTweenManager.dummyTarget, ref settings, t => Time.timeScale = t.FloatVal, _ => Time.timeScale.ToContainer());
             
             void clampTimescale(ref float value) {
                 if (value < 0) {

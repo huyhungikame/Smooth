@@ -134,7 +134,7 @@ namespace SmoothTween {
             if (!ValidateCustomCurve(curve)) {
                 return false;
             }
-            var instance = PrimeTweenManager.Instance;
+            var instance = SmoothTweenManager.Instance;
             if (instance == null || instance.validateCustomCurves) {
                 var error = getError();
                 if (error != null) {

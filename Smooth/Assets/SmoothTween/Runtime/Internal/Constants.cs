@@ -53,7 +53,7 @@ namespace SmoothTween {
             }
         }
 
-        internal static bool noInstance => ReferenceEquals(null, PrimeTweenManager.Instance);
+        internal static bool noInstance => ReferenceEquals(null, SmoothTweenManager.Instance);
         #endif
     }
 }

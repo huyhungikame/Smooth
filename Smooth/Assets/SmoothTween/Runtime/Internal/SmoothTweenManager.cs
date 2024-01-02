@@ -17,9 +17,9 @@ using UnityEditor;
 namespace SmoothTween
 {
     [AddComponentMenu("")]
-    internal class PrimeTweenManager : MonoBehaviour
+    internal class SmoothTweenManager : MonoBehaviour
     {
-        internal static PrimeTweenManager Instance;
+        internal static SmoothTweenManager Instance;
 #if UNITY_EDITOR
         static bool isHotReload = true;
 #endif
@@ -59,9 +59,9 @@ namespace SmoothTween
             isHotReload = false;
 #endif
             Assert.IsNull(Instance);
-            var go = new GameObject(nameof(PrimeTweenManager));
+            var go = new GameObject(nameof(SmoothTweenManager));
             DontDestroyOnLoad(go);
-            var instance = go.AddComponent<PrimeTweenManager>();
+            var instance = go.AddComponent<SmoothTweenManager>();
             instance.init();
             Instance = instance;
         }
@@ -76,7 +76,7 @@ namespace SmoothTween
             SetTweensCapacity(capacity);
         }
 
-        const string manualInstanceCreationIsNotAllowedMessage = "Please don't create the " + nameof(PrimeTweenManager) + " instance manually.";
+        const string manualInstanceCreationIsNotAllowedMessage = "Please don't create the " + nameof(SmoothTweenManager) + " instance manually.";
         void Awake() => Assert.IsNull(Instance, manualInstanceCreationIsNotAllowedMessage);
 
 #if UNITY_EDITOR
@@ -108,7 +108,7 @@ namespace SmoothTween
 #else
                 FindObjectOfType
 #endif
-                    <PrimeTweenManager>();
+                    <SmoothTweenManager>();
             Assert.IsNotNull(foundInScene);
 #if PRIME_TWEEN_INSPECTOR_DEBUGGING
             Debug.LogError("PRIME_TWEEN_INSPECTOR_DEBUGGING doesn't work with 'Recompile And Continue Playing' because Tween.id is serializable but Tween.tween is not.");
@@ -319,7 +319,7 @@ namespace SmoothTween
                     var newCapacity = currentPoolCapacity == 0 ? 4 : currentPoolCapacity * 2;
                     Debug.LogWarning(
                         $"Tweens capacity has been increased from {currentPoolCapacity} to {newCapacity}. Please increase the capacity manually to prevent memory allocations at runtime by calling {Constants.setTweensCapacityMethod}.\n" +
-                        $"To know the highest number of simultaneously running tweens, please observe the '{nameof(PrimeTweenManager)}/{Constants.maxAliveTweens}' in Inspector.\n");
+                        $"To know the highest number of simultaneously running tweens, please observe the '{nameof(SmoothTweenManager)}/{Constants.maxAliveTweens}' in Inspector.\n");
                     currentPoolCapacity = newCapacity;
                 }
             }

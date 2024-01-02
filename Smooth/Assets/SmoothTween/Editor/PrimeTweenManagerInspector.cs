@@ -3,7 +3,7 @@ using SmoothTween;
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(PrimeTweenManager))]
+[CustomEditor(typeof(SmoothTweenManager))]
 internal class PrimeTweenManagerInspector : Editor {
     SerializedProperty tweensProp;
     SerializedProperty fixedUpdateTweensProp;
@@ -11,8 +11,8 @@ internal class PrimeTweenManagerInspector : Editor {
     GUIContent fixedUpdateTweenGuiContent;
 
     void OnEnable() {
-        tweensProp = serializedObject.FindProperty(nameof(PrimeTweenManager.tweens));
-        fixedUpdateTweensProp = serializedObject.FindProperty(nameof(PrimeTweenManager.fixedUpdateTweens));
+        tweensProp = serializedObject.FindProperty(nameof(SmoothTweenManager.tweens));
+        fixedUpdateTweensProp = serializedObject.FindProperty(nameof(SmoothTweenManager.fixedUpdateTweens));
         Assert.IsNotNull(tweensProp);
         aliveTweenGuiContent = new GUIContent("Tweens");
         fixedUpdateTweenGuiContent = new GUIContent("Fixed update tweens");
@@ -23,7 +23,7 @@ internal class PrimeTweenManagerInspector : Editor {
             EditorGUILayout.ObjectField("Script", MonoScript.FromMonoBehaviour((MonoBehaviour)target), typeof(MonoBehaviour), false);
         }
         
-        var manager = target as PrimeTweenManager;
+        var manager = target as SmoothTweenManager;
         Assert.IsNotNull(manager);
         
         GUILayout.BeginHorizontal();

@@ -69,7 +69,7 @@ namespace SmoothTween {
         static Tween shake(TweenType tweenType, PropType propType, [NotNull] Transform target, ShakeSettings settings, [NotNull] Action<ReusableTween, Vector3> onValueChange, [NotNull] Func<ReusableTween, ValueContainer> getter) {
             Assert.IsNotNull(onValueChange);
             Assert.IsNotNull(getter);
-            var tween = PrimeTweenManager.fetchTween();
+            var tween = SmoothTweenManager.fetchTween();
             tween.propType = propType;
             prepareShakeData(settings, tween);
             tween.tweenType = tweenType;
@@ -81,7 +81,7 @@ namespace SmoothTween {
                 var shakeVal = getShakeVal(state);
                 _onValueChange(state, shakeVal);
             }, getter, true);
-            return PrimeTweenManager.Animate(tween);
+            return SmoothTweenManager.Animate(tween);
         }
 
         internal static ValueContainer? tryGetStartValueFromOtherShake([NotNull] ReusableTween newTween) {
@@ -92,7 +92,7 @@ namespace SmoothTween {
             if (target == null) {
                 return null;
             }
-            var manager = PrimeTweenManager.Instance;
+            var manager = SmoothTweenManager.Instance;
             ValueContainer? findIn(List<ReusableTween> list) {
                 foreach (var tween in list) {
                     if (tween != null && tween != newTween && tween._isAlive && ReferenceEquals(tween.unityTarget, target) && tween.tweenType == newTween.tweenType && !tween.startFromCurrent) {
@@ -107,7 +107,7 @@ namespace SmoothTween {
 
         public static Tween ShakeCustom<T>([NotNull] T target, Vector3 startValue, ShakeSettings settings, [NotNull] Action<T, Vector3> onValueChange) where T : class {
             Assert.IsNotNull(onValueChange);
-            var tween = PrimeTweenManager.fetchTween();
+            var tween = SmoothTweenManager.fetchTween();
             tween.propType = PropType.Vector3;
             tween.tweenType = TweenType.ShakeCustom;
             tween.startValue.CopyFrom(ref startValue);
@@ -126,7 +126,7 @@ namespace SmoothTween {
                     _tween.EmergencyStop();
                 }
             }, null, false);
-            return PrimeTweenManager.Animate(tween);
+            return SmoothTweenManager.Animate(tween);
         }
         public static Tween PunchCustom<T>([NotNull] T target, Vector3 startValue, ShakeSettings settings, [NotNull] Action<T, Vector3> onValueChange) where T : class => ShakeCustom(target, startValue, settings.WithPunch(), onValueChange);
 
@@ -215,7 +215,7 @@ namespace SmoothTween {
                         _easeBetweenShakes = Ease.OutQuad;
                     }
                     if (_easeBetweenShakes == Ease.Default) {
-                        _easeBetweenShakes = PrimeTweenManager.defaultShakeEase;
+                        _easeBetweenShakes = SmoothTweenManager.defaultShakeEase;
                     }
                     easeBetweenShakes = _easeBetweenShakes;
                 }

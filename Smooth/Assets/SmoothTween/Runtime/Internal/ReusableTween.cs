@@ -386,11 +386,11 @@ namespace SmoothTween {
             }
             #endif
             if (_settings.ease == Ease.Default) {
-                _settings.ease = PrimeTweenManager.Instance.defaultEase;
+                _settings.ease = SmoothTweenManager.Instance.defaultEase;
             } else if (_settings.ease == Ease.Custom && _settings.parametricEase == ParametricEase.None) {
                 if (_settings.customEase == null || !TweenSettings.ValidateCustomCurveKeyframes(_settings.customEase)) {
                     Debug.LogError($"Ease type is Ease.Custom, but {nameof(TweenSettings.customEase)} is not configured correctly.");
-                    _settings.ease = PrimeTweenManager.Instance.defaultEase;
+                    _settings.ease = SmoothTweenManager.Instance.defaultEase;
                 }
             }
             state = State.Before;
@@ -433,7 +433,7 @@ namespace SmoothTween {
             if (startFromCurrent) {
                 startFromCurrent = false;
                 startValue = Tween.tryGetStartValueFromOtherShake(this) ?? getter(this);
-                if (startValue.Vector4Val == endValue.Vector4Val && PrimeTweenManager.Instance.warnEndValueEqualsCurrent && !shakeData.isAlive) {
+                if (startValue.Vector4Val == endValue.Vector4Val && SmoothTweenManager.Instance.warnEndValueEqualsCurrent && !shakeData.isAlive) {
                     Debug.LogWarning($"Tween's 'endValue' equals to the current animated value: {startValue.Vector4Val}, tween: {GetDescription()}.\n" +
                                      $"{Constants.buildWarningCanBeDisabledMessage(nameof(PrimeTweenConfig.warnEndValueEqualsCurrent))}\n");
                 }
@@ -465,7 +465,7 @@ namespace SmoothTween {
             if (!_isAlive) {
                 result += " - ";
             }
-            if (target != PrimeTweenManager.dummyTarget) {
+            if (target != SmoothTweenManager.dummyTarget) {
                 result += $"{(unityTarget != null ? unityTarget.name : target?.GetType().Name)} / ";
             }
             var duration = settings.duration;
